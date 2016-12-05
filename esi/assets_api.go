@@ -36,11 +36,11 @@ type AssetsApiService service
  * Get character assets
  * Return a list of the characters assets  ---  Alternate route: &#x60;/v1/characters/{character_id}/assets/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/assets/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/assets/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param characterId Character id of the target character
- * @param datasource The server name you would like data from
+ * @param characterId Character id of the target character 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersCharacterIdAssets200Ok
  */
-func (a AssetsApiService) GetCharactersCharacterIdAssets(characterId int32, datasource string) ([]GetCharactersCharacterIdAssets200Ok, *APIResponse, error) {
+func (a AssetsApiService) GetCharactersCharacterIdAssets(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdAssets200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -62,7 +62,13 @@ func (a AssetsApiService) GetCharactersCharacterIdAssets(characterId int32, data
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

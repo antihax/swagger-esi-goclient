@@ -36,11 +36,11 @@ type ClonesApiService service
  * Get clones
  * A list of the character&#39;s clones  ---  Alternate route: &#x60;/v2/characters/{character_id}/clones/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/clones/&#x60;   ---  This route is cached for up to 120 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdClonesOk
  */
-func (a ClonesApiService) GetCharactersCharacterIdClones(characterId int32, datasource string) (*GetCharactersCharacterIdClonesOk, *APIResponse, error) {
+func (a ClonesApiService) GetCharactersCharacterIdClones(characterId int32, datasource interface{}) (*GetCharactersCharacterIdClonesOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -62,7 +62,13 @@ func (a ClonesApiService) GetCharactersCharacterIdClones(characterId int32, data
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

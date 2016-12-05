@@ -36,12 +36,12 @@ type CalendarApiService service
  * List calendar event summaries
  * Get 50 event summaries from the calendar. If no event ID is given, the resource will return the next 50 chronological event summaries from now. If an event ID is specified, it will return the next 50 chronological event summaries from after that event.   ---  Alternate route: &#x60;/v1/characters/{character_id}/calendar/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/calendar/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/calendar/&#x60;   ---  This route is cached for up to 5 seconds
  *
- * @param characterId The character to retrieve events from
- * @param fromEvent The event ID to retrieve events from
- * @param datasource The server name you would like data from
+ * @param characterId The character to retrieve events from 
+ * @param fromEvent(nil) The event ID to retrieve events from 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersCharacterIdCalendar200Ok
  */
-func (a CalendarApiService) GetCharactersCharacterIdCalendar(characterId int64, fromEvent int32, datasource string) ([]GetCharactersCharacterIdCalendar200Ok, *APIResponse, error) {
+func (a CalendarApiService) GetCharactersCharacterIdCalendar(characterId int64, fromEvent interface{}, datasource interface{}) ([]GetCharactersCharacterIdCalendar200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -63,8 +63,19 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendar(characterId int64, 
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("from_event", a.client.ParameterToString(fromEvent, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(fromEvent, "int32", "fromEvent"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if fromEvent != nil {
+		localVarQueryParams.Add("from_event", a.client.parameterToString(fromEvent, ""))
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -106,12 +117,12 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendar(characterId int64, 
  * Get an event
  * Get all the information for a specific event  ---  Alternate route: &#x60;/v3/characters/{character_id}/calendar/{event_id}/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/calendar/{event_id}/&#x60;   ---  This route is cached for up to 5 seconds
  *
- * @param characterId The character id requesting the event
- * @param eventId The id of the event requested
- * @param datasource The server name you would like data from
+ * @param characterId The character id requesting the event 
+ * @param eventId The id of the event requested 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdCalendarEventIdOk
  */
-func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(characterId int64, eventId int32, datasource string) (*GetCharactersCharacterIdCalendarEventIdOk, *APIResponse, error) {
+func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(characterId int64, eventId int32, datasource interface{}) (*GetCharactersCharacterIdCalendarEventIdOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -134,7 +145,13 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(characterId 
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -176,13 +193,13 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(characterId 
  * Respond to an event
  * Set your response status to an event  ---  Alternate route: &#x60;/v3/characters/{character_id}/calendar/{event_id}/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/calendar/{event_id}/&#x60; 
  *
- * @param characterId The character ID requesting the event
- * @param eventId The ID of the event requested
- * @param response The response value to set, overriding current value.
- * @param datasource The server name you would like data from
- * @return void
+ * @param characterId The character ID requesting the event 
+ * @param eventId The ID of the event requested 
+ * @param response The response value to set, overriding current value. 
+ * @param datasource(nil) The server name you would like data from 
+ * @return nil
  */
-func (a CalendarApiService) PutCharactersCharacterIdCalendarEventId(characterId int32, eventId int32, response PutCharactersCharacterIdCalendarEventIdResponse, datasource string) (*APIResponse, error) {
+func (a CalendarApiService) PutCharactersCharacterIdCalendarEventId(characterId int32, eventId int32, response PutCharactersCharacterIdCalendarEventIdResponse, datasource interface{}) (*APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Put")
 	// create path and map variables
@@ -205,7 +222,13 @@ func (a CalendarApiService) PutCharactersCharacterIdCalendarEventId(characterId 
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

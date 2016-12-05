@@ -35,11 +35,11 @@ type InsuranceApiService service
  * List insurance levels
  * Return available insurance levels for all ship types  ---  Alternate route: &#x60;/v1/insurance/prices/&#x60;  Alternate route: &#x60;/legacy/insurance/prices/&#x60;  Alternate route: &#x60;/dev/insurance/prices/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param acceptLanguage Language to use in the response
- * @param datasource The server name you would like data from
+ * @param acceptLanguage(nil) Language to use in the response 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetInsurancePrices200Ok
  */
-func (a InsuranceApiService) GetInsurancePrices(acceptLanguage string, datasource string) ([]GetInsurancePrices200Ok, *APIResponse, error) {
+func (a InsuranceApiService) GetInsurancePrices(acceptLanguage interface{}, datasource interface{}) ([]GetInsurancePrices200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -55,7 +55,16 @@ func (a InsuranceApiService) GetInsurancePrices(acceptLanguage string, datasourc
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(acceptLanguage, "string", "acceptLanguage"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -76,7 +85,7 @@ func (a InsuranceApiService) GetInsurancePrices(acceptLanguage string, datasourc
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
 	// header params "Accept-Language"
-	localVarHeaderParams["Accept-Language"] = a.client.ParameterToString(acceptLanguage, "")
+	localVarHeaderParams["Accept-Language"] = a.client.parameterToString(acceptLanguage, "")
 	var successPayload = new([]GetInsurancePrices200Ok)
 	localVarHttpResponse, err := a.client.CallAPI(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 

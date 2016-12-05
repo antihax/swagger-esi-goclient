@@ -36,15 +36,15 @@ type SearchApiService service
  * Search on a string
  * Search for entities that match a given sub-string.  ---  Alternate route: &#x60;/v2/characters/{character_id}/search/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/search/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param characterId An EVE character ID
- * @param search The string to search on
- * @param categories Type of entities to search for
- * @param language Search locale
- * @param strict Whether the search should be a strict match
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param search The string to search on 
+ * @param categories Type of entities to search for 
+ * @param language(nil) Search locale 
+ * @param strict(nil) Whether the search should be a strict match 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdSearchOk
  */
-func (a SearchApiService) GetCharactersCharacterIdSearch(characterId int32, search string, categories []string, language string, strict bool, datasource string) (*GetCharactersCharacterIdSearchOk, *APIResponse, error) {
+func (a SearchApiService) GetCharactersCharacterIdSearch(characterId int32, search string, categories []string, language interface{}, strict interface{}, datasource interface{}) (*GetCharactersCharacterIdSearchOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -66,18 +66,27 @@ func (a SearchApiService) GetCharactersCharacterIdSearch(characterId int32, sear
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("search", a.client.ParameterToString(search, ""))
-	var collectionFormat = "csv"
-	if collectionFormat == "multi" {
-		for _, value := range categories {
-			localVarQueryParams.Add("categories", value)
-		}
-	} else {
-		localVarQueryParams.Add("categories", a.client.ParameterToString(categories, collectionFormat))
+
+	if err := a.client.typeCheckParameter(language, "string", "language"); err != nil {
+		return nil,  nil, err
 	}
-		localVarQueryParams.Add("language", a.client.ParameterToString(language, ""))
-		localVarQueryParams.Add("strict", a.client.ParameterToString(strict, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+	if err := a.client.typeCheckParameter(strict, "bool", "strict"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+		localVarQueryParams.Add("search", a.client.parameterToString(search, ""))
+		localVarQueryParams.Add("categories", a.client.parameterToString(categories, "csv"))
+	if language != nil {
+		localVarQueryParams.Add("language", a.client.parameterToString(language, ""))
+	}
+	if strict != nil {
+		localVarQueryParams.Add("strict", a.client.parameterToString(strict, ""))
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -119,14 +128,14 @@ func (a SearchApiService) GetCharactersCharacterIdSearch(characterId int32, sear
  * Search on a string
  * Search for entities that match a given sub-string.  ---  Alternate route: &#x60;/v1/search/&#x60;  Alternate route: &#x60;/legacy/search/&#x60;  Alternate route: &#x60;/dev/search/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param search The string to search on
- * @param categories Type of entities to search for
- * @param language Search locale
- * @param strict Whether the search should be a strict match
- * @param datasource The server name you would like data from
+ * @param search The string to search on 
+ * @param categories Type of entities to search for 
+ * @param language(nil) Search locale 
+ * @param strict(nil) Whether the search should be a strict match 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetSearchOk
  */
-func (a SearchApiService) GetSearch(search string, categories []string, language string, strict bool, datasource string) (*GetSearchOk, *APIResponse, error) {
+func (a SearchApiService) GetSearch(search string, categories []string, language interface{}, strict interface{}, datasource interface{}) (*GetSearchOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -142,18 +151,27 @@ func (a SearchApiService) GetSearch(search string, categories []string, language
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("search", a.client.ParameterToString(search, ""))
-	var collectionFormat = "csv"
-	if collectionFormat == "multi" {
-		for _, value := range categories {
-			localVarQueryParams.Add("categories", value)
-		}
-	} else {
-		localVarQueryParams.Add("categories", a.client.ParameterToString(categories, collectionFormat))
+
+	if err := a.client.typeCheckParameter(language, "string", "language"); err != nil {
+		return nil,  nil, err
 	}
-		localVarQueryParams.Add("language", a.client.ParameterToString(language, ""))
-		localVarQueryParams.Add("strict", a.client.ParameterToString(strict, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+	if err := a.client.typeCheckParameter(strict, "bool", "strict"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+		localVarQueryParams.Add("search", a.client.parameterToString(search, ""))
+		localVarQueryParams.Add("categories", a.client.parameterToString(categories, "csv"))
+	if language != nil {
+		localVarQueryParams.Add("language", a.client.parameterToString(language, ""))
+	}
+	if strict != nil {
+		localVarQueryParams.Add("strict", a.client.parameterToString(strict, ""))
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

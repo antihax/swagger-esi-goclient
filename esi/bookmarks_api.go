@@ -36,11 +36,11 @@ type BookmarksApiService service
  * List bookmarks
  * List your character&#39;s personal bookmarks  ---  Alternate route: &#x60;/v1/characters/{character_id}/bookmarks/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/bookmarks/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/bookmarks/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersCharacterIdBookmarks200Ok
  */
-func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(characterId int32, datasource string) ([]GetCharactersCharacterIdBookmarks200Ok, *APIResponse, error) {
+func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdBookmarks200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -62,7 +62,13 @@ func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(characterId int32
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -104,11 +110,11 @@ func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(characterId int32
  * List bookmark folders
  * List your character&#39;s personal bookmark folders  ---  Alternate route: &#x60;/v1/characters/{character_id}/bookmarks/folders/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/bookmarks/folders/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/bookmarks/folders/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersCharacterIdBookmarksFolders200Ok
  */
-func (a BookmarksApiService) GetCharactersCharacterIdBookmarksFolders(characterId int32, datasource string) ([]GetCharactersCharacterIdBookmarksFolders200Ok, *APIResponse, error) {
+func (a BookmarksApiService) GetCharactersCharacterIdBookmarksFolders(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdBookmarksFolders200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -130,7 +136,13 @@ func (a BookmarksApiService) GetCharactersCharacterIdBookmarksFolders(characterI
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

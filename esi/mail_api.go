@@ -36,12 +36,12 @@ type MailApiService service
  * Delete a mail
  * Delete a mail  ---  Alternate route: &#x60;/v1/characters/{character_id}/mail/{mail_id}/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/mail/{mail_id}/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/{mail_id}/&#x60; 
  *
- * @param characterId An EVE character ID
- * @param mailId An EVE mail ID
- * @param datasource The server name you would like data from
- * @return void
+ * @param characterId An EVE character ID 
+ * @param mailId An EVE mail ID 
+ * @param datasource(nil) The server name you would like data from 
+ * @return nil
  */
-func (a MailApiService) DeleteCharactersCharacterIdMailMailId(characterId int32, mailId int32, datasource string) (*APIResponse, error) {
+func (a MailApiService) DeleteCharactersCharacterIdMailMailId(characterId int32, mailId int32, datasource interface{}) (*APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Delete")
 	// create path and map variables
@@ -64,7 +64,13 @@ func (a MailApiService) DeleteCharactersCharacterIdMailMailId(characterId int32,
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -104,13 +110,13 @@ func (a MailApiService) DeleteCharactersCharacterIdMailMailId(characterId int32,
  * Return mail headers
  * Return the 50 most recent mail headers belonging to the character that match the query criteria. Queries can be filtered by label, and last_mail_id can be used to paginate backwards.  ---  Alternate route: &#x60;/v1/characters/{character_id}/mail/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/mail/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/&#x60;   ---  This route is cached for up to 30 seconds
  *
- * @param characterId An EVE character ID
- * @param labels Fetch only mails that match one or more of the given labels
- * @param lastMailId List only mail with an ID lower than the given ID, if present
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param labels Fetch only mails that match one or more of the given labels 
+ * @param lastMailId(nil) List only mail with an ID lower than the given ID, if present 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersCharacterIdMail200Ok
  */
-func (a MailApiService) GetCharactersCharacterIdMail(characterId int32, labels []int64, lastMailId int32, datasource string) ([]GetCharactersCharacterIdMail200Ok, *APIResponse, error) {
+func (a MailApiService) GetCharactersCharacterIdMail(characterId int32, labels []int64, lastMailId interface{}, datasource interface{}) ([]GetCharactersCharacterIdMail200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -132,16 +138,22 @@ func (a MailApiService) GetCharactersCharacterIdMail(characterId int32, labels [
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-	var collectionFormat = "csv"
-	if collectionFormat == "multi" {
-		for _, value := range labels {
-			localVarQueryParams.Add("labels", value)
-		}
-	} else {
-		localVarQueryParams.Add("labels", a.client.ParameterToString(labels, collectionFormat))
+
+	if err := a.client.typeCheckParameter(lastMailId, "int32", "lastMailId"); err != nil {
+		return nil,  nil, err
 	}
-		localVarQueryParams.Add("last_mail_id", a.client.ParameterToString(lastMailId, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if labels != nil {
+		localVarQueryParams.Add("labels", a.client.parameterToString(labels, "csv"))
+	}
+	if lastMailId != nil {
+		localVarQueryParams.Add("last_mail_id", a.client.parameterToString(lastMailId, ""))
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -183,11 +195,11 @@ func (a MailApiService) GetCharactersCharacterIdMail(characterId int32, labels [
  * Get mail labels and unread counts
  * Return a list of the users mail labels, unread counts for each label and a total unread count.  ---  Alternate route: &#x60;/v3/characters/{character_id}/mail/labels/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/labels/&#x60;   ---  This route is cached for up to 30 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdMailLabelsOk
  */
-func (a MailApiService) GetCharactersCharacterIdMailLabels(characterId int32, datasource string) (*GetCharactersCharacterIdMailLabelsOk, *APIResponse, error) {
+func (a MailApiService) GetCharactersCharacterIdMailLabels(characterId int32, datasource interface{}) (*GetCharactersCharacterIdMailLabelsOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -209,7 +221,13 @@ func (a MailApiService) GetCharactersCharacterIdMailLabels(characterId int32, da
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -251,11 +269,11 @@ func (a MailApiService) GetCharactersCharacterIdMailLabels(characterId int32, da
  * Return mailing list subscriptions
  * Return all mailing lists that the character is subscribed to   ---  Alternate route: &#x60;/v1/characters/{character_id}/mail/lists/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/mail/lists/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/lists/&#x60;   ---  This route is cached for up to 120 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersCharacterIdMailLists200Ok
  */
-func (a MailApiService) GetCharactersCharacterIdMailLists(characterId int32, datasource string) ([]GetCharactersCharacterIdMailLists200Ok, *APIResponse, error) {
+func (a MailApiService) GetCharactersCharacterIdMailLists(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdMailLists200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -277,7 +295,13 @@ func (a MailApiService) GetCharactersCharacterIdMailLists(characterId int32, dat
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -319,12 +343,12 @@ func (a MailApiService) GetCharactersCharacterIdMailLists(characterId int32, dat
  * Return a mail
  * Return the contents of an EVE mail  ---  Alternate route: &#x60;/v1/characters/{character_id}/mail/{mail_id}/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/mail/{mail_id}/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/{mail_id}/&#x60;   ---  This route is cached for up to 30 seconds
  *
- * @param characterId An EVE character ID
- * @param mailId An EVE mail ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param mailId An EVE mail ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdMailMailIdOk
  */
-func (a MailApiService) GetCharactersCharacterIdMailMailId(characterId int32, mailId int32, datasource string) (*GetCharactersCharacterIdMailMailIdOk, *APIResponse, error) {
+func (a MailApiService) GetCharactersCharacterIdMailMailId(characterId int32, mailId int32, datasource interface{}) (*GetCharactersCharacterIdMailMailIdOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -347,7 +371,13 @@ func (a MailApiService) GetCharactersCharacterIdMailMailId(characterId int32, ma
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -389,12 +419,12 @@ func (a MailApiService) GetCharactersCharacterIdMailMailId(characterId int32, ma
  * Send a new mail
  * Create and send a new mail  ---  Alternate route: &#x60;/v1/characters/{character_id}/mail/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/mail/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/&#x60; 
  *
- * @param characterId The sender&#39;s character ID
- * @param mail The mail to send
- * @param datasource The server name you would like data from
+ * @param characterId The sender&#39;s character ID 
+ * @param mail The mail to send 
+ * @param datasource(nil) The server name you would like data from 
  * @return *int32
  */
-func (a MailApiService) PostCharactersCharacterIdMail(characterId int32, mail PostCharactersCharacterIdMailMail, datasource string) (*int32, *APIResponse, error) {
+func (a MailApiService) PostCharactersCharacterIdMail(characterId int32, mail PostCharactersCharacterIdMailMail, datasource interface{}) (*int32, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Post")
 	// create path and map variables
@@ -416,7 +446,13 @@ func (a MailApiService) PostCharactersCharacterIdMail(characterId int32, mail Po
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -460,12 +496,12 @@ func (a MailApiService) PostCharactersCharacterIdMail(characterId int32, mail Po
  * Create a mail label
  * Create a mail label  ---  Alternate route: &#x60;/v2/characters/{character_id}/mail/labels/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/mail/labels/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/labels/&#x60; 
  *
- * @param characterId An EVE character ID
- * @param label Label to create
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param label Label to create 
+ * @param datasource(nil) The server name you would like data from 
  * @return *int64
  */
-func (a MailApiService) PostCharactersCharacterIdMailLabels(characterId int32, label PostCharactersCharacterIdMailLabelsLabel, datasource string) (*int64, *APIResponse, error) {
+func (a MailApiService) PostCharactersCharacterIdMailLabels(characterId int32, label PostCharactersCharacterIdMailLabelsLabel, datasource interface{}) (*int64, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Post")
 	// create path and map variables
@@ -487,7 +523,13 @@ func (a MailApiService) PostCharactersCharacterIdMailLabels(characterId int32, l
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -531,13 +573,13 @@ func (a MailApiService) PostCharactersCharacterIdMailLabels(characterId int32, l
  * Update metadata about a mail
  * Update metadata about a mail  ---  Alternate route: &#x60;/v1/characters/{character_id}/mail/{mail_id}/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/mail/{mail_id}/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/{mail_id}/&#x60; 
  *
- * @param characterId An EVE character ID
- * @param mailId An EVE mail ID
- * @param contents Data used to update the mail
- * @param datasource The server name you would like data from
- * @return void
+ * @param characterId An EVE character ID 
+ * @param mailId An EVE mail ID 
+ * @param contents Data used to update the mail 
+ * @param datasource(nil) The server name you would like data from 
+ * @return nil
  */
-func (a MailApiService) PutCharactersCharacterIdMailMailId(characterId int32, mailId int32, contents PutCharactersCharacterIdMailMailIdContents, datasource string) (*APIResponse, error) {
+func (a MailApiService) PutCharactersCharacterIdMailMailId(characterId int32, mailId int32, contents PutCharactersCharacterIdMailMailIdContents, datasource interface{}) (*APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Put")
 	// create path and map variables
@@ -560,7 +602,13 @@ func (a MailApiService) PutCharactersCharacterIdMailMailId(characterId int32, ma
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

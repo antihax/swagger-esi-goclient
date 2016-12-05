@@ -36,11 +36,11 @@ type WarsApiService service
  * List wars
  * Return a list of wars  ---  Alternate route: &#x60;/v1/wars/&#x60;  Alternate route: &#x60;/legacy/wars/&#x60;  Alternate route: &#x60;/dev/wars/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param page Which page to query, starting at 1, 2000 wars per page.
- * @param datasource The server name you would like data from
+ * @param page(nil) Which page to query, starting at 1, 2000 wars per page. 
+ * @param datasource(nil) The server name you would like data from 
  * @return []int32
  */
-func (a WarsApiService) GetWars(page int32, datasource string) ([]int32, *APIResponse, error) {
+func (a WarsApiService) GetWars(page interface{}, datasource interface{}) ([]int32, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -56,8 +56,19 @@ func (a WarsApiService) GetWars(page int32, datasource string) ([]int32, *APIRes
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("page", a.client.ParameterToString(page, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(page, "int32", "page"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if page != nil {
+		localVarQueryParams.Add("page", a.client.parameterToString(page, ""))
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -99,11 +110,11 @@ func (a WarsApiService) GetWars(page int32, datasource string) ([]int32, *APIRes
  * Get war information
  * Return details about a war  ---  Alternate route: &#x60;/v1/wars/{war_id}/&#x60;  Alternate route: &#x60;/legacy/wars/{war_id}/&#x60;  Alternate route: &#x60;/dev/wars/{war_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param warId ID for a war
- * @param datasource The server name you would like data from
+ * @param warId ID for a war 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetWarsWarIdOk
  */
-func (a WarsApiService) GetWarsWarId(warId int32, datasource string) (*GetWarsWarIdOk, *APIResponse, error) {
+func (a WarsApiService) GetWarsWarId(warId int32, datasource interface{}) (*GetWarsWarIdOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -120,7 +131,13 @@ func (a WarsApiService) GetWarsWarId(warId int32, datasource string) (*GetWarsWa
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -162,12 +179,12 @@ func (a WarsApiService) GetWarsWarId(warId int32, datasource string) (*GetWarsWa
  * List kills for a war
  * Return a list of kills related to a war  ---  Alternate route: &#x60;/v1/wars/{war_id}/killmails/&#x60;  Alternate route: &#x60;/legacy/wars/{war_id}/killmails/&#x60;  Alternate route: &#x60;/dev/wars/{war_id}/killmails/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param warId A valid war ID
- * @param page Which page to query, starting at 1, 2000 killmails per page.
- * @param datasource The server name you would like data from
+ * @param warId A valid war ID 
+ * @param page(nil) Which page to query, starting at 1, 2000 killmails per page. 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetWarsWarIdKillmails200Ok
  */
-func (a WarsApiService) GetWarsWarIdKillmails(warId int32, page int32, datasource string) ([]GetWarsWarIdKillmails200Ok, *APIResponse, error) {
+func (a WarsApiService) GetWarsWarIdKillmails(warId int32, page interface{}, datasource interface{}) ([]GetWarsWarIdKillmails200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -184,8 +201,19 @@ func (a WarsApiService) GetWarsWarIdKillmails(warId int32, page int32, datasourc
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("page", a.client.ParameterToString(page, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(page, "int32", "page"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if page != nil {
+		localVarQueryParams.Add("page", a.client.parameterToString(page, ""))
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

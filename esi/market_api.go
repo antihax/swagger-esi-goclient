@@ -36,10 +36,10 @@ type MarketApiService service
  * List market prices
  * Return a list of prices  ---  Alternate route: &#x60;/v1/markets/prices/&#x60;  Alternate route: &#x60;/legacy/markets/prices/&#x60;  Alternate route: &#x60;/dev/markets/prices/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param datasource The server name you would like data from
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetMarketsPrices200Ok
  */
-func (a MarketApiService) GetMarketsPrices(datasource string) ([]GetMarketsPrices200Ok, *APIResponse, error) {
+func (a MarketApiService) GetMarketsPrices(datasource interface{}) ([]GetMarketsPrices200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -55,7 +55,13 @@ func (a MarketApiService) GetMarketsPrices(datasource string) ([]GetMarketsPrice
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -97,12 +103,12 @@ func (a MarketApiService) GetMarketsPrices(datasource string) ([]GetMarketsPrice
  * List historical market statistics in a region
  * Return a list of historical market statistics for the specified type in a region  ---  Alternate route: &#x60;/v1/markets/{region_id}/history/&#x60;  Alternate route: &#x60;/legacy/markets/{region_id}/history/&#x60;  Alternate route: &#x60;/dev/markets/{region_id}/history/&#x60;   ---  This route is cached for up to 300 seconds
  *
- * @param regionId Return statistics in this region
- * @param typeId Return statistics for this type
- * @param datasource The server name you would like data from
+ * @param regionId Return statistics in this region 
+ * @param typeId Return statistics for this type 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetMarketsRegionIdHistory200Ok
  */
-func (a MarketApiService) GetMarketsRegionIdHistory(regionId int64, typeId int64, datasource string) ([]GetMarketsRegionIdHistory200Ok, *APIResponse, error) {
+func (a MarketApiService) GetMarketsRegionIdHistory(regionId int64, typeId int64, datasource interface{}) ([]GetMarketsRegionIdHistory200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -119,8 +125,14 @@ func (a MarketApiService) GetMarketsRegionIdHistory(regionId int64, typeId int64
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("type_id", a.client.ParameterToString(typeId, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+		localVarQueryParams.Add("type_id", a.client.parameterToString(typeId, ""))
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -162,14 +174,14 @@ func (a MarketApiService) GetMarketsRegionIdHistory(regionId int64, typeId int64
  * List orders in a region
  * Return a list of orders in a region  ---  Alternate route: &#x60;/v1/markets/{region_id}/orders/&#x60;  Alternate route: &#x60;/legacy/markets/{region_id}/orders/&#x60;  Alternate route: &#x60;/dev/markets/{region_id}/orders/&#x60;   ---  This route is cached for up to 300 seconds
  *
- * @param regionId Return orders in this region
- * @param orderType Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders. 
- * @param typeId Return orders only for this type
- * @param page Which page to query, only used for querying without type_id. Starting at 1 
- * @param datasource The server name you would like data from
+ * @param regionId Return orders in this region 
+ * @param orderType Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders.  
+ * @param typeId(nil) Return orders only for this type 
+ * @param page(nil) Which page to query, only used for querying without type_id. Starting at 1  
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetMarketsRegionIdOrders200Ok
  */
-func (a MarketApiService) GetMarketsRegionIdOrders(regionId int64, orderType string, typeId int64, page int32, datasource string) ([]GetMarketsRegionIdOrders200Ok, *APIResponse, error) {
+func (a MarketApiService) GetMarketsRegionIdOrders(regionId int64, orderType string, typeId interface{}, page interface{}, datasource interface{}) ([]GetMarketsRegionIdOrders200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -186,10 +198,26 @@ func (a MarketApiService) GetMarketsRegionIdOrders(regionId int64, orderType str
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("type_id", a.client.ParameterToString(typeId, ""))
-		localVarQueryParams.Add("order_type", a.client.ParameterToString(orderType, ""))
-		localVarQueryParams.Add("page", a.client.ParameterToString(page, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(typeId, "int64", "typeId"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(page, "int32", "page"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if typeId != nil {
+		localVarQueryParams.Add("type_id", a.client.parameterToString(typeId, ""))
+	}
+		localVarQueryParams.Add("order_type", a.client.parameterToString(orderType, ""))
+	if page != nil {
+		localVarQueryParams.Add("page", a.client.parameterToString(page, ""))
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

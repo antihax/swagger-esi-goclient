@@ -36,11 +36,11 @@ type UniverseApiService service
  * Get station information
  * Public information on stations  ---  Alternate route: &#x60;/v1/universe/stations/{station_id}/&#x60;  Alternate route: &#x60;/legacy/universe/stations/{station_id}/&#x60;  Alternate route: &#x60;/dev/universe/stations/{station_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param stationId An Eve station ID
- * @param datasource The server name you would like data from
+ * @param stationId An Eve station ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetUniverseStationsStationIdOk
  */
-func (a UniverseApiService) GetUniverseStationsStationId(stationId int32, datasource string) (*GetUniverseStationsStationIdOk, *APIResponse, error) {
+func (a UniverseApiService) GetUniverseStationsStationId(stationId int32, datasource interface{}) (*GetUniverseStationsStationIdOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -57,7 +57,13 @@ func (a UniverseApiService) GetUniverseStationsStationId(stationId int32, dataso
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -99,10 +105,10 @@ func (a UniverseApiService) GetUniverseStationsStationId(stationId int32, dataso
  * List all public structures
  * List all public structures  ---  Alternate route: &#x60;/v1/universe/structures/&#x60;  Alternate route: &#x60;/legacy/universe/structures/&#x60;  Alternate route: &#x60;/dev/universe/structures/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param datasource The server name you would like data from
+ * @param datasource(nil) The server name you would like data from 
  * @return []int64
  */
-func (a UniverseApiService) GetUniverseStructures(datasource string) ([]int64, *APIResponse, error) {
+func (a UniverseApiService) GetUniverseStructures(datasource interface{}) ([]int64, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -118,7 +124,13 @@ func (a UniverseApiService) GetUniverseStructures(datasource string) ([]int64, *
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -160,11 +172,11 @@ func (a UniverseApiService) GetUniverseStructures(datasource string) ([]int64, *
  * Get structure information
  * Returns information on requested structure, if you are on the ACL. Otherwise, returns \&quot;Forbidden\&quot; for all inputs.  ---  Alternate route: &#x60;/v1/universe/structures/{structure_id}/&#x60;  Alternate route: &#x60;/legacy/universe/structures/{structure_id}/&#x60;  Alternate route: &#x60;/dev/universe/structures/{structure_id}/&#x60; 
  *
- * @param structureId An Eve structure ID
- * @param datasource The server name you would like data from
+ * @param structureId An Eve structure ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetUniverseStructuresStructureIdOk
  */
-func (a UniverseApiService) GetUniverseStructuresStructureId(structureId int64, datasource string) (*GetUniverseStructuresStructureIdOk, *APIResponse, error) {
+func (a UniverseApiService) GetUniverseStructuresStructureId(structureId int64, datasource interface{}) (*GetUniverseStructuresStructureIdOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -186,7 +198,13 @@ func (a UniverseApiService) GetUniverseStructuresStructureId(structureId int64, 
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -228,11 +246,11 @@ func (a UniverseApiService) GetUniverseStructuresStructureId(structureId int64, 
  * Get solar system information
  * Information on solar systems  ---  Alternate route: &#x60;/v1/universe/systems/{system_id}/&#x60;  Alternate route: &#x60;/legacy/universe/systems/{system_id}/&#x60;  Alternate route: &#x60;/dev/universe/systems/{system_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param systemId An Eve solar system ID
- * @param datasource The server name you would like data from
+ * @param systemId An Eve solar system ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetUniverseSystemsSystemIdOk
  */
-func (a UniverseApiService) GetUniverseSystemsSystemId(systemId int32, datasource string) (*GetUniverseSystemsSystemIdOk, *APIResponse, error) {
+func (a UniverseApiService) GetUniverseSystemsSystemId(systemId int32, datasource interface{}) (*GetUniverseSystemsSystemIdOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -249,7 +267,13 @@ func (a UniverseApiService) GetUniverseSystemsSystemId(systemId int32, datasourc
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -291,11 +315,11 @@ func (a UniverseApiService) GetUniverseSystemsSystemId(systemId int32, datasourc
  * Get type information
  * Get information on a type  ---  Alternate route: &#x60;/v1/universe/types/{type_id}/&#x60;  Alternate route: &#x60;/legacy/universe/types/{type_id}/&#x60;  Alternate route: &#x60;/dev/universe/types/{type_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param typeId An Eve item type ID
- * @param datasource The server name you would like data from
+ * @param typeId An Eve item type ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetUniverseTypesTypeIdOk
  */
-func (a UniverseApiService) GetUniverseTypesTypeId(typeId int32, datasource string) (*GetUniverseTypesTypeIdOk, *APIResponse, error) {
+func (a UniverseApiService) GetUniverseTypesTypeId(typeId int32, datasource interface{}) (*GetUniverseTypesTypeIdOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -312,7 +336,13 @@ func (a UniverseApiService) GetUniverseTypesTypeId(typeId int32, datasource stri
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -354,11 +384,11 @@ func (a UniverseApiService) GetUniverseTypesTypeId(typeId int32, datasource stri
  * Get names and categories for a set of ID&#39;s
  * Resolve a set of IDs to names and categories. Supported ID&#39;s for resolving are: Characters, Corporations, Alliances, Stations, Solar Systems, Constellations, Regions, Types.  ---  Alternate route: &#x60;/v1/universe/names/&#x60;  Alternate route: &#x60;/legacy/universe/names/&#x60; 
  *
- * @param ids The ids to resolve
- * @param datasource The server name you would like data from
+ * @param ids The ids to resolve 
+ * @param datasource(nil) The server name you would like data from 
  * @return []PostUniverseNames200Ok
  */
-func (a UniverseApiService) PostUniverseNames(ids PostUniverseNamesIds, datasource string) ([]PostUniverseNames200Ok, *APIResponse, error) {
+func (a UniverseApiService) PostUniverseNames(ids PostUniverseNamesIds, datasource interface{}) ([]PostUniverseNames200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Post")
 	// create path and map variables
@@ -374,7 +404,13 @@ func (a UniverseApiService) PostUniverseNames(ids PostUniverseNamesIds, datasour
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

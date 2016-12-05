@@ -35,10 +35,10 @@ type IncursionsApiService service
  * List incursions
  * Return a list of current incursions  ---  Alternate route: &#x60;/v1/incursions/&#x60;  Alternate route: &#x60;/legacy/incursions/&#x60;  Alternate route: &#x60;/dev/incursions/&#x60;   ---  This route is cached for up to 300 seconds
  *
- * @param datasource The server name you would like data from
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetIncursions200Ok
  */
-func (a IncursionsApiService) GetIncursions(datasource string) ([]GetIncursions200Ok, *APIResponse, error) {
+func (a IncursionsApiService) GetIncursions(datasource interface{}) ([]GetIncursions200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -54,7 +54,13 @@ func (a IncursionsApiService) GetIncursions(datasource string) ([]GetIncursions2
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

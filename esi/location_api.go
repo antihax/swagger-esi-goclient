@@ -36,11 +36,11 @@ type LocationApiService service
  * Get character location
  * Information about the characters current location. Returns the current solar system id, and also the current station or structure ID if applicable.  ---  Alternate route: &#x60;/v1/characters/{character_id}/location/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/location/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/location/&#x60;   ---  This route is cached for up to 5 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdLocationOk
  */
-func (a LocationApiService) GetCharactersCharacterIdLocation(characterId int32, datasource string) (*GetCharactersCharacterIdLocationOk, *APIResponse, error) {
+func (a LocationApiService) GetCharactersCharacterIdLocation(characterId int32, datasource interface{}) (*GetCharactersCharacterIdLocationOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -62,7 +62,13 @@ func (a LocationApiService) GetCharactersCharacterIdLocation(characterId int32, 
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -104,11 +110,11 @@ func (a LocationApiService) GetCharactersCharacterIdLocation(characterId int32, 
  * Get current ship
  * Get the current ship type, name and id  ---  Alternate route: &#x60;/v1/characters/{character_id}/ship/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/ship/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/ship/&#x60;   ---  This route is cached for up to 5 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdShipOk
  */
-func (a LocationApiService) GetCharactersCharacterIdShip(characterId int32, datasource string) (*GetCharactersCharacterIdShipOk, *APIResponse, error) {
+func (a LocationApiService) GetCharactersCharacterIdShip(characterId int32, datasource interface{}) (*GetCharactersCharacterIdShipOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -130,7 +136,13 @@ func (a LocationApiService) GetCharactersCharacterIdShip(characterId int32, data
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

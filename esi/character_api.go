@@ -36,11 +36,11 @@ type CharacterApiService service
  * Get character&#39;s public information
  * Public information about a character  ---  Alternate route: &#x60;/v3/characters/{character_id}/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdOk
  */
-func (a CharacterApiService) GetCharactersCharacterId(characterId int32, datasource string) (*GetCharactersCharacterIdOk, *APIResponse, error) {
+func (a CharacterApiService) GetCharactersCharacterId(characterId int32, datasource interface{}) (*GetCharactersCharacterIdOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -57,7 +57,13 @@ func (a CharacterApiService) GetCharactersCharacterId(characterId int32, datasou
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -99,11 +105,11 @@ func (a CharacterApiService) GetCharactersCharacterId(characterId int32, datasou
  * Get corporation history
  * Get a list of all the corporations a character has been a member of  ---  Alternate route: &#x60;/v1/characters/{character_id}/corporationhistory/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/corporationhistory/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/corporationhistory/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersCharacterIdCorporationhistory200Ok
  */
-func (a CharacterApiService) GetCharactersCharacterIdCorporationhistory(characterId int32, datasource string) ([]GetCharactersCharacterIdCorporationhistory200Ok, *APIResponse, error) {
+func (a CharacterApiService) GetCharactersCharacterIdCorporationhistory(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdCorporationhistory200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -120,7 +126,13 @@ func (a CharacterApiService) GetCharactersCharacterIdCorporationhistory(characte
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -162,11 +174,11 @@ func (a CharacterApiService) GetCharactersCharacterIdCorporationhistory(characte
  * Get character portraits
  * Get portrait urls for a character  ---  Alternate route: &#x60;/v2/characters/{character_id}/portrait/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/portrait/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param characterId An EVE character ID
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetCharactersCharacterIdPortraitOk
  */
-func (a CharacterApiService) GetCharactersCharacterIdPortrait(characterId int32, datasource string) (*GetCharactersCharacterIdPortraitOk, *APIResponse, error) {
+func (a CharacterApiService) GetCharactersCharacterIdPortrait(characterId int32, datasource interface{}) (*GetCharactersCharacterIdPortraitOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -183,7 +195,13 @@ func (a CharacterApiService) GetCharactersCharacterIdPortrait(characterId int32,
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -225,11 +243,11 @@ func (a CharacterApiService) GetCharactersCharacterIdPortrait(characterId int32,
  * Get character names
  * Resolve a set of character IDs to character names  ---  Alternate route: &#x60;/v1/characters/names/&#x60;  Alternate route: &#x60;/legacy/characters/names/&#x60;  Alternate route: &#x60;/dev/characters/names/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param characterIds A comma separated list of character IDs
- * @param datasource The server name you would like data from
+ * @param characterIds A comma separated list of character IDs 
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersNames200Ok
  */
-func (a CharacterApiService) GetCharactersNames(characterIds []int64, datasource string) ([]GetCharactersNames200Ok, *APIResponse, error) {
+func (a CharacterApiService) GetCharactersNames(characterIds []int64, datasource interface{}) ([]GetCharactersNames200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -245,15 +263,14 @@ func (a CharacterApiService) GetCharactersNames(characterIds []int64, datasource
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-	var collectionFormat = "csv"
-	if collectionFormat == "multi" {
-		for _, value := range characterIds {
-			localVarQueryParams.Add("character_ids", value)
-		}
-	} else {
-		localVarQueryParams.Add("character_ids", a.client.ParameterToString(characterIds, collectionFormat))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+		localVarQueryParams.Add("character_ids", a.client.parameterToString(characterIds, "csv"))
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -295,12 +312,12 @@ func (a CharacterApiService) GetCharactersNames(characterIds []int64, datasource
  * Calculate a CSPA charge cost
  * Takes a source character ID in the url and a set of target character ID&#39;s in the body, returns a CSPA charge cost  ---  Alternate route: &#x60;/v3/characters/{character_id}/cspa/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/cspa/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/cspa/&#x60; 
  *
- * @param characterId An EVE character ID
- * @param characters The target characters to calculate the charge for
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param characters The target characters to calculate the charge for 
+ * @param datasource(nil) The server name you would like data from 
  * @return *PostCharactersCharacterIdCspaCreated
  */
-func (a CharacterApiService) PostCharactersCharacterIdCspa(characterId int32, characters PostCharactersCharacterIdCspaCharacters, datasource string) (*PostCharactersCharacterIdCspaCreated, *APIResponse, error) {
+func (a CharacterApiService) PostCharactersCharacterIdCspa(characterId int32, characters PostCharactersCharacterIdCspaCharacters, datasource interface{}) (*PostCharactersCharacterIdCspaCreated, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Post")
 	// create path and map variables
@@ -322,7 +339,13 @@ func (a CharacterApiService) PostCharactersCharacterIdCspa(characterId int32, ch
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }

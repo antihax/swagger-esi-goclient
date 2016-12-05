@@ -36,13 +36,13 @@ type KillmailsApiService service
  * List kills and losses
  * Return a list of character&#39;s recent kills and losses  ---  Alternate route: &#x60;/v1/characters/{character_id}/killmails/recent/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/killmails/recent/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/killmails/recent/&#x60;   ---  This route is cached for up to 120 seconds
  *
- * @param characterId An EVE character ID
- * @param maxCount How many killmails to return at maximum
- * @param maxKillId Only return killmails with ID smaller than this. 
- * @param datasource The server name you would like data from
+ * @param characterId An EVE character ID 
+ * @param maxCount(nil) How many killmails to return at maximum 
+ * @param maxKillId(nil) Only return killmails with ID smaller than this.  
+ * @param datasource(nil) The server name you would like data from 
  * @return []GetCharactersCharacterIdKillmailsRecent200Ok
  */
-func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(characterId int32, maxCount int32, maxKillId int32, datasource string) ([]GetCharactersCharacterIdKillmailsRecent200Ok, *APIResponse, error) {
+func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(characterId int32, maxCount interface{}, maxKillId interface{}, datasource interface{}) ([]GetCharactersCharacterIdKillmailsRecent200Ok, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -64,9 +64,25 @@ func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(characterId
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("max_count", a.client.ParameterToString(maxCount, ""))
-		localVarQueryParams.Add("max_kill_id", a.client.ParameterToString(maxKillId, ""))
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(maxCount, "int32", "maxCount"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(maxKillId, "int32", "maxKillId"); err != nil {
+		return nil,  nil, err
+	}
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if maxCount != nil {
+		localVarQueryParams.Add("max_count", a.client.parameterToString(maxCount, ""))
+	}
+	if maxKillId != nil {
+		localVarQueryParams.Add("max_kill_id", a.client.parameterToString(maxKillId, ""))
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
@@ -108,12 +124,12 @@ func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(characterId
  * Get a single killmail
  * Return a single killmail from its ID and hash  ---  Alternate route: &#x60;/v1/killmails/{killmail_id}/{killmail_hash}/&#x60;  Alternate route: &#x60;/legacy/killmails/{killmail_id}/{killmail_hash}/&#x60;  Alternate route: &#x60;/dev/killmails/{killmail_id}/{killmail_hash}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param killmailId The killmail ID to be queried
- * @param killmailHash The killmail hash for verification
- * @param datasource The server name you would like data from
+ * @param killmailId The killmail ID to be queried 
+ * @param killmailHash The killmail hash for verification 
+ * @param datasource(nil) The server name you would like data from 
  * @return *GetKillmailsKillmailIdKillmailHashOk
  */
-func (a KillmailsApiService) GetKillmailsKillmailIdKillmailHash(killmailId int32, killmailHash string, datasource string) (*GetKillmailsKillmailIdKillmailHashOk, *APIResponse, error) {
+func (a KillmailsApiService) GetKillmailsKillmailIdKillmailHash(killmailId int32, killmailHash string, datasource interface{}) (*GetKillmailsKillmailIdKillmailHashOk, *APIResponse, error) {
 
 	var localVarHttpMethod = strings.ToUpper("Get")
 	// create path and map variables
@@ -131,7 +147,13 @@ func (a KillmailsApiService) GetKillmailsKillmailIdKillmailHash(killmailId int32
 	for key := range a.client.Config.DefaultHeader {
 		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
 	}
-		localVarQueryParams.Add("datasource", a.client.ParameterToString(datasource, ""))
+
+	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
+		return nil,  nil, err
+	}
+	if datasource != nil {
+		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
+	}
 
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{  }
