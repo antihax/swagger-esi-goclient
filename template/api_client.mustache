@@ -4,7 +4,6 @@ package {{packageName}}
 import (
 	"bytes"
 	"encoding/json"
-	"encoding/xml"
 	"errors"
 	"fmt"
 	"io"
@@ -20,7 +19,6 @@ import (
 
 var (
 	jsonCheck = regexp.MustCompile("(?i:[application|text]/json)")
-	xmlCheck  = regexp.MustCompile("(?i:[application|text]/xml)")
 
 	errInvalidBody = errors.New("Unsupported 'Body' type/value")
 	errConfigMissingOAuth = errors.New("esi: called an api which requires an oauth token but one is not present")
@@ -224,15 +222,13 @@ func (c *APIClient) setBody(body interface{}, contentType string) (bodyBuf *byte
 	}
 
 	if reader, ok := body.(io.Reader); ok {
-		bodyBuf.ReadFrom(reader)
+		_, err = bodyBuf.ReadFrom(reader)
 	} else if b, ok := body.([]byte); ok {
 		_, err = bodyBuf.Write(b)
 	} else if s, ok := body.(string); ok {
 		_, err = bodyBuf.WriteString(s)
 	} else if jsonCheck.MatchString(contentType) {
 		err = json.NewEncoder(bodyBuf).Encode(body)
-	} else if xmlCheck.MatchString(contentType) {
-		err = xml.NewEncoder(bodyBuf).Encode(body)
 	}
 
 	if err != nil {
