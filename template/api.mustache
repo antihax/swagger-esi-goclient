@@ -5,7 +5,6 @@ package {{packageName}}
 import (
 	"net/url"
 	"strings"
-	"io/ioutil"
 {{#imports}}	"{{import}}"
 {{/imports}}
 )
@@ -22,7 +21,13 @@ type {{classname}}Service service
 {{/allParams}} * @return {{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}
  */
 func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} error) {
-	var localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
+	var (
+		localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
+		localVarPostBody interface{}
+		localVarFileName string
+		localVarFileBytes []byte
+	)
+
 	// create path and map variables
 	localVarPath := "{{{basePath}}}{{path}}"{{#pathParams}}
 	localVarPath = strings.Replace(localVarPath, "{"+"{{baseName}}"+"}", fmt.Sprintf("%v", {{paramName}}), -1){{/pathParams}}
@@ -30,9 +35,7 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	var localVarPostBody interface{}
-	var localVarFileName string
-	var localVarFileBytes []byte
+
 {{#authMethods}}
 	// authentication '({{name}})' required
 {{#isApiKey}}
@@ -55,6 +58,8 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	// oauth required
 	if a.client.Config.AccessToken != ""{
 		localVarHeaderParams["Authorization"] =  "Bearer " + a.client.Config.AccessToken
+	} else {
+		return {{#returnType}}nil, {{/returnType}}errConfigMissingOAuth
 	}
 {{/isOAuth}}
 {{/authMethods}}
@@ -85,14 +90,6 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	{{/queryParams}}
 	{{/hasQueryParams}}
 
-	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ {{#consumes}}"{{{mediaType}}}", {{/consumes}} }
-
-	// set Content-Type header
-	localVarHttpContentType := a.client.SelectHeaderContentType(localVarHttpContentTypes)
-	if localVarHttpContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHttpContentType
-	}
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		{{#produces}}
@@ -132,7 +129,7 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	 var successPayload = new({{returnType}})
 {{/returnType}}
 
-	 r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, localVarHttpContentType)
+	 r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	 if err != nil {
 		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
 	 }
@@ -144,12 +141,9 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 {{#returnType}}
 
 	 defer localVarHttpResponse.Body.Close()
-	 buf, err := ioutil.ReadAll(localVarHttpResponse.Body)
-	 if err != nil {
-		  return nil, err
-	 }
-
-	 err = json.Unmarshal([]byte(buf), &successPayload)
+	 if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
+	 	return nil, err
+     }
 
 {{/returnType}}
 	return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
