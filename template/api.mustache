@@ -5,6 +5,7 @@ package {{packageName}}
 import (
 	"net/url"
 	"strings"
+	"io/ioutil"
 {{#imports}}	"{{import}}"
 {{/imports}}
 )
@@ -20,16 +21,15 @@ type {{classname}}Service service
 {{#allParams}} * @param {{paramName}}{{^required}}{{#isPrimitiveType}}(nil){{/isPrimitiveType}}{{/required}} {{description}} 
 {{/allParams}} * @return {{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}
  */
-func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}}*APIResponse, error) {
-
+func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} error) {
 	var localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
 	// create path and map variables
-	localVarPath := a.client.Config.BasePath + "{{path}}"{{#pathParams}}
+	localVarPath := "{{{basePath}}}{{path}}"{{#pathParams}}
 	localVarPath = strings.Replace(localVarPath, "{"+"{{baseName}}"+"}", fmt.Sprintf("%v", {{paramName}}), -1){{/pathParams}}
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
-	localVarFormParams := make(map[string]string)
+	localVarFormParams := url.Values{}
 	var localVarPostBody interface{}
 	var localVarFileName string
 	var localVarFileBytes []byte
@@ -42,7 +42,7 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 {{/isKeyInHeader}}
 {{#isKeyInQuery}}
 	// set key with prefix in query string
-	localVarQueryParams["{{keyParamName}}"] =  a.client.Config.GetAPIKeyWithPrefix("{{keyParamName}}")
+	localVarQueryParams.Add(["{{keyParamName}}"], a.client.Config.GetAPIKeyWithPrefix("{{keyParamName}}"))
 {{/isKeyInQuery}}
 {{/isApiKey}}
 {{#isBasic}}
@@ -58,16 +58,12 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	}
 {{/isOAuth}}
 {{/authMethods}}
-	// add default headers if any
-	for key := range a.client.Config.DefaultHeader {
-		localVarHeaderParams[key] = a.client.Config.DefaultHeader[key]
-	}
 
 {{#allParams}}
 {{^required}}
 {{#isPrimitiveType}}
 	if err := a.client.typeCheckParameter({{paramName}}, "{{{dataType}}}", "{{paramName}}"); err != nil {
-		return {{#returnType}}nil, {{/returnType}} nil, err
+		return {{#returnType}}nil, {{/returnType}}err
 	}
 {{/isPrimitiveType}}
 {{/required}}
@@ -118,39 +114,44 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 {{#hasFormParams}}
 {{#formParams}}
 {{#isFile}}
-	fbs, _ := ioutil.ReadAll(file)
-	localVarFileBytes = fbs
-	localVarFileName = file.Name()
+	 fbs, _ := ioutil.ReadAll(file)
+	 localVarFileBytes = fbs
+	 localVarFileName = file.Name()
 {{/isFile}}
 {{^isFile}}
-	localVarFormParams["{{paramName}}"] = a.client.parameterToString({{paramName}}, "")
+	 localVarFormParams.Add(["{{paramName}}"], a.client.parameterToString({{paramName}}, ""))
 {{/isFile}}
 {{/formParams}}
 {{/hasFormParams}}
 {{#hasBodyParam}}
 {{#bodyParams}}	// body params
-	localVarPostBody = &{{paramName}}
+	 localVarPostBody = &{{paramName}}
 {{/bodyParams}}
 {{/hasBodyParam}}
 {{#returnType}}
-	var successPayload = new({{returnType}})
+	 var successPayload = new({{returnType}})
 {{/returnType}}
-	localVarHttpResponse, err := a.client.CallAPI(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 
-	var localVarURL, _ = url.Parse(localVarPath)
-	localVarURL.RawQuery = localVarQueryParams.Encode()
-	var localVarAPIResponse = &APIResponse{Operation: "{{operationId}}", Method: localVarHttpMethod, RequestURL: localVarURL.String()}
-	if localVarHttpResponse != nil {
-		localVarAPIResponse.Response = localVarHttpResponse.RawResponse
-		localVarAPIResponse.Payload = localVarHttpResponse.Body()
-	}
+	 r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, localVarHttpContentType)
+	 if err != nil {
+		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
+	 }
 
-	if err != nil {
-		return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}localVarAPIResponse, err
-	}
+	 localVarHttpResponse, err := a.client.callAPI(r)
+	 if err != nil || localVarHttpResponse == nil {
+		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
+	 }
 {{#returnType}}
-	err = json.Unmarshal(localVarHttpResponse.Body(), &successPayload)
+
+	 defer localVarHttpResponse.Body.Close()
+	 buf, err := ioutil.ReadAll(localVarHttpResponse.Body)
+	 if err != nil {
+		  return nil, err
+	 }
+
+	 err = json.Unmarshal([]byte(buf), &successPayload)
+
 {{/returnType}}
-	return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}localVarAPIResponse, err
+	return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
 }
 {{/operation}}{{/operations}}
