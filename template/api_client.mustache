@@ -18,6 +18,12 @@ import (
 	"strings"
 )
 
+var (
+	jsonCheck = regexp.MustCompile("(?i:[application|text]/json)")
+	xmlCheck  = regexp.MustCompile("(?i:[application|text]/xml)")
+	errInvalidBody = errors.New("Unsupported 'Body' type/value")
+)
+
 type APIClient struct {
 	Config *Configuration
 	client *http.Client
@@ -38,7 +44,6 @@ type service struct {
 }
 
 func NewAPIClient(httpClient *http.Client) *APIClient {
-
 	if httpClient == nil {
 		httpClient = &http.Client{}
 	}
@@ -60,7 +65,6 @@ func NewAPIClient(httpClient *http.Client) *APIClient {
 }
 
 func (c *APIClient) SelectHeaderContentType(contentTypes []string) string {
-
 	if len(contentTypes) == 0 {
 		return ""
 	}
@@ -71,16 +75,18 @@ func (c *APIClient) SelectHeaderContentType(contentTypes []string) string {
 }
 
 func (c *APIClient) SelectHeaderAccept(accepts []string) string {
-
 	if len(accepts) == 0 {
 		return ""
 	}
+
 	if contains(accepts, "application/json") {
 		return "application/json"
 	}
+
 	return strings.Join(accepts, ",")
 }
 
+// contains is a case insenstive match, finding needle in a haystack
 func contains(haystack []string, needle string) bool {
 	for _, a := range haystack {
 		if strings.ToLower(a) == strings.ToLower(needle) {
@@ -95,7 +101,8 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 }
 
 func (c *APIClient) parameterToString(obj interface{}, collectionFormat string) string {
-	delimiter := ""
+	var delimiter string
+
 	switch collectionFormat {
 	case "pipes":
 		delimiter = "|"
@@ -136,13 +143,9 @@ func (c *APIClient) prepareRequest (
 	formParams url.Values,
 	fileName string,
 	fileBytes []byte,
-	localVarHttpContentType string) (*http.Request, error) {
+	localVarHttpContentType string) (request *http.Request, err error) {
 
-	var (
-		err     error
-		body    *bytes.Buffer
-		request *http.Request
-	)
+	var body *bytes.Buffer
 
 	if postBody != nil {
 		body, err = c.setBody(postBody, localVarHttpContentType)
@@ -223,45 +226,30 @@ func addFile(w *multipart.Writer, fieldName, path string) error {
 	return err
 }
 
-func (c *APIClient) setBody(body interface{}, contentType string) (*bytes.Buffer, error) {
-	var (
-		err       error
-		bodyBytes []byte
-		bodyBuf   *bytes.Buffer
-		jsonCheck = regexp.MustCompile("(?i:[application|text]/json)")
-		xmlCheck  = regexp.MustCompile("(?i:[application|text]/xml)")
-	)
-
-	kind := reflect.TypeOf(body).Kind()
+func (c *APIClient) setBody(body interface{}, contentType string) (bodyBuf *bytes.Buffer, err error) {
+	if bodyBuf == nil {
+		bodyBuf = &bytes.Buffer{}
+	}
 
 	if reader, ok := body.(io.Reader); ok {
-		bodyBuf = &bytes.Buffer{}
 		bodyBuf.ReadFrom(reader)
 	} else if b, ok := body.([]byte); ok {
-		bodyBytes = b
+		_, err = bodyBuf.Write(b)
 	} else if s, ok := body.(string); ok {
-		bodyBytes = []byte(s)
-	} else if jsonCheck.MatchString(contentType) &&
-		(kind == reflect.Struct || kind == reflect.Map || kind == reflect.Slice) {
-		bodyBytes, err = json.Marshal(body)
-	} else if xmlCheck.MatchString(contentType) && (kind == reflect.Struct) {
-		bodyBytes, err = xml.Marshal(body)
+		_, err = bodyBuf.WriteString(s)
+	} else if jsonCheck.MatchString(contentType) {
+		err = json.NewEncoder(bodyBuf).Encode(body)
+	} else if xmlCheck.MatchString(contentType) {
+		err = xml.NewEncoder(bodyBuf).Encode(body)
 	}
+
 	if err != nil {
 		return nil, err
 	}
 
-	if bodyBytes == nil && bodyBuf == nil {
-		err = errors.New("Unsupported 'Body' type/value")
-		if err != nil {
-			return nil, err
-		}
+	if bodyBuf.Len() == 0 {
+		err = errInvalidBody
+		return nil, err
 	}
-
-	// []byte into Buffer
-	if bodyBuf == nil {
-		bodyBuf = bytes.NewBuffer(bodyBytes)
-	}
-
 	return bodyBuf, nil
 }
