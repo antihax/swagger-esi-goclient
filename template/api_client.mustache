@@ -66,16 +66,6 @@ func NewAPIClient(httpClient *http.Client) *APIClient {
 	return c
 }
 
-func (c *APIClient) SelectHeaderContentType(contentTypes []string) string {
-	if len(contentTypes) == 0 {
-		return ""
-	}
-	if contains(contentTypes, "application/json") {
-		return "application/json"
-	}
-	return contentTypes[0] // use the first content type specified in 'consumes'
-}
-
 func (c *APIClient) SelectHeaderAccept(accepts []string) string {
 	if len(accepts) == 0 {
 		return ""

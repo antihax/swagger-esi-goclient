@@ -90,14 +90,6 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	{{/queryParams}}
 	{{/hasQueryParams}}
 
-	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ {{#consumes}}"{{{mediaType}}}", {{/consumes}} }
-
-	// set Content-Type header
-	localVarHttpContentType := a.client.SelectHeaderContentType(localVarHttpContentTypes)
-	if localVarHttpContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHttpContentType
-	}
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		{{#produces}}
@@ -137,7 +129,7 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	 var successPayload = new({{returnType}})
 {{/returnType}}
 
-	 r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, localVarHttpContentType)
+	 r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	 if err != nil {
 		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
 	 }
