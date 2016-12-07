@@ -21,7 +21,9 @@ import (
 var (
 	jsonCheck = regexp.MustCompile("(?i:[application|text]/json)")
 	xmlCheck  = regexp.MustCompile("(?i:[application|text]/xml)")
+
 	errInvalidBody = errors.New("Unsupported 'Body' type/value")
+	errConfigMissingOAuth = errors.New("esi: called an api which requires an oauth token but one is not present")
 )
 
 type APIClient struct {

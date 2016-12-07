@@ -55,6 +55,9 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	// oauth required
 	if a.client.Config.AccessToken != ""{
 		localVarHeaderParams["Authorization"] =  "Bearer " + a.client.Config.AccessToken
+	} else {
+		err = errConfigMissingOAuth
+		return {{#returnType}}nil, {{/returnType}}err
 	}
 {{/isOAuth}}
 {{/authMethods}}
