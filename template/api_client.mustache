@@ -132,7 +132,7 @@ func (c *APIClient) typeCheckParameter(obj interface{}, expected string, name st
 
 	// Check the type is as expected.
 	if reflect.TypeOf(obj).String() != expected {
-		return errors.New(fmt.Sprintf("Expected %s to be of type %s but received %s.", name, expected, reflect.TypeOf(obj).String()))
+		return fmt.Errorf("Expected %s to be of type %s but received %s.", name, expected, reflect.TypeOf(obj).String())
 	}
 	return nil
 }
