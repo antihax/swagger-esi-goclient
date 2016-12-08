@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type WalletApiService service
@@ -36,10 +37,10 @@ type WalletApiService service
  * List your wallets and their balances. Characters typically have only one wallet, with wallet_id 1000 being the master wallet.  ---  Alternate route: &#x60;/v1/characters/{character_id}/wallets/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/wallets/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/wallets/&#x60;   ---  This route is cached for up to 120 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdWallets200Ok
  */
-func (a WalletApiService) GetCharactersCharacterIdWallets(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdWallets200Ok, error) {
+func (a WalletApiService) GetCharactersCharacterIdWallets(ts TokenSource, characterId int32, datasource interface{}) ([]GetCharactersCharacterIdWallets200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -54,14 +55,6 @@ func (a WalletApiService) GetCharactersCharacterIdWallets(characterId int32, dat
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -85,6 +78,14 @@ func (a WalletApiService) GetCharactersCharacterIdWallets(characterId int32, dat
 	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	if err != nil {
 		return *successPayload, err
+	}
+
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)

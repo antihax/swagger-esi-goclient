@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type AllianceApiService service
@@ -35,7 +36,7 @@ type AllianceApiService service
  * List all alliances
  * List all active player alliances  ---  Alternate route: &#x60;/v1/alliances/&#x60;  Alternate route: &#x60;/legacy/alliances/&#x60;  Alternate route: &#x60;/dev/alliances/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []int32
  */
 func (a AllianceApiService) GetAlliances(datasource interface{}) ([]int32, error) {
@@ -95,7 +96,7 @@ func (a AllianceApiService) GetAlliances(datasource interface{}) ([]int32, error
  * Public information about an alliance  ---  Alternate route: &#x60;/v2/alliances/{alliance_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param allianceId An Eve alliance ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetAlliancesAllianceIdOk
  */
 func (a AllianceApiService) GetAlliancesAllianceId(allianceId int32, datasource interface{}) (*GetAlliancesAllianceIdOk, error) {
@@ -156,7 +157,7 @@ func (a AllianceApiService) GetAlliancesAllianceId(allianceId int32, datasource 
  * List all current member corporations of an alliance  ---  Alternate route: &#x60;/v1/alliances/{alliance_id}/corporations/&#x60;  Alternate route: &#x60;/legacy/alliances/{alliance_id}/corporations/&#x60;  Alternate route: &#x60;/dev/alliances/{alliance_id}/corporations/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param allianceId An EVE alliance ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []int32
  */
 func (a AllianceApiService) GetAlliancesAllianceIdCorporations(allianceId int32, datasource interface{}) ([]int32, error) {
@@ -217,7 +218,7 @@ func (a AllianceApiService) GetAlliancesAllianceIdCorporations(allianceId int32,
  * Get the icon urls for a alliance  ---  Alternate route: &#x60;/v1/alliances/{alliance_id}/icons/&#x60;  Alternate route: &#x60;/legacy/alliances/{alliance_id}/icons/&#x60;  Alternate route: &#x60;/dev/alliances/{alliance_id}/icons/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param allianceId An EVE alliance ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetAlliancesAllianceIdIconsOk
  */
 func (a AllianceApiService) GetAlliancesAllianceIdIcons(allianceId int32, datasource interface{}) (*GetAlliancesAllianceIdIconsOk, error) {
@@ -278,7 +279,7 @@ func (a AllianceApiService) GetAlliancesAllianceIdIcons(allianceId int32, dataso
  * Resolve a set of alliance IDs to alliance names  ---  Alternate route: &#x60;/v1/alliances/names/&#x60;  Alternate route: &#x60;/legacy/alliances/names/&#x60;  Alternate route: &#x60;/dev/alliances/names/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param allianceIds A comma separated list of alliance IDs
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetAlliancesNames200Ok
  */
 func (a AllianceApiService) GetAlliancesNames(allianceIds []int64, datasource interface{}) ([]GetAlliancesNames200Ok, error) {

@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type SkillsApiService service
@@ -36,10 +37,10 @@ type SkillsApiService service
  * List the configured skill queue for the given character  ---  Alternate route: &#x60;/v2/characters/{character_id}/skillqueue/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/skillqueue/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/skillqueue/&#x60;   ---  This route is cached for up to 120 seconds
  *
  * @param characterId Character id of the target character
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdSkillqueue200Ok
  */
-func (a SkillsApiService) GetCharactersCharacterIdSkillqueue(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdSkillqueue200Ok, error) {
+func (a SkillsApiService) GetCharactersCharacterIdSkillqueue(ts TokenSource, characterId int32, datasource interface{}) ([]GetCharactersCharacterIdSkillqueue200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -54,14 +55,6 @@ func (a SkillsApiService) GetCharactersCharacterIdSkillqueue(characterId int32, 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -87,6 +80,14 @@ func (a SkillsApiService) GetCharactersCharacterIdSkillqueue(characterId int32, 
 		return *successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return *successPayload, err
@@ -105,10 +106,10 @@ func (a SkillsApiService) GetCharactersCharacterIdSkillqueue(characterId int32, 
  * List all trained skills for the given character  ---  Alternate route: &#x60;/v3/characters/{character_id}/skills/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/skills/&#x60;   ---  This route is cached for up to 120 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetCharactersCharacterIdSkillsOk
  */
-func (a SkillsApiService) GetCharactersCharacterIdSkills(characterId int32, datasource interface{}) (*GetCharactersCharacterIdSkillsOk, error) {
+func (a SkillsApiService) GetCharactersCharacterIdSkills(ts TokenSource, characterId int32, datasource interface{}) (*GetCharactersCharacterIdSkillsOk, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -123,14 +124,6 @@ func (a SkillsApiService) GetCharactersCharacterIdSkills(characterId int32, data
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -154,6 +147,14 @@ func (a SkillsApiService) GetCharactersCharacterIdSkills(characterId int32, data
 	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	if err != nil {
 		return successPayload, err
+	}
+
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)

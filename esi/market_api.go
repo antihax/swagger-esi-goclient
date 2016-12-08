@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type MarketApiService service
@@ -35,7 +36,7 @@ type MarketApiService service
  * List market prices
  * Return a list of prices  ---  Alternate route: &#x60;/v1/markets/prices/&#x60;  Alternate route: &#x60;/legacy/markets/prices/&#x60;  Alternate route: &#x60;/dev/markets/prices/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetMarketsPrices200Ok
  */
 func (a MarketApiService) GetMarketsPrices(datasource interface{}) ([]GetMarketsPrices200Ok, error) {
@@ -96,7 +97,7 @@ func (a MarketApiService) GetMarketsPrices(datasource interface{}) ([]GetMarkets
  *
  * @param regionId Return statistics in this region
  * @param typeId Return statistics for this type
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetMarketsRegionIdHistory200Ok
  */
 func (a MarketApiService) GetMarketsRegionIdHistory(regionId int64, typeId int64, datasource interface{}) ([]GetMarketsRegionIdHistory200Ok, error) {
@@ -159,9 +160,9 @@ func (a MarketApiService) GetMarketsRegionIdHistory(regionId int64, typeId int64
  *
  * @param regionId Return orders in this region
  * @param orderType Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders.
- * @param typeId(nil) Return orders only for this type
- * @param page(nil) Which page to query, only used for querying without type_id. Starting at 1
- * @param datasource(nil) The server name you would like data from
+ * @param typeId(int64) Return orders only for this type
+ * @param page(int32) Which page to query, only used for querying without type_id. Starting at 1
+ * @param datasource(string) The server name you would like data from
  * @return []GetMarketsRegionIdOrders200Ok
  */
 func (a MarketApiService) GetMarketsRegionIdOrders(regionId int64, orderType string, typeId interface{}, page interface{}, datasource interface{}) ([]GetMarketsRegionIdOrders200Ok, error) {

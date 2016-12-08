@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type UniverseApiService service
@@ -36,7 +37,7 @@ type UniverseApiService service
  * Public information on stations  ---  Alternate route: &#x60;/v1/universe/stations/{station_id}/&#x60;  Alternate route: &#x60;/legacy/universe/stations/{station_id}/&#x60;  Alternate route: &#x60;/dev/universe/stations/{station_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param stationId An Eve station ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetUniverseStationsStationIdOk
  */
 func (a UniverseApiService) GetUniverseStationsStationId(stationId int32, datasource interface{}) (*GetUniverseStationsStationIdOk, error) {
@@ -96,7 +97,7 @@ func (a UniverseApiService) GetUniverseStationsStationId(stationId int32, dataso
  * List all public structures
  * List all public structures  ---  Alternate route: &#x60;/v1/universe/structures/&#x60;  Alternate route: &#x60;/legacy/universe/structures/&#x60;  Alternate route: &#x60;/dev/universe/structures/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []int64
  */
 func (a UniverseApiService) GetUniverseStructures(datasource interface{}) ([]int64, error) {
@@ -156,10 +157,10 @@ func (a UniverseApiService) GetUniverseStructures(datasource interface{}) ([]int
  * Returns information on requested structure, if you are on the ACL. Otherwise, returns \&quot;Forbidden\&quot; for all inputs.  ---  Alternate route: &#x60;/v1/universe/structures/{structure_id}/&#x60;  Alternate route: &#x60;/legacy/universe/structures/{structure_id}/&#x60;  Alternate route: &#x60;/dev/universe/structures/{structure_id}/&#x60;
  *
  * @param structureId An Eve structure ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetUniverseStructuresStructureIdOk
  */
-func (a UniverseApiService) GetUniverseStructuresStructureId(structureId int64, datasource interface{}) (*GetUniverseStructuresStructureIdOk, error) {
+func (a UniverseApiService) GetUniverseStructuresStructureId(ts TokenSource, structureId int64, datasource interface{}) (*GetUniverseStructuresStructureIdOk, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -174,14 +175,6 @@ func (a UniverseApiService) GetUniverseStructuresStructureId(structureId int64, 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -207,6 +200,14 @@ func (a UniverseApiService) GetUniverseStructuresStructureId(structureId int64, 
 		return successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return successPayload, err
@@ -225,7 +226,7 @@ func (a UniverseApiService) GetUniverseStructuresStructureId(structureId int64, 
  * Information on solar systems  ---  Alternate route: &#x60;/v1/universe/systems/{system_id}/&#x60;  Alternate route: &#x60;/legacy/universe/systems/{system_id}/&#x60;  Alternate route: &#x60;/dev/universe/systems/{system_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param systemId An Eve solar system ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetUniverseSystemsSystemIdOk
  */
 func (a UniverseApiService) GetUniverseSystemsSystemId(systemId int32, datasource interface{}) (*GetUniverseSystemsSystemIdOk, error) {
@@ -286,7 +287,7 @@ func (a UniverseApiService) GetUniverseSystemsSystemId(systemId int32, datasourc
  * Get information on a type  ---  Alternate route: &#x60;/v1/universe/types/{type_id}/&#x60;  Alternate route: &#x60;/legacy/universe/types/{type_id}/&#x60;  Alternate route: &#x60;/dev/universe/types/{type_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param typeId An Eve item type ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetUniverseTypesTypeIdOk
  */
 func (a UniverseApiService) GetUniverseTypesTypeId(typeId int32, datasource interface{}) (*GetUniverseTypesTypeIdOk, error) {
@@ -347,7 +348,7 @@ func (a UniverseApiService) GetUniverseTypesTypeId(typeId int32, datasource inte
  * Resolve a set of IDs to names and categories. Supported ID&#39;s for resolving are: Characters, Corporations, Alliances, Stations, Solar Systems, Constellations, Regions, Types.  ---  Alternate route: &#x60;/v1/universe/names/&#x60;  Alternate route: &#x60;/legacy/universe/names/&#x60;
  *
  * @param ids The ids to resolve
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []PostUniverseNames200Ok
  */
 func (a UniverseApiService) PostUniverseNames(ids PostUniverseNamesIds, datasource interface{}) ([]PostUniverseNames200Ok, error) {

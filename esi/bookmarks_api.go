@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type BookmarksApiService service
@@ -36,10 +37,10 @@ type BookmarksApiService service
  * List your character&#39;s personal bookmarks  ---  Alternate route: &#x60;/v1/characters/{character_id}/bookmarks/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/bookmarks/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/bookmarks/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdBookmarks200Ok
  */
-func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdBookmarks200Ok, error) {
+func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(ts TokenSource, characterId int32, datasource interface{}) ([]GetCharactersCharacterIdBookmarks200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -54,14 +55,6 @@ func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(characterId int32
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -87,6 +80,14 @@ func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(characterId int32
 		return *successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return *successPayload, err
@@ -105,10 +106,10 @@ func (a BookmarksApiService) GetCharactersCharacterIdBookmarks(characterId int32
  * List your character&#39;s personal bookmark folders  ---  Alternate route: &#x60;/v1/characters/{character_id}/bookmarks/folders/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/bookmarks/folders/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/bookmarks/folders/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdBookmarksFolders200Ok
  */
-func (a BookmarksApiService) GetCharactersCharacterIdBookmarksFolders(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdBookmarksFolders200Ok, error) {
+func (a BookmarksApiService) GetCharactersCharacterIdBookmarksFolders(ts TokenSource, characterId int32, datasource interface{}) ([]GetCharactersCharacterIdBookmarksFolders200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -123,14 +124,6 @@ func (a BookmarksApiService) GetCharactersCharacterIdBookmarksFolders(characterI
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -154,6 +147,14 @@ func (a BookmarksApiService) GetCharactersCharacterIdBookmarksFolders(characterI
 	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	if err != nil {
 		return *successPayload, err
+	}
+
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)

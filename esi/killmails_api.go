@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type KillmailsApiService service
@@ -36,12 +37,12 @@ type KillmailsApiService service
  * Return a list of character&#39;s recent kills and losses  ---  Alternate route: &#x60;/v1/characters/{character_id}/killmails/recent/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/killmails/recent/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/killmails/recent/&#x60;   ---  This route is cached for up to 120 seconds
  *
  * @param characterId An EVE character ID
- * @param maxCount(nil) How many killmails to return at maximum
- * @param maxKillId(nil) Only return killmails with ID smaller than this.
- * @param datasource(nil) The server name you would like data from
+ * @param maxCount(int32) How many killmails to return at maximum
+ * @param maxKillId(int32) Only return killmails with ID smaller than this.
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdKillmailsRecent200Ok
  */
-func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(characterId int32, maxCount interface{}, maxKillId interface{}, datasource interface{}) ([]GetCharactersCharacterIdKillmailsRecent200Ok, error) {
+func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(ts TokenSource, characterId int32, maxCount interface{}, maxKillId interface{}, datasource interface{}) ([]GetCharactersCharacterIdKillmailsRecent200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -56,14 +57,6 @@ func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(characterId
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(maxCount, "int32", "maxCount"); err != nil {
 		return nil, err
@@ -101,6 +94,14 @@ func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(characterId
 		return *successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return *successPayload, err
@@ -120,7 +121,7 @@ func (a KillmailsApiService) GetCharactersCharacterIdKillmailsRecent(characterId
  *
  * @param killmailId The killmail ID to be queried
  * @param killmailHash The killmail hash for verification
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetKillmailsKillmailIdKillmailHashOk
  */
 func (a KillmailsApiService) GetKillmailsKillmailIdKillmailHash(killmailId int32, killmailHash string, datasource interface{}) (*GetKillmailsKillmailIdKillmailHashOk, error) {

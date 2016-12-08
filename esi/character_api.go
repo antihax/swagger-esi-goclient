@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type CharacterApiService service
@@ -36,7 +37,7 @@ type CharacterApiService service
  * Public information about a character  ---  Alternate route: &#x60;/v3/characters/{character_id}/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetCharactersCharacterIdOk
  */
 func (a CharacterApiService) GetCharactersCharacterId(characterId int32, datasource interface{}) (*GetCharactersCharacterIdOk, error) {
@@ -97,7 +98,7 @@ func (a CharacterApiService) GetCharactersCharacterId(characterId int32, datasou
  * Get a list of all the corporations a character has been a member of  ---  Alternate route: &#x60;/v1/characters/{character_id}/corporationhistory/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/corporationhistory/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/corporationhistory/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdCorporationhistory200Ok
  */
 func (a CharacterApiService) GetCharactersCharacterIdCorporationhistory(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdCorporationhistory200Ok, error) {
@@ -158,7 +159,7 @@ func (a CharacterApiService) GetCharactersCharacterIdCorporationhistory(characte
  * Get portrait urls for a character  ---  Alternate route: &#x60;/v2/characters/{character_id}/portrait/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/portrait/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetCharactersCharacterIdPortraitOk
  */
 func (a CharacterApiService) GetCharactersCharacterIdPortrait(characterId int32, datasource interface{}) (*GetCharactersCharacterIdPortraitOk, error) {
@@ -219,7 +220,7 @@ func (a CharacterApiService) GetCharactersCharacterIdPortrait(characterId int32,
  * Resolve a set of character IDs to character names  ---  Alternate route: &#x60;/v1/characters/names/&#x60;  Alternate route: &#x60;/legacy/characters/names/&#x60;  Alternate route: &#x60;/dev/characters/names/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param characterIds A comma separated list of character IDs
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersNames200Ok
  */
 func (a CharacterApiService) GetCharactersNames(characterIds []int64, datasource interface{}) ([]GetCharactersNames200Ok, error) {
@@ -281,10 +282,10 @@ func (a CharacterApiService) GetCharactersNames(characterIds []int64, datasource
  *
  * @param characterId An EVE character ID
  * @param characters The target characters to calculate the charge for
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *PostCharactersCharacterIdCspaCreated
  */
-func (a CharacterApiService) PostCharactersCharacterIdCspa(characterId int32, characters PostCharactersCharacterIdCspaCharacters, datasource interface{}) (*PostCharactersCharacterIdCspaCreated, error) {
+func (a CharacterApiService) PostCharactersCharacterIdCspa(ts TokenSource, characterId int32, characters PostCharactersCharacterIdCspaCharacters, datasource interface{}) (*PostCharactersCharacterIdCspaCreated, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
 		localVarPostBody   interface{}
@@ -299,14 +300,6 @@ func (a CharacterApiService) PostCharactersCharacterIdCspa(characterId int32, ch
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -332,6 +325,14 @@ func (a CharacterApiService) PostCharactersCharacterIdCspa(characterId int32, ch
 	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	if err != nil {
 		return successPayload, err
+	}
+
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)

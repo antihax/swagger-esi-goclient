@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type WarsApiService service
@@ -35,8 +36,8 @@ type WarsApiService service
  * List wars
  * Return a list of wars  ---  Alternate route: &#x60;/v1/wars/&#x60;  Alternate route: &#x60;/legacy/wars/&#x60;  Alternate route: &#x60;/dev/wars/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param page(nil) Which page to query, starting at 1, 2000 wars per page.
- * @param datasource(nil) The server name you would like data from
+ * @param page(int32) Which page to query, starting at 1, 2000 wars per page.
+ * @param datasource(string) The server name you would like data from
  * @return []int32
  */
 func (a WarsApiService) GetWars(page interface{}, datasource interface{}) ([]int32, error) {
@@ -102,7 +103,7 @@ func (a WarsApiService) GetWars(page interface{}, datasource interface{}) ([]int
  * Return details about a war  ---  Alternate route: &#x60;/v1/wars/{war_id}/&#x60;  Alternate route: &#x60;/legacy/wars/{war_id}/&#x60;  Alternate route: &#x60;/dev/wars/{war_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param warId ID for a war
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetWarsWarIdOk
  */
 func (a WarsApiService) GetWarsWarId(warId int32, datasource interface{}) (*GetWarsWarIdOk, error) {
@@ -163,8 +164,8 @@ func (a WarsApiService) GetWarsWarId(warId int32, datasource interface{}) (*GetW
  * Return a list of kills related to a war  ---  Alternate route: &#x60;/v1/wars/{war_id}/killmails/&#x60;  Alternate route: &#x60;/legacy/wars/{war_id}/killmails/&#x60;  Alternate route: &#x60;/dev/wars/{war_id}/killmails/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param warId A valid war ID
- * @param page(nil) Which page to query, starting at 1, 2000 killmails per page.
- * @param datasource(nil) The server name you would like data from
+ * @param page(int32) Which page to query, starting at 1, 2000 killmails per page.
+ * @param datasource(string) The server name you would like data from
  * @return []GetWarsWarIdKillmails200Ok
  */
 func (a WarsApiService) GetWarsWarIdKillmails(warId int32, page interface{}, datasource interface{}) ([]GetWarsWarIdKillmails200Ok, error) {

@@ -27,6 +27,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"golang.org/x/oauth2"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -37,6 +38,8 @@ import (
 	"regexp"
 	"strings"
 )
+
+type TokenSource oauth2.TokenSource
 
 var (
 	jsonCheck = regexp.MustCompile("(?i:[application|text]/json)")

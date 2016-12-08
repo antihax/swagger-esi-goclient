@@ -23,9 +23,10 @@
 package esi
 
 import (
-	"encoding/json"
 	"net/url"
 	"strings"
+
+	"encoding/json"
 )
 
 type SovereigntyApiService service
@@ -34,7 +35,7 @@ type SovereigntyApiService service
  * List sovereignty campaigns
  * Shows sovereignty data for campaigns.  ---  Alternate route: &#x60;/v1/sovereignty/campaigns/&#x60;  Alternate route: &#x60;/legacy/sovereignty/campaigns/&#x60;  Alternate route: &#x60;/dev/sovereignty/campaigns/&#x60;   ---  This route is cached for up to 5 seconds
  *
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetSovereigntyCampaigns200Ok
  */
 func (a SovereigntyApiService) GetSovereigntyCampaigns(datasource interface{}) ([]GetSovereigntyCampaigns200Ok, error) {
@@ -93,7 +94,7 @@ func (a SovereigntyApiService) GetSovereigntyCampaigns(datasource interface{}) (
  * List sovereignty structures
  * Shows sovereignty data for structures.  ---  Alternate route: &#x60;/v1/sovereignty/structures/&#x60;  Alternate route: &#x60;/legacy/sovereignty/structures/&#x60;  Alternate route: &#x60;/dev/sovereignty/structures/&#x60;   ---  This route is cached for up to 120 seconds
  *
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetSovereigntyStructures200Ok
  */
 func (a SovereigntyApiService) GetSovereigntyStructures(datasource interface{}) ([]GetSovereigntyStructures200Ok, error) {

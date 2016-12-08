@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type SearchApiService service
@@ -38,12 +39,12 @@ type SearchApiService service
  * @param characterId An EVE character ID
  * @param search The string to search on
  * @param categories Type of entities to search for
- * @param language(nil) Search locale
- * @param strict(nil) Whether the search should be a strict match
- * @param datasource(nil) The server name you would like data from
+ * @param language(string) Search locale
+ * @param strict(bool) Whether the search should be a strict match
+ * @param datasource(string) The server name you would like data from
  * @return *GetCharactersCharacterIdSearchOk
  */
-func (a SearchApiService) GetCharactersCharacterIdSearch(characterId int32, search string, categories []string, language interface{}, strict interface{}, datasource interface{}) (*GetCharactersCharacterIdSearchOk, error) {
+func (a SearchApiService) GetCharactersCharacterIdSearch(ts TokenSource, characterId int32, search string, categories []string, language interface{}, strict interface{}, datasource interface{}) (*GetCharactersCharacterIdSearchOk, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -58,14 +59,6 @@ func (a SearchApiService) GetCharactersCharacterIdSearch(characterId int32, sear
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(language, "string", "language"); err != nil {
 		return nil, err
@@ -105,6 +98,14 @@ func (a SearchApiService) GetCharactersCharacterIdSearch(characterId int32, sear
 		return successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return successPayload, err
@@ -124,9 +125,9 @@ func (a SearchApiService) GetCharactersCharacterIdSearch(characterId int32, sear
  *
  * @param search The string to search on
  * @param categories Type of entities to search for
- * @param language(nil) Search locale
- * @param strict(nil) Whether the search should be a strict match
- * @param datasource(nil) The server name you would like data from
+ * @param language(string) Search locale
+ * @param strict(bool) Whether the search should be a strict match
+ * @param datasource(string) The server name you would like data from
  * @return *GetSearchOk
  */
 func (a SearchApiService) GetSearch(search string, categories []string, language interface{}, strict interface{}, datasource interface{}) (*GetSearchOk, error) {

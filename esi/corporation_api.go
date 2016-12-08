@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type CorporationApiService service
@@ -36,7 +37,7 @@ type CorporationApiService service
  * Public information about a corporation  ---  Alternate route: &#x60;/v2/corporations/{corporation_id}/&#x60;  Alternate route: &#x60;/dev/corporations/{corporation_id}/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param corporationId An Eve corporation ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetCorporationsCorporationIdOk
  */
 func (a CorporationApiService) GetCorporationsCorporationId(corporationId int32, datasource interface{}) (*GetCorporationsCorporationIdOk, error) {
@@ -97,7 +98,7 @@ func (a CorporationApiService) GetCorporationsCorporationId(corporationId int32,
  * Get a list of all the alliances a corporation has been a member of  ---  Alternate route: &#x60;/v1/corporations/{corporation_id}/alliancehistory/&#x60;  Alternate route: &#x60;/legacy/corporations/{corporation_id}/alliancehistory/&#x60;  Alternate route: &#x60;/dev/corporations/{corporation_id}/alliancehistory/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param corporationId An EVE corporation ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCorporationsCorporationIdAlliancehistory200Ok
  */
 func (a CorporationApiService) GetCorporationsCorporationIdAlliancehistory(corporationId int32, datasource interface{}) ([]GetCorporationsCorporationIdAlliancehistory200Ok, error) {
@@ -158,7 +159,7 @@ func (a CorporationApiService) GetCorporationsCorporationIdAlliancehistory(corpo
  * Get the icon urls for a corporation  ---  Alternate route: &#x60;/v1/corporations/{corporation_id}/icons/&#x60;  Alternate route: &#x60;/legacy/corporations/{corporation_id}/icons/&#x60;  Alternate route: &#x60;/dev/corporations/{corporation_id}/icons/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param corporationId An EVE corporation ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetCorporationsCorporationIdIconsOk
  */
 func (a CorporationApiService) GetCorporationsCorporationIdIcons(corporationId int32, datasource interface{}) (*GetCorporationsCorporationIdIconsOk, error) {
@@ -219,10 +220,10 @@ func (a CorporationApiService) GetCorporationsCorporationIdIcons(corporationId i
  * Read the current list of members if the calling character is a member.  ---  Alternate route: &#x60;/v2/corporations/{corporation_id}/members/&#x60;  Alternate route: &#x60;/legacy/corporations/{corporation_id}/members/&#x60;  Alternate route: &#x60;/dev/corporations/{corporation_id}/members/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param corporationId A corporation ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCorporationsCorporationIdMembers200Ok
  */
-func (a CorporationApiService) GetCorporationsCorporationIdMembers(corporationId int32, datasource interface{}) ([]GetCorporationsCorporationIdMembers200Ok, error) {
+func (a CorporationApiService) GetCorporationsCorporationIdMembers(ts TokenSource, corporationId int32, datasource interface{}) ([]GetCorporationsCorporationIdMembers200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -237,14 +238,6 @@ func (a CorporationApiService) GetCorporationsCorporationIdMembers(corporationId
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -270,6 +263,14 @@ func (a CorporationApiService) GetCorporationsCorporationIdMembers(corporationId
 		return *successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return *successPayload, err
@@ -288,10 +289,10 @@ func (a CorporationApiService) GetCorporationsCorporationIdMembers(corporationId
  * Return the roles of all members if the character has the personnel manager role or any grantable role.  ---  Alternate route: &#x60;/v1/corporations/{corporation_id}/roles/&#x60;  Alternate route: &#x60;/legacy/corporations/{corporation_id}/roles/&#x60;  Alternate route: &#x60;/dev/corporations/{corporation_id}/roles/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param corporationId A corporation ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCorporationsCorporationIdRoles200Ok
  */
-func (a CorporationApiService) GetCorporationsCorporationIdRoles(corporationId int32, datasource interface{}) ([]GetCorporationsCorporationIdRoles200Ok, error) {
+func (a CorporationApiService) GetCorporationsCorporationIdRoles(ts TokenSource, corporationId int32, datasource interface{}) ([]GetCorporationsCorporationIdRoles200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -306,14 +307,6 @@ func (a CorporationApiService) GetCorporationsCorporationIdRoles(corporationId i
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -339,6 +332,14 @@ func (a CorporationApiService) GetCorporationsCorporationIdRoles(corporationId i
 		return *successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return *successPayload, err
@@ -357,7 +358,7 @@ func (a CorporationApiService) GetCorporationsCorporationIdRoles(corporationId i
  * Resolve a set of corporation IDs to corporation names  ---  Alternate route: &#x60;/v1/corporations/names/&#x60;  Alternate route: &#x60;/legacy/corporations/names/&#x60;  Alternate route: &#x60;/dev/corporations/names/&#x60;   ---  This route is cached for up to 3600 seconds
  *
  * @param corporationIds A comma separated list of corporation IDs
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCorporationsNames200Ok
  */
 func (a CorporationApiService) GetCorporationsNames(corporationIds []int64, datasource interface{}) ([]GetCorporationsNames200Ok, error) {

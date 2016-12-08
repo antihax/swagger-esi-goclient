@@ -23,9 +23,10 @@
 package esi
 
 import (
-	"encoding/json"
 	"net/url"
 	"strings"
+
+	"encoding/json"
 )
 
 type InsuranceApiService service
@@ -34,8 +35,8 @@ type InsuranceApiService service
  * List insurance levels
  * Return available insurance levels for all ship types  ---  Alternate route: &#x60;/v1/insurance/prices/&#x60;  Alternate route: &#x60;/legacy/insurance/prices/&#x60;  Alternate route: &#x60;/dev/insurance/prices/&#x60;   ---  This route is cached for up to 3600 seconds
  *
- * @param acceptLanguage(nil) Language to use in the response
- * @param datasource(nil) The server name you would like data from
+ * @param acceptLanguage(string) Language to use in the response
+ * @param datasource(string) The server name you would like data from
  * @return []GetInsurancePrices200Ok
  */
 func (a InsuranceApiService) GetInsurancePrices(acceptLanguage interface{}, datasource interface{}) ([]GetInsurancePrices200Ok, error) {

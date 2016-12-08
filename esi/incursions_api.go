@@ -23,9 +23,10 @@
 package esi
 
 import (
-	"encoding/json"
 	"net/url"
 	"strings"
+
+	"encoding/json"
 )
 
 type IncursionsApiService service
@@ -34,7 +35,7 @@ type IncursionsApiService service
  * List incursions
  * Return a list of current incursions  ---  Alternate route: &#x60;/v1/incursions/&#x60;  Alternate route: &#x60;/legacy/incursions/&#x60;  Alternate route: &#x60;/dev/incursions/&#x60;   ---  This route is cached for up to 300 seconds
  *
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetIncursions200Ok
  */
 func (a IncursionsApiService) GetIncursions(datasource interface{}) ([]GetIncursions200Ok, error) {

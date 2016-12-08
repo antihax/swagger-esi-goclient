@@ -23,10 +23,11 @@
 package esi
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/url"
 	"strings"
+
+	"encoding/json"
+	"fmt"
 )
 
 type MailApiService service
@@ -37,10 +38,10 @@ type MailApiService service
  *
  * @param characterId An EVE character ID
  * @param mailId An EVE mail ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return nil
  */
-func (a MailApiService) DeleteCharactersCharacterIdMailMailId(characterId int32, mailId int32, datasource interface{}) error {
+func (a MailApiService) DeleteCharactersCharacterIdMailMailId(ts TokenSource, characterId int32, mailId int32, datasource interface{}) error {
 	var (
 		localVarHttpMethod = strings.ToUpper("Delete")
 		localVarPostBody   interface{}
@@ -56,14 +57,6 @@ func (a MailApiService) DeleteCharactersCharacterIdMailMailId(characterId int32,
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return err
@@ -88,6 +81,14 @@ func (a MailApiService) DeleteCharactersCharacterIdMailMailId(characterId int32,
 		return err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return err
@@ -101,11 +102,11 @@ func (a MailApiService) DeleteCharactersCharacterIdMailMailId(characterId int32,
  *
  * @param characterId An EVE character ID
  * @param labels Fetch only mails that match one or more of the given labels
- * @param lastMailId(nil) List only mail with an ID lower than the given ID, if present
- * @param datasource(nil) The server name you would like data from
+ * @param lastMailId(int32) List only mail with an ID lower than the given ID, if present
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdMail200Ok
  */
-func (a MailApiService) GetCharactersCharacterIdMail(characterId int32, labels []int64, lastMailId interface{}, datasource interface{}) ([]GetCharactersCharacterIdMail200Ok, error) {
+func (a MailApiService) GetCharactersCharacterIdMail(ts TokenSource, characterId int32, labels []int64, lastMailId interface{}, datasource interface{}) ([]GetCharactersCharacterIdMail200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -120,14 +121,6 @@ func (a MailApiService) GetCharactersCharacterIdMail(characterId int32, labels [
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(lastMailId, "int32", "lastMailId"); err != nil {
 		return nil, err
@@ -162,6 +155,14 @@ func (a MailApiService) GetCharactersCharacterIdMail(characterId int32, labels [
 		return *successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return *successPayload, err
@@ -180,10 +181,10 @@ func (a MailApiService) GetCharactersCharacterIdMail(characterId int32, labels [
  * Return a list of the users mail labels, unread counts for each label and a total unread count.  ---  Alternate route: &#x60;/v3/characters/{character_id}/mail/labels/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/labels/&#x60;   ---  This route is cached for up to 30 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetCharactersCharacterIdMailLabelsOk
  */
-func (a MailApiService) GetCharactersCharacterIdMailLabels(characterId int32, datasource interface{}) (*GetCharactersCharacterIdMailLabelsOk, error) {
+func (a MailApiService) GetCharactersCharacterIdMailLabels(ts TokenSource, characterId int32, datasource interface{}) (*GetCharactersCharacterIdMailLabelsOk, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -198,14 +199,6 @@ func (a MailApiService) GetCharactersCharacterIdMailLabels(characterId int32, da
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -231,6 +224,14 @@ func (a MailApiService) GetCharactersCharacterIdMailLabels(characterId int32, da
 		return successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return successPayload, err
@@ -249,10 +250,10 @@ func (a MailApiService) GetCharactersCharacterIdMailLabels(characterId int32, da
  * Return all mailing lists that the character is subscribed to   ---  Alternate route: &#x60;/v1/characters/{character_id}/mail/lists/&#x60;  Alternate route: &#x60;/legacy/characters/{character_id}/mail/lists/&#x60;  Alternate route: &#x60;/dev/characters/{character_id}/mail/lists/&#x60;   ---  This route is cached for up to 120 seconds
  *
  * @param characterId An EVE character ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdMailLists200Ok
  */
-func (a MailApiService) GetCharactersCharacterIdMailLists(characterId int32, datasource interface{}) ([]GetCharactersCharacterIdMailLists200Ok, error) {
+func (a MailApiService) GetCharactersCharacterIdMailLists(ts TokenSource, characterId int32, datasource interface{}) ([]GetCharactersCharacterIdMailLists200Ok, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -267,14 +268,6 @@ func (a MailApiService) GetCharactersCharacterIdMailLists(characterId int32, dat
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -300,6 +293,14 @@ func (a MailApiService) GetCharactersCharacterIdMailLists(characterId int32, dat
 		return *successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return *successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return *successPayload, err
@@ -319,10 +320,10 @@ func (a MailApiService) GetCharactersCharacterIdMailLists(characterId int32, dat
  *
  * @param characterId An EVE character ID
  * @param mailId An EVE mail ID
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *GetCharactersCharacterIdMailMailIdOk
  */
-func (a MailApiService) GetCharactersCharacterIdMailMailId(characterId int32, mailId int32, datasource interface{}) (*GetCharactersCharacterIdMailMailIdOk, error) {
+func (a MailApiService) GetCharactersCharacterIdMailMailId(ts TokenSource, characterId int32, mailId int32, datasource interface{}) (*GetCharactersCharacterIdMailMailIdOk, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -338,14 +339,6 @@ func (a MailApiService) GetCharactersCharacterIdMailMailId(characterId int32, ma
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -371,6 +364,14 @@ func (a MailApiService) GetCharactersCharacterIdMailMailId(characterId int32, ma
 		return successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return successPayload, err
@@ -390,10 +391,10 @@ func (a MailApiService) GetCharactersCharacterIdMailMailId(characterId int32, ma
  *
  * @param characterId The sender&#39;s character ID
  * @param mail The mail to send
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *int32
  */
-func (a MailApiService) PostCharactersCharacterIdMail(characterId int32, mail PostCharactersCharacterIdMailMail, datasource interface{}) (*int32, error) {
+func (a MailApiService) PostCharactersCharacterIdMail(ts TokenSource, characterId int32, mail PostCharactersCharacterIdMailMail, datasource interface{}) (*int32, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
 		localVarPostBody   interface{}
@@ -408,14 +409,6 @@ func (a MailApiService) PostCharactersCharacterIdMail(characterId int32, mail Po
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -443,6 +436,14 @@ func (a MailApiService) PostCharactersCharacterIdMail(characterId int32, mail Po
 		return successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return successPayload, err
@@ -462,10 +463,10 @@ func (a MailApiService) PostCharactersCharacterIdMail(characterId int32, mail Po
  *
  * @param characterId An EVE character ID
  * @param label Label to create
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return *int64
  */
-func (a MailApiService) PostCharactersCharacterIdMailLabels(characterId int32, label PostCharactersCharacterIdMailLabelsLabel, datasource interface{}) (*int64, error) {
+func (a MailApiService) PostCharactersCharacterIdMailLabels(ts TokenSource, characterId int32, label PostCharactersCharacterIdMailLabelsLabel, datasource interface{}) (*int64, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
 		localVarPostBody   interface{}
@@ -480,14 +481,6 @@ func (a MailApiService) PostCharactersCharacterIdMailLabels(characterId int32, l
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return nil, errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return nil, err
@@ -515,6 +508,14 @@ func (a MailApiService) PostCharactersCharacterIdMailLabels(characterId int32, l
 		return successPayload, err
 	}
 
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return successPayload, err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return successPayload, err
@@ -535,10 +536,10 @@ func (a MailApiService) PostCharactersCharacterIdMailLabels(characterId int32, l
  * @param characterId An EVE character ID
  * @param mailId An EVE mail ID
  * @param contents Data used to update the mail
- * @param datasource(nil) The server name you would like data from
+ * @param datasource(string) The server name you would like data from
  * @return nil
  */
-func (a MailApiService) PutCharactersCharacterIdMailMailId(characterId int32, mailId int32, contents PutCharactersCharacterIdMailMailIdContents, datasource interface{}) error {
+func (a MailApiService) PutCharactersCharacterIdMailMailId(ts TokenSource, characterId int32, mailId int32, contents PutCharactersCharacterIdMailMailIdContents, datasource interface{}) error {
 	var (
 		localVarHttpMethod = strings.ToUpper("Put")
 		localVarPostBody   interface{}
@@ -554,14 +555,6 @@ func (a MailApiService) PutCharactersCharacterIdMailMailId(characterId int32, ma
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-	// authentication '(evesso)' required
-	// oauth required
-	if a.client.Config.AccessToken != "" {
-		localVarHeaderParams["Authorization"] = "Bearer " + a.client.Config.AccessToken
-	} else {
-		return errConfigMissingOAuth
-	}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
 		return err
@@ -586,6 +579,14 @@ func (a MailApiService) PutCharactersCharacterIdMailMailId(characterId int32, ma
 	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	if err != nil {
 		return err
+	}
+
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)
