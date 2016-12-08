@@ -5,6 +5,7 @@ package {{packageName}}
 import (
 	"net/url"
 	"strings"
+
 {{#imports}}	"{{import}}"
 {{/imports}}
 )
@@ -17,10 +18,10 @@ type {{classname}}Service service
  * {{summary}}{{#notes}}
  * {{notes}}{{/notes}}
  *
-{{#allParams}} * @param {{paramName}}{{^required}}{{#isPrimitiveType}}(nil){{/isPrimitiveType}}{{/required}} {{description}} 
+{{#allParams}} * @param {{paramName}}{{^required}}{{#isPrimitiveType}}({{{dataType}}}){{/isPrimitiveType}}{{/required}} {{description}} 
 {{/allParams}} * @return {{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}
  */
-func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} error) {
+func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts TokenSource, {{/isOAuth}}{{/authMethods}}{{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
 		localVarPostBody interface{}
@@ -35,34 +36,6 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-
-{{#authMethods}}
-	// authentication '({{name}})' required
-{{#isApiKey}}
-{{#isKeyInHeader}}
-	// set key with prefix in header
-	localVarHeaderParams["{{keyParamName}}"] = a.client.Config.GetAPIKeyWithPrefix("{{keyParamName}}")
-{{/isKeyInHeader}}
-{{#isKeyInQuery}}
-	// set key with prefix in query string
-	localVarQueryParams.Add(["{{keyParamName}}"], a.client.Config.GetAPIKeyWithPrefix("{{keyParamName}}"))
-{{/isKeyInQuery}}
-{{/isApiKey}}
-{{#isBasic}}
-	// http basic authentication required
-	if a.client.Config.UserName != "" || a.client.Config.Password != ""{
-		localVarHeaderParams["Authorization"] =  "Basic " + a.client.Config.GetBasicAuthEncodedString()
-	}
-{{/isBasic}}
-{{#isOAuth}}
-	// oauth required
-	if a.client.Config.AccessToken != ""{
-		localVarHeaderParams["Authorization"] =  "Bearer " + a.client.Config.AccessToken
-	} else {
-		return {{#returnType}}nil, {{/returnType}}errConfigMissingOAuth
-	}
-{{/isOAuth}}
-{{/authMethods}}
 
 {{#allParams}}
 {{^required}}
@@ -133,6 +106,18 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#allParams}}{{paramName}} {{#re
 	 if err != nil {
 		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
 	 }
+
+{{#authMethods}}
+{{#isOAuth}}
+	if ts != nil {
+		if t, err := ts.Token(); err != nil {
+			return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
+		} else if t != nil {
+			t.SetAuthHeader(r)
+		}
+	}
+{{/isOAuth}}
+{{/authMethods}}
 
 	 localVarHttpResponse, err := a.client.callAPI(r)
 	 if err != nil || localVarHttpResponse == nil {
