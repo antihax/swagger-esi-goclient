@@ -2,6 +2,9 @@
 
 swagger codegen template for EVE's ESI API
 
+## Sample Ouput
+See sample output [https://github.com/antihax/evedata/tree/master/esi](https://github.com/antihax/evedata/tree/master/esi)
+
 ## Generating the code
 
 The output directory can be specified with `-o`.
