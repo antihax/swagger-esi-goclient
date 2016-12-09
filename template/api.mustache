@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	"errors"
 
 {{#imports}}	"{{import}}"
 {{/imports}}
@@ -125,6 +126,9 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts To
 		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
 	 }
 	 defer localVarHttpResponse.Body.Close()
+	 if localVarHttpResponse.StatusCode >= 300 {
+		return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), errors.New(localVarHttpResponse.Status)
+	 }
 {{#returnType}}
 	
 	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
