@@ -5,6 +5,7 @@ package {{packageName}}
 import (
 	"net/url"
 	"strings"
+	"time"
 
 {{#imports}}	"{{import}}"
 {{/imports}}
@@ -21,7 +22,7 @@ type {{classname}}Service service
 {{#allParams}} * @param {{paramName}}{{^required}}{{#isPrimitiveType}}({{{dataType}}}){{/isPrimitiveType}}{{/required}} {{description}} 
 {{/allParams}} * @return {{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}
  */
-func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts TokenSource, {{/isOAuth}}{{/authMethods}}{{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} error) {
+func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts TokenSource, {{/isOAuth}}{{/authMethods}}{{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} time.Time, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
 		localVarPostBody interface{}
@@ -41,7 +42,7 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts To
 {{^required}}
 {{#isPrimitiveType}}
 	if err := a.client.typeCheckParameter({{paramName}}, "{{{dataType}}}", "{{paramName}}"); err != nil {
-		return {{#returnType}}nil, {{/returnType}}err
+		return {{#returnType}}nil, {{/returnType}}time.Now(), err
 	}
 {{/isPrimitiveType}}
 {{/required}}
@@ -104,14 +105,14 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts To
 
 	 r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	 if err != nil {
-		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
+		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
 	 }
 
 {{#authMethods}}
 {{#isOAuth}}
 	if ts != nil {
 		if t, err := ts.Token(); err != nil {
-			return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
+			return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
 		} else if t != nil {
 			t.SetAuthHeader(r)
 		}
@@ -121,16 +122,17 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts To
 
 	 localVarHttpResponse, err := a.client.callAPI(r)
 	 if err != nil || localVarHttpResponse == nil {
-		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
+		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
 	 }
-{{#returnType}}
-
 	 defer localVarHttpResponse.Body.Close()
-	 if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
-	 	return nil, err
-     }
+{{#returnType}}
+	
+	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
+	 	return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
+	}
 
 {{/returnType}}
-	return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}err
+	expires := cacheExpires(localVarHttpResponse)
+	return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}expires, err
 }
 {{/operation}}{{/operations}}

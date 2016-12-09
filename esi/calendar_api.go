@@ -25,6 +25,7 @@ package esi
 import (
 	"net/url"
 	"strings"
+	"time"
 
 	"encoding/json"
 	"fmt"
@@ -41,7 +42,7 @@ type CalendarApiService service
  * @param datasource(string) The server name you would like data from
  * @return []GetCharactersCharacterIdCalendar200Ok
  */
-func (a CalendarApiService) GetCharactersCharacterIdCalendar(ts TokenSource, characterId int64, fromEvent interface{}, datasource interface{}) ([]GetCharactersCharacterIdCalendar200Ok, error) {
+func (a CalendarApiService) GetCharactersCharacterIdCalendar(ts TokenSource, characterId int64, fromEvent interface{}, datasource interface{}) ([]GetCharactersCharacterIdCalendar200Ok, time.Time, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -58,10 +59,10 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendar(ts TokenSource, cha
 	localVarFormParams := url.Values{}
 
 	if err := a.client.typeCheckParameter(fromEvent, "int32", "fromEvent"); err != nil {
-		return nil, err
+		return nil, time.Now(), err
 	}
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
-		return nil, err
+		return nil, time.Now(), err
 	}
 	if fromEvent != nil {
 		localVarQueryParams.Add("from_event", a.client.parameterToString(fromEvent, ""))
@@ -84,12 +85,12 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendar(ts TokenSource, cha
 
 	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	if err != nil {
-		return *successPayload, err
+		return *successPayload, time.Now(), err
 	}
 
 	if ts != nil {
 		if t, err := ts.Token(); err != nil {
-			return *successPayload, err
+			return *successPayload, time.Now(), err
 		} else if t != nil {
 			t.SetAuthHeader(r)
 		}
@@ -97,15 +98,16 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendar(ts TokenSource, cha
 
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
-		return *successPayload, err
+		return *successPayload, time.Now(), err
 	}
-
 	defer localVarHttpResponse.Body.Close()
+
 	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
-		return nil, err
+		return *successPayload, time.Now(), err
 	}
 
-	return *successPayload, err
+	expires := cacheExpires(localVarHttpResponse)
+	return *successPayload, expires, err
 }
 
 /**
@@ -117,7 +119,7 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendar(ts TokenSource, cha
  * @param datasource(string) The server name you would like data from
  * @return *GetCharactersCharacterIdCalendarEventIdOk
  */
-func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(ts TokenSource, characterId int64, eventId int32, datasource interface{}) (*GetCharactersCharacterIdCalendarEventIdOk, error) {
+func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(ts TokenSource, characterId int64, eventId int32, datasource interface{}) (*GetCharactersCharacterIdCalendarEventIdOk, time.Time, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
@@ -135,7 +137,7 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(ts TokenSour
 	localVarFormParams := url.Values{}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
-		return nil, err
+		return nil, time.Now(), err
 	}
 	if datasource != nil {
 		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
@@ -155,12 +157,12 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(ts TokenSour
 
 	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	if err != nil {
-		return successPayload, err
+		return successPayload, time.Now(), err
 	}
 
 	if ts != nil {
 		if t, err := ts.Token(); err != nil {
-			return successPayload, err
+			return successPayload, time.Now(), err
 		} else if t != nil {
 			t.SetAuthHeader(r)
 		}
@@ -168,15 +170,16 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(ts TokenSour
 
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
-		return successPayload, err
+		return successPayload, time.Now(), err
 	}
-
 	defer localVarHttpResponse.Body.Close()
+
 	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
-		return nil, err
+		return successPayload, time.Now(), err
 	}
 
-	return successPayload, err
+	expires := cacheExpires(localVarHttpResponse)
+	return successPayload, expires, err
 }
 
 /**
@@ -189,7 +192,7 @@ func (a CalendarApiService) GetCharactersCharacterIdCalendarEventId(ts TokenSour
  * @param datasource(string) The server name you would like data from
  * @return nil
  */
-func (a CalendarApiService) PutCharactersCharacterIdCalendarEventId(ts TokenSource, characterId int32, eventId int32, response PutCharactersCharacterIdCalendarEventIdResponse, datasource interface{}) error {
+func (a CalendarApiService) PutCharactersCharacterIdCalendarEventId(ts TokenSource, characterId int32, eventId int32, response PutCharactersCharacterIdCalendarEventIdResponse, datasource interface{}) (time.Time, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Put")
 		localVarPostBody   interface{}
@@ -207,7 +210,7 @@ func (a CalendarApiService) PutCharactersCharacterIdCalendarEventId(ts TokenSour
 	localVarFormParams := url.Values{}
 
 	if err := a.client.typeCheckParameter(datasource, "string", "datasource"); err != nil {
-		return err
+		return time.Now(), err
 	}
 	if datasource != nil {
 		localVarQueryParams.Add("datasource", a.client.parameterToString(datasource, ""))
@@ -228,12 +231,12 @@ func (a CalendarApiService) PutCharactersCharacterIdCalendarEventId(ts TokenSour
 
 	r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	if err != nil {
-		return err
+		return time.Now(), err
 	}
 
 	if ts != nil {
 		if t, err := ts.Token(); err != nil {
-			return err
+			return time.Now(), err
 		} else if t != nil {
 			t.SetAuthHeader(r)
 		}
@@ -241,7 +244,9 @@ func (a CalendarApiService) PutCharactersCharacterIdCalendarEventId(ts TokenSour
 
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
-		return err
+		return time.Now(), err
 	}
-	return err
+	defer localVarHttpResponse.Body.Close()
+	expires := cacheExpires(localVarHttpResponse)
+	return expires, err
 }
