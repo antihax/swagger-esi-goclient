@@ -2,6 +2,14 @@
 
 swagger codegen template for EVE's ESI API
 
+## Generating the code
+
+The output directory can be specified with `-o`.
+
+Run a command similar to the following to generate the code:
+
+```java -jar swagger-codegen-cli.jar generate -o ../esi -t ./template -l go -i https://esi.tech.ccp.is/latest/swagger.json?datasource=tranquility -DpackageName=esi```
+
 ## Usage Examples
 
 List Alliances:
