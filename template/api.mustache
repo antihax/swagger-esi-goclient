@@ -7,10 +7,12 @@ import (
 	"strings"
 	"time"
 	"errors"
-
+	"golang.org/x/net/context"
 {{#imports}}	"{{import}}"
 {{/imports}}
 )
+
+var _ context.Context
 
 type {{classname}}Service service
 
@@ -23,7 +25,7 @@ type {{classname}}Service service
 {{#allParams}} * @param {{paramName}}{{^required}}{{#isPrimitiveType}}({{{dataType}}}){{/isPrimitiveType}}{{/required}} {{description}} 
 {{/allParams}} * @return {{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}
  */
-func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts TokenSource, {{/isOAuth}}{{/authMethods}}{{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} time.Time, error) {
+func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Context, {{/authMethods}}{{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} time.Time, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
 		localVarPostBody interface{}
@@ -104,22 +106,10 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}{{#isOAuth}}ts To
 	 var successPayload = new({{returnType}})
 {{/returnType}}
 
-	 r, err := a.client.prepareRequest(localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
+	 r, err := a.client.prepareRequest({{#authMethods}}ctx{{/authMethods}}{{^authMethods}}nil{{/authMethods}}, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	 if err != nil {
 		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
 	 }
-
-{{#authMethods}}
-{{#isOAuth}}
-	if ts != nil {
-		if t, err := ts.Token(); err != nil {
-			return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
-		} else if t != nil {
-			t.SetAuthHeader(r)
-		}
-	}
-{{/isOAuth}}
-{{/authMethods}}
 
 	 localVarHttpResponse, err := a.client.callAPI(r)
 	 if err != nil || localVarHttpResponse == nil {
