@@ -23,14 +23,17 @@ type {{classname}}Service service
  * {{notes}}{{/notes}}
  *
 {{#allParams}} * @param {{paramName}}{{^required}}{{#isPrimitiveType}}({{{dataType}}}){{/isPrimitiveType}}{{/required}} {{description}} 
-{{/allParams}} * @return {{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}
+{{/allParams}} * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}
  */
-func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Context, {{/authMethods}}{{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{^isListContainer}}*{{/isListContainer}}{{{returnType}}}, {{/returnType}} time.Time, error) {
+func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Context, {{/authMethods}}{{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{{returnType}}}, {{/returnType}} time.Time, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
 		localVarPostBody interface{}
 		localVarFileName string
 		localVarFileBytes []byte
+{{#returnType}}
+	 	successPayload  {{returnType}}
+{{/returnType}}
 	)
 
 	// create path and map variables
@@ -45,7 +48,7 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Conte
 {{^required}}
 {{#isPrimitiveType}}
 	if err := a.client.typeCheckParameter({{paramName}}, "{{{dataType}}}", "{{paramName}}"); err != nil {
-		return {{#returnType}}nil, {{/returnType}}time.Now(), err
+		return {{#returnType}}successPayload, {{/returnType}}time.Now(), err
 	}
 {{/isPrimitiveType}}
 {{/required}}
@@ -102,31 +105,29 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Conte
 	 localVarPostBody = &{{paramName}}
 {{/bodyParams}}
 {{/hasBodyParam}}
-{{#returnType}}
-	 var successPayload = new({{returnType}})
-{{/returnType}}
+
 
 	 r, err := a.client.prepareRequest({{#authMethods}}ctx{{/authMethods}}{{^authMethods}}nil{{/authMethods}}, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	 if err != nil {
-		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
+		  return {{#returnType}}successPayload, {{/returnType}}time.Now(), err
 	 }
 
 	 localVarHttpResponse, err := a.client.callAPI(r)
 	 if err != nil || localVarHttpResponse == nil {
-		  return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
+		  return {{#returnType}}successPayload, {{/returnType}}time.Now(), err
 	 }
 	 defer localVarHttpResponse.Body.Close()
 	 if localVarHttpResponse.StatusCode >= 300 {
-		return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), errors.New(localVarHttpResponse.Status)
+		return {{#returnType}}successPayload, {{/returnType}}time.Now(), errors.New(localVarHttpResponse.Status)
 	 }
 {{#returnType}}
 	
 	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
-	 	return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}time.Now(), err
+	 	return {{#returnType}}successPayload, {{/returnType}}time.Now(), err
 	}
 
 {{/returnType}}
 	expires := cacheExpires(localVarHttpResponse)
-	return {{#returnType}}{{#isListContainer}}*{{/isListContainer}}successPayload, {{/returnType}}expires, err
+	return {{#returnType}}successPayload, {{/returnType}}expires, err
 }
 {{/operation}}{{/operations}}
