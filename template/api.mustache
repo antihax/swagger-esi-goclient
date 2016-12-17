@@ -22,10 +22,13 @@ type {{classname}}Service service
  * {{summary}}{{#notes}}
  * {{notes}}{{/notes}}
  *
-{{#allParams}} * @param {{paramName}}{{^required}}{{#isPrimitiveType}}({{{dataType}}}){{/isPrimitiveType}}{{/required}} {{description}} 
-{{/allParams}} * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}
+{{#authMethods}} * @param ctx context.Context Authentication Context {{/authMethods}}
+{{#allParams}}{{#required}} * @param {{paramName}} {{description}}
+{{/required}}{{/allParams}}{{#hasOptionalParams}} * @param optional (nil or map[string]interface{}) with one or more of:
+{{#allParams}}{{^required}} *     @param "{{paramName}}" ({{dataType}}) {{description}}
+{{/required}}{{/allParams}}{{/hasOptionalParams}} * @return {{#returnType}}{{{returnType}}}{{/returnType}}
  */
-func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Context, {{/authMethods}}{{#allParams}}{{paramName}} {{#required}}{{{dataType}}}{{/required}}{{^required}}{{#isPrimitiveType}}interface{}{{/isPrimitiveType}}{{^isPrimitiveType}}{{{dataType}}}{{/isPrimitiveType}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) ({{#returnType}}{{{returnType}}}, {{/returnType}} time.Time, error) {
+func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Context, {{/authMethods}}{{#allParams}}{{#required}}{{paramName}} {{{dataType}}}{{#hasMore}}, {{/hasMore}}{{/required}}{{/allParams}}{{#hasOptionalParams}}localVarOptionals map[string]interface{}{{/hasOptionalParams}}) ({{#returnType}}{{{returnType}}}, {{/returnType}} time.Time, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
 		localVarPostBody interface{}
@@ -44,29 +47,16 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Conte
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-{{#allParams}}
-{{^required}}
-{{#isPrimitiveType}}
-	if err := a.client.typeCheckParameter({{paramName}}, "{{{dataType}}}", "{{paramName}}"); err != nil {
-		return {{#returnType}}successPayload, {{/returnType}}time.Now(), err
-	}
-{{/isPrimitiveType}}
-{{/required}}
-{{/allParams}}
 	{{#hasQueryParams}}
 	{{#queryParams}}
+	{{#required}}
+	localVarQueryParams.Add("{{baseName}}", a.client.parameterToString({{paramName}}, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}"))
+	{{/required}}
 	{{^required}}
-	if {{paramName}} != nil {
-    {{/required}}
-	{{#isListContainer}}
-		localVarQueryParams.Add("{{baseName}}", a.client.parameterToString({{paramName}}, "{{collectionFormat}}"))
-	{{/isListContainer}}
-	{{^isListContainer}}
-		localVarQueryParams.Add("{{baseName}}", a.client.parameterToString({{paramName}}, ""))
-	{{/isListContainer}}
-    {{^required}}
+	if localVarTempParam, localVarOk := localVarOptionals["{{paramName}}"].({{dataType}}); localVarOptionals != nil && localVarOk {
+		localVarQueryParams.Add("{{baseName}}", a.client.parameterToString(localVarTempParam, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}"))
 	}
-    {{/required}}
+	{{/required}}
 	{{/queryParams}}
 	{{/hasQueryParams}}
 
@@ -84,25 +74,53 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Conte
 	}
 {{#hasHeaderParams}}
 {{#headerParams}}
-	// header params "{{baseName}}"
-	localVarHeaderParams["{{baseName}}"] = a.client.parameterToString({{paramName}}, "")
+	{{#required}}
+	localVarHeaderParams["{{baseName}}"] = a.client.parameterToString({{paramName}}, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}")
+	{{/required}}
+	{{^required}}
+	if localVarTempParam, localVarOk := localVarOptionals["{{paramName}}"].({{dataType}}); localVarOptionals != nil && localVarOk {
+		localVarHeaderParams["{{baseName}}"] = a.client.parameterToString(localVarTempParam, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}")
+	}
+	{{/required}}
 {{/headerParams}}
 {{/hasHeaderParams}}
 {{#hasFormParams}}
 {{#formParams}}
 {{#isFile}}
-	 fbs, _ := ioutil.ReadAll(file)
-	 localVarFileBytes = fbs
-	 localVarFileName = file.Name()
+{{^required}}
+	var file ({{dataType}})
+	if localVarTempParam, localVarOk := localVarOptionals["{{paramName}}"].({{dataType}}); localVarOptionals != nil && localVarOk {
+		file = localVarTempParam
+	}
+{{/required}}
+	if file != nil {
+		fbs, _ := ioutil.ReadAll(file)
+		localVarFileBytes = fbs
+		localVarFileName = file.Name()
+	}
 {{/isFile}}
 {{^isFile}}
-	 localVarFormParams.Add(["{{paramName}}"], a.client.parameterToString({{paramName}}, ""))
+{{#required}}
+	localVarFormParams["{{baseName}}"] = a.client.parameterToString({{paramName}}, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}")
+{{/required}}
+{{^required}}
+	if localVarTempParam, localVarOk := localVarOptionals["{{paramName}}"].({{dataType}}); localVarOptionals != nil && localVarOk {
+		localVarFormParams["{{baseName}}"] = a.client.parameterToString(localVarTempParam, "{{#collectionFormat}}{{collectionFormat}}{{/collectionFormat}}")
+	}
+{{/required}}
 {{/isFile}}
 {{/formParams}}
 {{/hasFormParams}}
 {{#hasBodyParam}}
 {{#bodyParams}}	// body params
+{{#required}}
 	 localVarPostBody = &{{paramName}}
+{{/required}}
+{{^required}}
+	if localVarTempParam, localVarOk := localVarOptionals["{{paramName}}"].({{dataType}}); localVarOptionals != nil && localVarOk {
+		localVarPostBody = &localVarTempParam
+	}
+{{/required}}
 {{/bodyParams}}
 {{/hasBodyParam}}
 
