@@ -4,8 +4,8 @@ package {{packageName}}
 {{#operations}}
 import (
 	"net/url"
+	"net/http"
 	"strings"
-	"time"
 	"errors"
 	"golang.org/x/net/context"
 {{#imports}}	"{{import}}"
@@ -28,7 +28,7 @@ type {{classname}}Service service
 {{#allParams}}{{^required}} *     @param "{{paramName}}" ({{dataType}}) {{description}}
 {{/required}}{{/allParams}}{{/hasOptionalParams}} * @return {{#returnType}}{{{returnType}}}{{/returnType}}
  */
-func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Context, {{/authMethods}}{{#allParams}}{{#required}}{{paramName}} {{{dataType}}}{{#hasMore}}, {{/hasMore}}{{/required}}{{/allParams}}{{#hasOptionalParams}}localVarOptionals map[string]interface{}{{/hasOptionalParams}}) ({{#returnType}}{{{returnType}}}, {{/returnType}} time.Time, error) {
+func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Context, {{/authMethods}}{{#allParams}}{{#required}}{{paramName}} {{{dataType}}}{{#hasMore}}, {{/hasMore}}{{/required}}{{/allParams}}{{#hasOptionalParams}}localVarOptionals map[string]interface{}{{/hasOptionalParams}}) ({{#returnType}}{{{returnType}}}, {{/returnType}} *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("{{httpMethod}}")
 		localVarPostBody interface{}
@@ -127,25 +127,25 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Conte
 
 	 r, err := a.client.prepareRequest({{#authMethods}}ctx{{/authMethods}}{{^authMethods}}nil{{/authMethods}}, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes, "application/json")
 	 if err != nil {
-		  return {{#returnType}}successPayload, {{/returnType}}time.Now(), err
+		  return {{#returnType}}successPayload, {{/returnType}}nil, err
 	 }
 
 	 localVarHttpResponse, err := a.client.callAPI(r)
 	 if err != nil || localVarHttpResponse == nil {
-		  return {{#returnType}}successPayload, {{/returnType}}time.Now(), err
+		  return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, err
 	 }
 	 defer localVarHttpResponse.Body.Close()
 	 if localVarHttpResponse.StatusCode >= 300 {
-		return {{#returnType}}successPayload, {{/returnType}}time.Now(), errors.New(localVarHttpResponse.Status)
+		return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, errors.New(localVarHttpResponse.Status)
 	 }
 {{#returnType}}
 	
 	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
-	 	return {{#returnType}}successPayload, {{/returnType}}time.Now(), err
+	 	return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, err
 	}
 
 {{/returnType}}
-	expires := cacheExpires(localVarHttpResponse)
-	return {{#returnType}}successPayload, {{/returnType}}expires, err
+
+	return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, err
 }
 {{/operation}}{{/operations}}
