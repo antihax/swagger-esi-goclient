@@ -159,10 +159,9 @@ func TestDeletePet(t *testing.T) {
 func TestConcurrency(t *testing.T) {
 	errc := make(chan error)
 
-	newPets := []sw.Pet{sw.Pet{Id: 12345, Name: "gopherFred", PhotoUrls: []string{"http://1.com", "http://2.com"}, Status: "pending"},
-		sw.Pet{Id: 12346, Name: "gopherDan", PhotoUrls: []string{"http://1.com", "http://2.com"}, Status: "active"},
-		sw.Pet{Id: 12347, Name: "gopherRick", PhotoUrls: []string{"http://1.com", "http://2.com"}, Status: "mia"},
-		sw.Pet{Id: 12348, Name: "gopherJohn", PhotoUrls: []string{"http://1.com", "http://2.com"}, Status: "dead"}}
+	newPets := []sw.Pet{sw.Pet{Id: 912345, Name: "gopherFred", PhotoUrls: []string{"http://1.com", "http://2.com"}, Status: "pending"},
+		sw.Pet{Id: 912346, Name: "gopherDan", PhotoUrls: []string{"http://1.com", "http://2.com"}, Status: "active"},
+		sw.Pet{Id: 912347, Name: "gopherRick", PhotoUrls: []string{"http://1.com", "http://2.com"}, Status: "mia"}}
 
 	/***
 	 *** Add the pets.
@@ -177,33 +176,30 @@ func TestConcurrency(t *testing.T) {
 		}(pet)
 	}
 	waitOnFunctions(t, errc, len(newPets))
-	time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 1)
 
 	/***
 	 *** Verify they are correct.
 	 ***/
 	go func() {
-		isPetCorrect(t, 12345, "gopherFred", "pending")
+		isPetCorrect(t, 912345, "gopherFred", "pending")
 		errc <- nil
 	}()
 	go func() {
-		isPetCorrect(t, 12346, "gopherDan", "active")
+		isPetCorrect(t, 912346, "gopherDan", "active")
 		errc <- nil
 	}()
 	go func() {
-		isPetCorrect(t, 12347, "gopherRick", "mia")
+		isPetCorrect(t, 912347, "gopherRick", "mia")
 		errc <- nil
 	}()
-	go func() {
-		isPetCorrect(t, 12348, "gopherJohn", "dead")
-		errc <- nil
-	}()
+
 	waitOnFunctions(t, errc, len(newPets))
 
 	/***
 	 *** Update all to active with the name gopherDan
 	 ***/
-	for i := 12345; i < 12349; i++ {
+	for i := 912345; i <= 912347; i++ {
 		go func(id int) {
 			r, err := client.PetApi.UpdatePet(nil, sw.Pet{Id: (int64)(id), Name: "gopherDan", PhotoUrls: []string{"http://1.com", "http://2.com"}, Status: "active"})
 			if r.StatusCode != 200 {
@@ -213,33 +209,30 @@ func TestConcurrency(t *testing.T) {
 		}(i)
 	}
 	waitOnFunctions(t, errc, len(newPets))
-	time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 1)
 
 	/***
 	 *** Verify they are correct.
 	 ***/
 	go func() {
-		isPetCorrect(t, 12345, "gopherDan", "active")
+		isPetCorrect(t, 912345, "gopherDan", "active")
 		errc <- nil
 	}()
 	go func() {
-		isPetCorrect(t, 12346, "gopherDan", "active")
+		isPetCorrect(t, 912346, "gopherDan", "active")
 		errc <- nil
 	}()
 	go func() {
-		isPetCorrect(t, 12347, "gopherDan", "active")
+		isPetCorrect(t, 912347, "gopherDan", "active")
 		errc <- nil
 	}()
-	go func() {
-		isPetCorrect(t, 12348, "gopherDan", "active")
-		errc <- nil
-	}()
+
 	waitOnFunctions(t, errc, len(newPets))
 
 	/***
 	 *** Delete them all.
 	 ***/
-	for i := 12345; i <= 12348; i++ {
+	for i := 912345; i <= 912347; i++ {
 		go func(id int) {
 			deletePet(t, (int64)(id))
 			errc <- nil
