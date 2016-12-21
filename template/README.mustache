@@ -33,7 +33,10 @@ It is also good manners to provide a user-agent describing the point of use of t
 
 ```
   client, err := {{packageName}}.NewClient(nil, "{{packageName}} client http://mysite.com")
-  result, response, err := client.Endpoint.Operation(parameters)
+  result, response, err := client.Endpoint.Operation(requiredParam, map[string]interface{} { 
+                                                                        "optionalParam1": "stringParam",
+                                                                        "optionalParam2": 1234.56
+                                                                    })
 ```
 
 ## Documentation for API Endpoints
@@ -61,6 +64,20 @@ Class | Method | HTTP request | Description
 - **Location**: {{#isKeyInQuery}}URL query string{{/isKeyInQuery}}{{#isKeyInHeader}}HTTP header{{/isKeyInHeader}}
 {{/isApiKey}}
 {{#isBasic}}- **Type**: HTTP basic authentication
+For basic authentication, a username and password are provided to each operation through a context.
+
+```
+  auth := {{packageName}}.BasicAuth{Username: "user", Password: "pass"}
+  client, err := {{packageName}}.NewClient(nil, "{{packageName}} client http://mysite.com")
+  ctx := context.WithValue(context.TODO(), {{packageName}}.ContextBasicAuth, auth)
+  result, response, err := client.Endpoint.AuthenticatedOperation(  ctx, 
+                                                                    requiredParam, 
+                                                                    map[string]interface{} { 
+                                                                       "optionalParam1": "stringParam",
+                                                                       "optionalParam2": 1234.56
+                                                                    })
+```
+
 {{/isBasic}}
 {{#isOAuth}}- **Type**: OAuth
 - **Flow**: {{{flow}}}
@@ -68,6 +85,21 @@ Class | Method | HTTP request | Description
 - **Scopes**: {{^scopes}}N/A{{/scopes}}
 {{#scopes}} - **{{{scope}}}**: {{{description}}}
 {{/scopes}}
+
+Example:
+```
+  auth, err = oauth2conf.TokenSource(http.Client, token) // Access and Refresh token structure
+
+  client, err := {{packageName}}.NewClient(nil, "{{packageName}} client http://mysite.com")
+  ctx := context.WithValue(context.TODO(), {{packageName}}.ContextOAuth2, auth)
+  result, response, err := client.Endpoint.AuthenticatedOperation(  ctx, 
+                                                                    requiredParam, 
+                                                                    map[string]interface{} { 
+                                                                       "optionalParam1": "stringParam",
+                                                                       "optionalParam2": 1234.56
+                                                                    })
+```
+
 {{/isOAuth}}
 
 {{/authMethods}}
