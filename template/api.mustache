@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"net/http"
 	"strings"
-	"errors"
 	"golang.org/x/net/context"
 {{#imports}}	"{{import}}"
 {{/imports}}
@@ -44,6 +43,28 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Conte
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+
+	{{#allParams}}
+	{{^required}}
+	{{#isPrimitiveType}}
+	if err := typeCheckParameter(localVarOptionals["{{paramName}}"], "{{{dataType}}}", "{{paramName}}"); err != nil {
+		return {{#returnType}}successPayload, {{/returnType}}nil, err
+	}
+	{{/isPrimitiveType}}
+	{{/required}}
+	{{#required}}
+	{{#minItems}}
+	if len({{paramName}}) < {{minItems}} {
+			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must have at least %d elements",{{minItems}})
+	}
+	{{/minItems}}
+	{{#maxItems}}
+	if len({{paramName}}) > {{maxItems}} {
+			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must have less than %d elements",{{maxItems}})
+	}
+	{{/maxItems}}
+	{{/required}}
+	{{/allParams}}
 
 	{{#hasQueryParams}}
 	{{#queryParams}}
@@ -143,7 +164,7 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Conte
 	 }
 	 defer localVarHttpResponse.Body.Close()
 	 if localVarHttpResponse.StatusCode >= 300 {
-		return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, errors.New(localVarHttpResponse.Status)
+		return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, reportError(localVarHttpResponse.Status)
 	 }
 {{#returnType}}
 	
