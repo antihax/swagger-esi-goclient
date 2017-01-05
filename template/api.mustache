@@ -11,7 +11,10 @@ import (
 {{/imports}}
 )
 
-var _ context.Context
+// Linger please
+var (
+	_ context.Context
+)
 
 type {{classname}}Service service
 
@@ -55,14 +58,34 @@ func (a {{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Conte
 	{{#required}}
 	{{#minItems}}
 	if len({{paramName}}) < {{minItems}} {
-			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must have at least %d elements",{{minItems}})
+			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must have at least {{minItems}} elements")
 	}
 	{{/minItems}}
 	{{#maxItems}}
 	if len({{paramName}}) > {{maxItems}} {
-			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must have less than %d elements",{{maxItems}})
+			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must have less than {{maxItems}} elements")
 	}
 	{{/maxItems}}
+	{{#minLength}}
+	if strlen({{paramName}}) < {{minLength}} {
+			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must have at least {{minLength}} elements")
+	}
+	{{/minLength}}
+	{{#maxLength}}
+	if strlen({{paramName}}) > {{maxLength}} {
+			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must have less than {{maxLength}} elements")
+	}
+	{{/maxLength}}
+	{{#minimum}}
+	if {{paramName}} < {{minimum}} {
+			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must be greater than {{minimum}}")
+	}
+	{{/minimum}}
+	{{#maximum}}
+	if {{paramName}} > {{maximum}} {
+			return {{#returnType}}successPayload, {{/returnType}}nil, reportError("{{paramName}} must be less than {{maximum}}")
+	}
+	{{/maximum}}
 	{{/required}}
 	{{/allParams}}
 

@@ -19,6 +19,7 @@ import (
 	"reflect"
 	"regexp"
 	"strings"
+	"unicode/utf8"
 )
 
 var (
@@ -398,4 +399,8 @@ func CacheExpires(r *http.Response) (time.Time) {
 		}
 	}
 	return expires
+}
+
+func strlen(s string) (int) {
+	return utf8.RuneCountInString(s)
 }
