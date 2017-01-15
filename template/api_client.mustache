@@ -33,6 +33,7 @@ type APIClient struct {
 	client *http.Client // The HTTP client.
 	userAgent string	// User Agent
 	common service 		// Reuse a single struct instead of allocating one for each service on the heap.
+	basePath string 	// 
 
 	 // API Services
 {{#apiInfo}}
@@ -57,6 +58,7 @@ func NewAPIClient(httpClient *http.Client, userAgent string) *APIClient {
 
 	c := &APIClient{}
 	c.client = httpClient
+	c.basePath = "{{{basePath}}}"
 	c.userAgent = userAgent
 	c.common.client = c
 
