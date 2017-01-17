@@ -5,10 +5,10 @@ import ({{/imports}}{{#imports}}
 	"{{import}}"{{/imports}}{{#imports}}
 )
 {{/imports}}{{#model}}{{#description}}
-// {{{description}}}{{/description}}
+/* {{{description}}} */{{/description}}
 type {{classname}} struct {
 {{#vars}}{{#description}}
-	// {{{description}}}{{/description}}
+	/* {{{description}}} */{{/description}}
 	{{name}} {{{datatype}}} `json:"{{baseName}},omitempty"`
 {{/vars}}
 }
