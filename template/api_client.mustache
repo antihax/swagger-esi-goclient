@@ -412,8 +412,11 @@ func strlen(s string) (int) {
 	return utf8.RuneCountInString(s)
 }
 
+// Custom date type for Swagger date.
+type SwaggerDateType struct {
+	time.Time
+}
 
-// Deal with dates and poorly formated datetime.
 const swaggerDateTypeLayout = "2006-01-02"
 
 func (c *SwaggerDateType) UnmarshalJSON(b []byte) (err error) {
