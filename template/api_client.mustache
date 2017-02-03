@@ -63,8 +63,8 @@ func NewAPIClient(httpClient *http.Client, userAgent string) *APIClient {
 	c.common.client = c
 
 {{#apiInfo}}
-{{#apis}}
 	// API Services
+{{#apis}}
 {{#operations}}
 	c.{{classname}} = (*{{classname}}Service)(&c.common)
 {{/operations}}
