@@ -19,6 +19,7 @@ touch version.txt
 oldnum=`cut -d ',' -f2 version.txt`  
 newnum=`expr $oldnum + 1`
 sed -i "s/$oldnum\$/$newnum/g" version.txt 
+git add -A .
 git commit -m "rebuild esi at ${rev}"
 git push -q upstream HEAD
 
