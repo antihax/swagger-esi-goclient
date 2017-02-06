@@ -31,4 +31,9 @@ set -e
 go test ./...
 git add -A .
 git commit -m "rebuild pages at ${rev}"
+set +e
 git push -q upstream HEAD
+set -e
+
+go get -v
+go test ./...
