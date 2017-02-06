@@ -19,6 +19,8 @@ touch version.txt
 oldnum=`cut -d ',' -f2 version.txt`  
 newnum=`expr $oldnum + 1`
 sed -i "s/$oldnum\$/$newnum/g" version.txt 
+
+bash build_mock_esi.sh
 git add -A .
 git commit -m "rebuild esi at ${rev}"
 git push -q upstream HEAD
@@ -36,7 +38,7 @@ go get -v
 COUNTER=1
 while [ $COUNTER -lt 5 ]; do
     rm ./v$COUNTER/*
-    rm ./v$COUNTER/doc/*
+    rm ./v$COUNTER/docs/*
     set -e
     java -jar ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ./v$COUNTER -t ../swagger-esi-goclient/template -l go -i https://esi.tech.ccp.is/v$COUNTER/swagger.json?datasource=tranquility -DpackageName=goesiv$COUNTER
     let COUNTER=COUNTER+1 
