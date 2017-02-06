@@ -30,8 +30,9 @@ set -e
 
 go test ./...
 git add -A .
-git commit -m "rebuild pages at ${rev}"
+
 set +e
+git commit -m "rebuild esi at ${rev}"
 git push -q upstream HEAD
 set -e
 
