@@ -25,7 +25,6 @@ git add -A .
 git commit -m "rebuild esi at ${rev}"
 git push -q upstream HEAD
 
-
 cd ..
 mkdir goesi
 cd goesi
