@@ -1,4 +1,10 @@
 language: go
 sudo: false
+
+before_install:
+  - docker pull antihax/mock-esi
+  - docker run -d -p 127.0.0.1:8080:8080 antihax/mock-esi
+  - docker ps -a
+
 script:
   - bash build_esi.sh
