@@ -22,6 +22,7 @@ sed -i "s/$oldnum\$/$newnum/g" version.txt
 set -e
 go get -v
 bash build_mock_esi.sh
+gofmt -s -w .
 set +e
 git add -A .
 git commit -m "rebuild esi at ${rev}"
@@ -47,6 +48,7 @@ while [ $COUNTER -lt 5 ]; do
 done
 
 set -e
+gofmt -s -w .
 
 go test ./...
 git add -A .

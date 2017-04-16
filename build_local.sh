@@ -11,4 +11,5 @@ while [ $COUNTER -lt 5 ]; do
     set +e
 done
 
-go test ./...
+gofmt -s -w ../goesi
+go test ../goesi/...

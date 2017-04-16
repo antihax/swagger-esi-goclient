@@ -7,9 +7,8 @@ import ({{/imports}}{{#imports}}
 {{/imports}}{{#model}}{{#description}}
 /* {{{description}}} */{{/description}}
 type {{classname}} struct {
-{{#vars}}{{#description}}
-	/* {{{description}}} */{{/description}}
-	{{name}} {{{datatype}}} `json:"{{baseName}},omitempty"`
+{{#vars}}
+	{{name}} {{{datatype}}} `json:"{{baseName}},omitempty"` {{#description}}/* {{{description}}} */{{/description}}
 {{/vars}}
 }
 {{/model}}{{/models}}

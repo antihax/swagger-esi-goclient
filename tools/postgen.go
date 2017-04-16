@@ -9,7 +9,7 @@ import (
 var generatedPath string
 
 func init() {
-	flag.StringVar(&generatedPath, "src", "./esi", "path of generated code")
+	flag.StringVar(&generatedPath, "src", "../goesi", "path of generated code")
 	flag.Parse()
 }
 
