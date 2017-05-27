@@ -4,7 +4,7 @@
     "info": {
         "description": "An OpenAPI for EVE Online",
         "title": "EVE Swagger Interface",
-        "version": "0.4.6"
+        "version": "0.4.7"
     },
     "paths": {
         "/alliances/": {
@@ -69,6 +69,7 @@
                                 "type": "integer",
                                 "uniqueItems": true
                             },
+                            "maxItems": 5000,
                             "title": "get_alliances_ok",
                             "type": "array"
                         }
@@ -118,6 +119,7 @@
                             "format": "int64",
                             "type": "integer"
                         },
+                        "maxItems": 100,
                         "minItems": 1,
                         "name": "alliance_ids",
                         "required": true,
@@ -196,6 +198,7 @@
                                 "title": "get_alliances_names_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 100,
                             "title": "get_alliances_names_ok",
                             "type": "array"
                         }
@@ -450,6 +453,7 @@
                                 "type": "integer",
                                 "uniqueItems": true
                             },
+                            "maxItems": 1000,
                             "title": "get_alliances_alliance_id_corporations_ok",
                             "type": "array"
                         }
@@ -730,6 +734,7 @@
                                 "title": "post_characters_affiliation_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 1000,
                             "title": "post_characters_affiliation_ok",
                             "type": "array"
                         }
@@ -799,6 +804,7 @@
                             "format": "int64",
                             "type": "integer"
                         },
+                        "maxItems": 1000,
                         "minItems": 1,
                         "name": "character_ids",
                         "required": true,
@@ -877,6 +883,7 @@
                                 "title": "get_characters_names_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 1000,
                             "title": "get_characters_names_ok",
                             "type": "array"
                         }
@@ -1228,6 +1235,7 @@
                                 "title": "get_characters_character_id_agents_research_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 1000,
                             "title": "get_characters_character_id_agents_research_ok",
                             "type": "array"
                         }
@@ -1504,6 +1512,7 @@
                                 "title": "get_characters_character_id_assets_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 100000,
                             "title": "get_characters_character_id_assets_ok",
                             "type": "array"
                         }
@@ -1786,6 +1795,7 @@
                                 "title": "get_characters_character_id_blueprints_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 10000,
                             "title": "get_characters_character_id_blueprints_ok",
                             "type": "array"
                         }
@@ -2057,6 +2067,7 @@
                                 "title": "get_characters_character_id_bookmarks_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 13000,
                             "title": "get_characters_character_id_bookmarks_ok",
                             "type": "array"
                         }
@@ -2216,6 +2227,7 @@
                                 "title": "get_characters_character_id_bookmarks_folders_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 10000,
                             "title": "get_characters_character_id_bookmarks_folders_ok",
                             "type": "array"
                         }
@@ -2360,7 +2372,7 @@
                             }
                         },
                         "schema": {
-                            "description": "Up to 50 events from now or the event you requested\n",
+                            "description": "Up to 50 events from now or the event you requested",
                             "items": {
                                 "description": "event",
                                 "properties": {
@@ -2402,6 +2414,7 @@
                                 "title": "get_characters_character_id_calendar_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 50,
                             "title": "get_characters_character_id_calendar_ok",
                             "type": "array"
                         }
@@ -2799,6 +2812,7 @@
                                             "title": "get_characters_character_id_chat_channels_allowed",
                                             "type": "object"
                                         },
+                                        "maxItems": 1000,
                                         "title": "get_characters_character_id_chat_channels_allowed",
                                         "type": "array"
                                     },
@@ -2842,6 +2856,7 @@
                                             "title": "get_characters_character_id_chat_channels_blocked",
                                             "type": "object"
                                         },
+                                        "maxItems": 1000,
                                         "title": "get_characters_character_id_chat_channels_blocked",
                                         "type": "array"
                                     },
@@ -2906,6 +2921,7 @@
                                             "title": "get_characters_character_id_chat_channels_muted",
                                             "type": "object"
                                         },
+                                        "maxItems": 1000,
                                         "title": "get_characters_character_id_chat_channels_muted",
                                         "type": "array"
                                     },
@@ -2943,6 +2959,7 @@
                                             "title": "get_characters_character_id_chat_channels_operator",
                                             "type": "object"
                                         },
+                                        "maxItems": 1000,
                                         "title": "get_characters_character_id_chat_channels_operators",
                                         "type": "array"
                                     },
@@ -2968,6 +2985,7 @@
                                 "title": "get_characters_character_id_chat_channels_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 1000,
                             "title": "get_characters_character_id_chat_channels_ok",
                             "type": "array"
                         }
@@ -3152,6 +3170,7 @@
                                                     "title": "get_characters_character_id_clones_implant",
                                                     "type": "integer"
                                                 },
+                                                "maxItems": 11,
                                                 "title": "get_characters_character_id_clones_implants",
                                                 "type": "array"
                                             },
@@ -3174,6 +3193,7 @@
                                         "title": "get_characters_character_id_clones_jump_clone",
                                         "type": "object"
                                     },
+                                    "maxItems": 10,
                                     "title": "get_characters_character_id_clones_jump_clones",
                                     "type": "array"
                                 },
@@ -4146,6 +4166,7 @@
                                 "title": "get_characters_character_id_corporationhistory_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 1000,
                             "title": "get_characters_character_id_corporationhistory_ok",
                             "type": "array"
                         }
@@ -4202,7 +4223,7 @@
                         "name": "characters",
                         "required": true,
                         "schema": {
-                            "description": "characters schema",
+                            "description": "characters object",
                             "properties": {
                                 "characters": {
                                     "description": "characters array",
@@ -4212,6 +4233,7 @@
                                         "title": "post_characters_character_id_cspa_character",
                                         "type": "integer"
                                     },
+                                    "maxItems": 100,
                                     "minItems": 1,
                                     "title": "post_characters_character_id_cspa_characters",
                                     "type": "array",
@@ -4221,7 +4243,8 @@
                             "required": [
                                 "characters"
                             ],
-                            "title": "post_characters_character_id_cspa_characters"
+                            "title": "post_characters_character_id_cspa_characters",
+                            "type": "object"
                         }
                     },
                     {
@@ -7434,6 +7457,7 @@
                                             "title": "get_characters_character_id_medals_graphic",
                                             "type": "object"
                                         },
+                                        "maxItems": 10,
                                         "title": "get_characters_character_id_medals_graphics",
                                         "type": "array"
                                     },
@@ -7483,6 +7507,7 @@
                                 "title": "get_characters_character_id_medals_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 1000,
                             "title": "get_characters_character_id_medals_ok",
                             "type": "array"
                         }
@@ -10003,6 +10028,7 @@
                                 "title": "get_characters_character_id_standings_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 10000,
                             "title": "get_characters_character_id_standings_ok",
                             "type": "array"
                         }
@@ -15272,6 +15298,7 @@
                                             "title": "get_incursions_infested_solar_system",
                                             "type": "integer"
                                         },
+                                        "maxItems": 10,
                                         "title": "get_incursions_infested_solar_systems",
                                         "type": "array"
                                     },
@@ -15316,6 +15343,7 @@
                                 "title": "get_incursions_200_ok",
                                 "type": "object"
                             },
+                            "maxItems": 10,
                             "title": "get_incursions_ok",
                             "type": "array"
                         }
@@ -19752,7 +19780,7 @@
         },
         "/universe/bloodlines/": {
             "get": {
-                "description": "Get a list of bloodlines\n\n---\n\nAlternate route: `/v1/universe/bloodlines/`\n\nAlternate route: `/legacy/universe/bloodlines/`\n\nAlternate route: `/dev/universe/bloodlines/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of bloodlines\n\n---\n\nAlternate route: `/v1/universe/bloodlines/`\n\nAlternate route: `/legacy/universe/bloodlines/`\n\nAlternate route: `/dev/universe/bloodlines/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_bloodlines",
                 "parameters": [
                     {
@@ -19959,13 +19987,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/categories/": {
             "get": {
-                "description": "Get a list of item categories\n\n---\n\nAlternate route: `/v1/universe/categories/`\n\nAlternate route: `/legacy/universe/categories/`\n\nAlternate route: `/dev/universe/categories/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of item categories\n\n---\n\nAlternate route: `/v1/universe/categories/`\n\nAlternate route: `/legacy/universe/categories/`\n\nAlternate route: `/dev/universe/categories/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_categories",
                 "parameters": [
                     {
@@ -20057,13 +20084,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/categories/{category_id}/": {
             "get": {
-                "description": "Get information of an item category\n\n---\n\nAlternate route: `/v1/universe/categories/{category_id}/`\n\nAlternate route: `/legacy/universe/categories/{category_id}/`\n\nAlternate route: `/dev/universe/categories/{category_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information of an item category\n\n---\n\nAlternate route: `/v1/universe/categories/{category_id}/`\n\nAlternate route: `/legacy/universe/categories/{category_id}/`\n\nAlternate route: `/dev/universe/categories/{category_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_categories_category_id",
                 "parameters": [
                     {
@@ -20244,13 +20270,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/constellations/": {
             "get": {
-                "description": "Get a list of constellations\n\n---\n\nAlternate route: `/v1/universe/constellations/`\n\nAlternate route: `/legacy/universe/constellations/`\n\nAlternate route: `/dev/universe/constellations/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of constellations\n\n---\n\nAlternate route: `/v1/universe/constellations/`\n\nAlternate route: `/legacy/universe/constellations/`\n\nAlternate route: `/dev/universe/constellations/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_constellations",
                 "parameters": [
                     {
@@ -20341,13 +20366,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/constellations/{constellation_id}/": {
             "get": {
-                "description": "Get information on a constellation\n\n---\n\nAlternate route: `/v1/universe/constellations/{constellation_id}/`\n\nAlternate route: `/legacy/universe/constellations/{constellation_id}/`\n\nAlternate route: `/dev/universe/constellations/{constellation_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on a constellation\n\n---\n\nAlternate route: `/v1/universe/constellations/{constellation_id}/`\n\nAlternate route: `/legacy/universe/constellations/{constellation_id}/`\n\nAlternate route: `/dev/universe/constellations/{constellation_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_constellations_constellation_id",
                 "parameters": [
                     {
@@ -20564,13 +20588,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/factions/": {
             "get": {
-                "description": "Get a list of factions\n\n---\n\nAlternate route: `/v1/universe/factions/`\n\nAlternate route: `/legacy/universe/factions/`\n\nAlternate route: `/dev/universe/factions/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of factions\n\n---\n\nAlternate route: `/v1/universe/factions/`\n\nAlternate route: `/legacy/universe/factions/`\n\nAlternate route: `/dev/universe/factions/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_factions",
                 "parameters": [
                     {
@@ -20766,13 +20789,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/graphics/": {
             "get": {
-                "description": "Get a list of graphics\n\n---\n\nAlternate route: `/v1/universe/graphics/`\n\nAlternate route: `/legacy/universe/graphics/`\n\nAlternate route: `/dev/universe/graphics/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of graphics\n\n---\n\nAlternate route: `/v1/universe/graphics/`\n\nAlternate route: `/legacy/universe/graphics/`\n\nAlternate route: `/dev/universe/graphics/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_graphics",
                 "parameters": [
                     {
@@ -20863,13 +20885,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/graphics/{graphic_id}/": {
             "get": {
-                "description": "Get information on a graphic\n\n---\n\nAlternate route: `/v1/universe/graphics/{graphic_id}/`\n\nAlternate route: `/legacy/universe/graphics/{graphic_id}/`\n\nAlternate route: `/dev/universe/graphics/{graphic_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on a graphic\n\n---\n\nAlternate route: `/v1/universe/graphics/{graphic_id}/`\n\nAlternate route: `/legacy/universe/graphics/{graphic_id}/`\n\nAlternate route: `/dev/universe/graphics/{graphic_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_graphics_graphic_id",
                 "parameters": [
                     {
@@ -21028,13 +21049,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/groups/": {
             "get": {
-                "description": "Get a list of item groups\n\n---\n\nAlternate route: `/v1/universe/groups/`\n\nAlternate route: `/legacy/universe/groups/`\n\nAlternate route: `/dev/universe/groups/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of item groups\n\n---\n\nAlternate route: `/v1/universe/groups/`\n\nAlternate route: `/legacy/universe/groups/`\n\nAlternate route: `/dev/universe/groups/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_groups",
                 "parameters": [
                     {
@@ -21135,13 +21155,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/groups/{group_id}/": {
             "get": {
-                "description": "Get information on an item group\n\n---\n\nAlternate route: `/v1/universe/groups/{group_id}/`\n\nAlternate route: `/legacy/universe/groups/{group_id}/`\n\nAlternate route: `/dev/universe/groups/{group_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on an item group\n\n---\n\nAlternate route: `/v1/universe/groups/{group_id}/`\n\nAlternate route: `/legacy/universe/groups/{group_id}/`\n\nAlternate route: `/dev/universe/groups/{group_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_groups_group_id",
                 "parameters": [
                     {
@@ -21330,13 +21349,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/moons/{moon_id}/": {
             "get": {
-                "description": "Get information on a moon\n\n---\n\nAlternate route: `/v1/universe/moons/{moon_id}/`\n\nAlternate route: `/legacy/universe/moons/{moon_id}/`\n\nAlternate route: `/dev/universe/moons/{moon_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on a moon\n\n---\n\nAlternate route: `/v1/universe/moons/{moon_id}/`\n\nAlternate route: `/legacy/universe/moons/{moon_id}/`\n\nAlternate route: `/dev/universe/moons/{moon_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_moons_moon_id",
                 "parameters": [
                     {
@@ -21510,8 +21528,7 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/names/": {
@@ -21681,7 +21698,7 @@
         },
         "/universe/planets/{planet_id}/": {
             "get": {
-                "description": "Get information on a planet\n\n---\n\nAlternate route: `/v1/universe/planets/{planet_id}/`\n\nAlternate route: `/legacy/universe/planets/{planet_id}/`\n\nAlternate route: `/dev/universe/planets/{planet_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on a planet\n\n---\n\nAlternate route: `/v1/universe/planets/{planet_id}/`\n\nAlternate route: `/legacy/universe/planets/{planet_id}/`\n\nAlternate route: `/dev/universe/planets/{planet_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_planets_planet_id",
                 "parameters": [
                     {
@@ -21863,13 +21880,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/races/": {
             "get": {
-                "description": "Get a list of character races\n\n---\n\nAlternate route: `/v1/universe/races/`\n\nAlternate route: `/legacy/universe/races/`\n\nAlternate route: `/dev/universe/races/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of character races\n\n---\n\nAlternate route: `/v1/universe/races/`\n\nAlternate route: `/legacy/universe/races/`\n\nAlternate route: `/dev/universe/races/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_races",
                 "parameters": [
                     {
@@ -22020,13 +22036,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/regions/": {
             "get": {
-                "description": "Get a list of regions\n\n---\n\nAlternate route: `/v1/universe/regions/`\n\nAlternate route: `/legacy/universe/regions/`\n\nAlternate route: `/dev/universe/regions/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of regions\n\n---\n\nAlternate route: `/v1/universe/regions/`\n\nAlternate route: `/legacy/universe/regions/`\n\nAlternate route: `/dev/universe/regions/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_regions",
                 "parameters": [
                     {
@@ -22117,13 +22132,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/regions/{region_id}/": {
             "get": {
-                "description": "Get information on a region\n\n---\n\nAlternate route: `/v1/universe/regions/{region_id}/`\n\nAlternate route: `/legacy/universe/regions/{region_id}/`\n\nAlternate route: `/dev/universe/regions/{region_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on a region\n\n---\n\nAlternate route: `/v1/universe/regions/{region_id}/`\n\nAlternate route: `/legacy/universe/regions/{region_id}/`\n\nAlternate route: `/dev/universe/regions/{region_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_regions_region_id",
                 "parameters": [
                     {
@@ -22302,8 +22316,7 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/schematics/{schematic_id}/": {
@@ -22444,7 +22457,7 @@
         },
         "/universe/stargates/{stargate_id}/": {
             "get": {
-                "description": "Get information on a stargate\n\n---\n\nAlternate route: `/v1/universe/stargates/{stargate_id}/`\n\nAlternate route: `/legacy/universe/stargates/{stargate_id}/`\n\nAlternate route: `/dev/universe/stargates/{stargate_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on a stargate\n\n---\n\nAlternate route: `/v1/universe/stargates/{stargate_id}/`\n\nAlternate route: `/legacy/universe/stargates/{stargate_id}/`\n\nAlternate route: `/dev/universe/stargates/{stargate_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_stargates_stargate_id",
                 "parameters": [
                     {
@@ -22654,8 +22667,7 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/stations/{station_id}/": {
@@ -23499,7 +23511,7 @@
         },
         "/universe/systems/": {
             "get": {
-                "description": "Get a list of solar systems\n\n---\n\nAlternate route: `/v1/universe/systems/`\n\nAlternate route: `/legacy/universe/systems/`\n\nAlternate route: `/dev/universe/systems/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of solar systems\n\n---\n\nAlternate route: `/v1/universe/systems/`\n\nAlternate route: `/legacy/universe/systems/`\n\nAlternate route: `/dev/universe/systems/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_systems",
                 "parameters": [
                     {
@@ -23590,13 +23602,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/systems/{system_id}/": {
             "get": {
-                "description": "Get information on a solar system\n\n---\n\nAlternate route: `/v2/universe/systems/{system_id}/`\n\nAlternate route: `/dev/universe/systems/{system_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on a solar system\n\n---\n\nAlternate route: `/v2/universe/systems/{system_id}/`\n\nAlternate route: `/dev/universe/systems/{system_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_systems_system_id",
                 "parameters": [
                     {
@@ -23869,13 +23880,12 @@
                 "x-alternate-versions": [
                     "dev",
                     "v2"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/types/": {
             "get": {
-                "description": "Get a list of type ids\n\n---\n\nAlternate route: `/v1/universe/types/`\n\nAlternate route: `/legacy/universe/types/`\n\nAlternate route: `/dev/universe/types/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get a list of type ids\n\n---\n\nAlternate route: `/v1/universe/types/`\n\nAlternate route: `/legacy/universe/types/`\n\nAlternate route: `/dev/universe/types/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_types",
                 "parameters": [
                     {
@@ -23976,13 +23986,12 @@
                     "dev",
                     "legacy",
                     "v1"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/universe/types/{type_id}/": {
             "get": {
-                "description": "Get information on a type\n\n---\n\nAlternate route: `/v2/universe/types/{type_id}/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Get information on a type\n\n---\n\nAlternate route: `/v2/universe/types/{type_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_types_type_id",
                 "parameters": [
                     {
@@ -24256,8 +24265,7 @@
                 ],
                 "x-alternate-versions": [
                     "v2"
-                ],
-                "x-cached-seconds": 3600
+                ]
             }
         },
         "/wars/": {
