@@ -10734,7 +10734,7 @@
         },
         "/characters/{character_id}/skills/": {
             "get": {
-                "description": "List all trained skills for the given character\n\n---\n\nAlternate route: `/v3/characters/{character_id}/skills/`\n\nAlternate route: `/dev/characters/{character_id}/skills/`\n\n\n---\n\nThis route is cached for up to 120 seconds",
+                "description": "List all trained skills for the given character\n\n---\n\nAlternate route: `/v3/characters/{character_id}/skills/`\n\n\n---\n\nThis route is cached for up to 120 seconds",
                 "operationId": "get_characters_character_id_skills",
                 "parameters": [
                     {
@@ -10907,7 +10907,6 @@
                     "Skills"
                 ],
                 "x-alternate-versions": [
-                    "dev",
                     "v3"
                 ],
                 "x-cached-seconds": 120
@@ -24924,7 +24923,7 @@
         },
         "/universe/systems/{system_id}/": {
             "get": {
-                "description": "Get information on a solar system\n\n---\n\nAlternate route: `/v2/universe/systems/{system_id}/`\n\nAlternate route: `/dev/universe/systems/{system_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
+                "description": "Get information on a solar system\n\n---\n\nAlternate route: `/v2/universe/systems/{system_id}/`\n\n\n---\n\nThis route expires daily at 11:05",
                 "operationId": "get_universe_systems_system_id",
                 "parameters": [
                     {
@@ -25198,7 +25197,6 @@
                     "Universe"
                 ],
                 "x-alternate-versions": [
-                    "dev",
                     "v2"
                 ]
             }
