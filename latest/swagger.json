@@ -11249,6 +11249,254 @@
                 "x-cached-seconds": 120
             }
         },
+        "/characters/{character_id}/wallets/journal/": {
+            "get": {
+                "description": "Retrieve character wallet journal\n\n---\n\nAlternate route: `/v1/characters/{character_id}/wallets/journal/`\n\nAlternate route: `/legacy/characters/{character_id}/wallets/journal/`\n\nAlternate route: `/dev/characters/{character_id}/wallets/journal/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "operationId": "get_characters_character_id_wallets_journal",
+                "parameters": [
+                    {
+                        "description": "An EVE character ID",
+                        "format": "int32",
+                        "in": "path",
+                        "name": "character_id",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "default": "tranquility",
+                        "description": "The server name you would like data from",
+                        "enum": [
+                            "tranquility",
+                            "singularity"
+                        ],
+                        "in": "query",
+                        "name": "datasource",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Only show journal entries happened before the transaction referenced by this id",
+                        "format": "int64",
+                        "in": "query",
+                        "name": "from_id",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "description": "Access token to use, if preferred over a header",
+                        "in": "query",
+                        "name": "token",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Client identifier, takes precedence over headers",
+                        "in": "query",
+                        "name": "user_agent",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Client identifier, takes precedence over User-Agent",
+                        "in": "header",
+                        "name": "X-User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Journal entries",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "date": "2016-10-24T09:00:00Z",
+                                    "ref_id": 1234567890,
+                                    "ref_type_id": 1
+                                }
+                            ]
+                        },
+                        "headers": {
+                            "Cache-Control": {
+                                "description": "The caching mechanism used",
+                                "type": "string"
+                            },
+                            "Expires": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            },
+                            "Last-Modified": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "description": "Journal entries",
+                            "items": {
+                                "description": "200 ok object",
+                                "properties": {
+                                    "amount": {
+                                        "description": "Transaction amount. Positive when value transferred to the first party. Negative otherwise",
+                                        "format": "float",
+                                        "title": "get_characters_character_id_wallets_journal_amount",
+                                        "type": "number"
+                                    },
+                                    "argument_name": {
+                                        "description": "argument_name string",
+                                        "title": "get_characters_character_id_wallets_journal_argument_name",
+                                        "type": "string"
+                                    },
+                                    "argument_value": {
+                                        "description": "argument_value integer",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallets_journal_argument_value",
+                                        "type": "integer"
+                                    },
+                                    "balance": {
+                                        "description": "Wallet balance after transaction occurred",
+                                        "format": "float",
+                                        "title": "get_characters_character_id_wallets_journal_balance",
+                                        "type": "number"
+                                    },
+                                    "date": {
+                                        "description": "Date and time of transaction",
+                                        "format": "date-time",
+                                        "title": "get_characters_character_id_wallets_journal_date",
+                                        "type": "string"
+                                    },
+                                    "first_party_id": {
+                                        "description": "first_party_id integer",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallets_journal_first_party_id",
+                                        "type": "integer"
+                                    },
+                                    "first_party_type": {
+                                        "description": "first_party_type string",
+                                        "enum": [
+                                            "character",
+                                            "corporation",
+                                            "alliance",
+                                            "faction"
+                                        ],
+                                        "title": "get_characters_character_id_wallets_journal_first_party_type",
+                                        "type": "string"
+                                    },
+                                    "reason": {
+                                        "description": "reason string",
+                                        "title": "get_characters_character_id_wallets_journal_reason",
+                                        "type": "string"
+                                    },
+                                    "ref_id": {
+                                        "description": "Unique journal reference ID",
+                                        "format": "int64",
+                                        "title": "get_characters_character_id_wallets_journal_ref_id",
+                                        "type": "integer"
+                                    },
+                                    "ref_type_id": {
+                                        "description": "Transaction type",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallets_journal_ref_type_id",
+                                        "type": "integer"
+                                    },
+                                    "second_party_id": {
+                                        "description": "second_party_id integer",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallets_journal_second_party_id",
+                                        "type": "integer"
+                                    },
+                                    "second_party_type": {
+                                        "description": "second_party_type string",
+                                        "enum": [
+                                            "character",
+                                            "corporation",
+                                            "alliance",
+                                            "faction"
+                                        ],
+                                        "title": "get_characters_character_id_wallets_journal_second_party_type",
+                                        "type": "string"
+                                    },
+                                    "tax_amount": {
+                                        "description": "Tax amount received for tax related transactions",
+                                        "format": "float",
+                                        "title": "get_characters_character_id_wallets_journal_tax_amount",
+                                        "type": "number"
+                                    },
+                                    "tax_reciever_id": {
+                                        "description": "For tax related transactions, gives the corporation ID of the entity receiving the tax",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallets_journal_tax_reciever_id",
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [
+                                    "date",
+                                    "ref_id",
+                                    "ref_type_id"
+                                ],
+                                "title": "get_characters_character_id_wallets_journal_200_ok",
+                                "type": "object"
+                            },
+                            "maxItems": 2500,
+                            "title": "get_characters_character_id_wallets_journal_ok",
+                            "type": "array"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "examples": {
+                            "application/json": {
+                                "error": "Token is not valid for scope(s): esi-wallet.read_character_wallet.v1"
+                            }
+                        },
+                        "schema": {
+                            "description": "Forbidden",
+                            "properties": {
+                                "error": {
+                                    "description": "Forbidden message",
+                                    "title": "get_characters_character_id_wallets_journal_403_forbidden",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "get_characters_character_id_wallets_journal_forbidden",
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "examples": {
+                            "application/json": {
+                                "error": "uncaught exception: IOError('out of memory')"
+                            }
+                        },
+                        "schema": {
+                            "description": "Internal server error",
+                            "properties": {
+                                "error": {
+                                    "description": "Internal server error message",
+                                    "title": "get_characters_character_id_wallets_journal_500_internal_server_error",
+                                    "type": "string"
+                                }
+                            },
+                            "title": "get_characters_character_id_wallets_journal_internal_server_error",
+                            "type": "object"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "evesso": [
+                            "esi-wallet.read_character_wallet.v1"
+                        ]
+                    }
+                ],
+                "summary": "Get character wallet journal",
+                "tags": [
+                    "Wallet"
+                ],
+                "x-alternate-versions": [
+                    "dev",
+                    "legacy",
+                    "v1"
+                ],
+                "x-cached-seconds": 3600
+            }
+        },
         "/corporations/names/": {
             "get": {
                 "description": "Resolve a set of corporation IDs to corporation names\n\n---\n\nAlternate route: `/v1/corporations/names/`\n\nAlternate route: `/legacy/corporations/names/`\n\nAlternate route: `/dev/corporations/names/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
