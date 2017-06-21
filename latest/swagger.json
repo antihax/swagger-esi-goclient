@@ -109,7 +109,7 @@
         },
         "/alliances/names/": {
             "get": {
-                "description": "Resolve a set of alliance IDs to alliance names\n\n---\n\nAlternate route: `/v1/alliances/names/`\n\nAlternate route: `/legacy/alliances/names/`\n\nAlternate route: `/dev/alliances/names/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Resolve a set of alliance IDs to alliance names\n\n---\n\nAlternate route: `/v1/alliances/names/`\n\nAlternate route: `/legacy/alliances/names/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
                 "operationId": "get_alliances_names",
                 "parameters": [
                     {
@@ -229,7 +229,6 @@
                     "Alliance"
                 ],
                 "x-alternate-versions": [
-                    "dev",
                     "legacy",
                     "v1"
                 ],
@@ -11498,7 +11497,7 @@
         },
         "/corporations/names/": {
             "get": {
-                "description": "Resolve a set of corporation IDs to corporation names\n\n---\n\nAlternate route: `/v1/corporations/names/`\n\nAlternate route: `/legacy/corporations/names/`\n\nAlternate route: `/dev/corporations/names/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
+                "description": "Resolve a set of corporation IDs to corporation names\n\n---\n\nAlternate route: `/v1/corporations/names/`\n\nAlternate route: `/legacy/corporations/names/`\n\n\n---\n\nThis route is cached for up to 3600 seconds",
                 "operationId": "get_corporations_names",
                 "parameters": [
                     {
@@ -11618,7 +11617,6 @@
                     "Corporation"
                 ],
                 "x-alternate-versions": [
-                    "dev",
                     "legacy",
                     "v1"
                 ],
@@ -18634,7 +18632,7 @@
                     },
                     {
                         "default": "all",
-                        "description": "Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders.\n",
+                        "description": "Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders.",
                         "enum": [
                             "buy",
                             "sell",
@@ -18647,7 +18645,7 @@
                     },
                     {
                         "default": 1,
-                        "description": "Which page to query, only used for querying without type_id. Starting at 1\n",
+                        "description": "Which page to query, only used for querying without type_id. Starting at 1",
                         "format": "int32",
                         "in": "query",
                         "name": "page",
@@ -18715,6 +18713,12 @@
                             "Last-Modified": {
                                 "description": "RFC7231 formatted datetime string",
                                 "type": "string"
+                            },
+                            "X-Pages": {
+                                "default": 1,
+                                "description": "Maximum page number",
+                                "format": "int32",
+                                "type": "number"
                             }
                         },
                         "schema": {
