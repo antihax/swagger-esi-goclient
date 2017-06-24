@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strings"
 	"golang.org/x/net/context"
+
+	"github.com/mailru/easyjson"
 {{#imports}}	"{{import}}"
 {{/imports}}
 )
@@ -35,7 +37,17 @@ func (a *{{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Cont
 		localVarFileName string
 		localVarFileBytes []byte
 {{#returnType}}
+		{{#isListContainer}}
+		{{#returnTypeIsPrimitive}}
 	 	successPayload  {{returnType}}
+		{{/returnTypeIsPrimitive}}
+		{{^returnTypeIsPrimitive}}
+		successPayload  REMOVEME{{returnType}}List
+		{{/returnTypeIsPrimitive}}
+		{{/isListContainer}}
+		{{^isListContainer}}
+	 	successPayload  {{returnType}}
+		{{/isListContainer}}
 {{/returnType}}
 	)
 
@@ -190,11 +202,16 @@ func (a *{{{classname}}}Service) {{{nickname}}}({{#authMethods}}ctx context.Cont
 		return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, reportError(localVarHttpResponse.Status)
 	 }
 {{#returnType}}
-	
+	{{#returnTypeIsPrimitive}}
 	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
-	 	return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, err
+	 	return successPayload, localVarHttpResponse, err
 	}
-
+	{{/returnTypeIsPrimitive}}
+	{{^returnTypeIsPrimitive}}
+	if err = easyjson.UnmarshalFromReader(localVarHttpResponse.Body, &successPayload); err != nil {
+	 	return successPayload, localVarHttpResponse, err
+	}
+	{{/returnTypeIsPrimitive}}
 {{/returnType}}
 
 	return {{#returnType}}successPayload, {{/returnType}}localVarHttpResponse, err

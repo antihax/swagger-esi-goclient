@@ -36,13 +36,23 @@ git remote add upstream "https://${GH_TOKEN}@github.com/antihax/goesi.git"
 git fetch upstream
 git pull upstream HEAD
 go get -v
+go get golang.org/x/tools/cmd/goimports
+go get -u github.com/mailru/easyjson/...
 
 COUNTER=1
 while [ $COUNTER -lt 5 ]; do
     rm ./v$COUNTER/*
     rm ./v$COUNTER/docs/*
     set -e
-    java -jar ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ./v$COUNTER -t ../swagger-esi-goclient/template -l go -i https://esi.tech.ccp.is/v$COUNTER/swagger.json?datasource=tranquility -DpackageName=goesiv$COUNTER
+    # Generate models first and JSON code second because there is no easy way to glob for model files only
+    java -jar -Dmodels ./swagger-codegen-cli.jar generate -o ../goesi/v$COUNTER -t ./template -l go -i https://esi.tech.ccp.is/v$COUNTER/swagger.json?datasource=tranquility -DpackageName=goesiv$COUNTER
+    easyjson -noformat ../goesi/v$COUNTER/*.go
+    # Generate all the other files
+    java -jar ./swagger-codegen-cli.jar generate -o ../goesi/v$COUNTER -t ./template -l go -i https://esi.tech.ccp.is/v$COUNTER/swagger.json?datasource=tranquility -DpackageName=goesiv$COUNTER
+    # Fix slices of struct types
+    sed -i 's/REMOVEME\[\]//g' ../goesi/v$COUNTER/*.*
+    # Fix imports where needed (select encoding/json or easyjson)
+    goimports -w ../goesi/v$COUNTER
     let COUNTER=COUNTER+1 
     set +e
 done

@@ -4,8 +4,14 @@ package {{packageName}}
 import ({{/imports}}{{#imports}}
 	"{{import}}"{{/imports}}{{#imports}}
 )
-{{/imports}}{{#model}}{{#description}}
+{{/imports}}{{#model}}
+/* A list of {{classname}}. */
+//easyjson:json
+type {{classname}}List []{{classname}}
+
+{{#description}}
 /* {{{description}}} */{{/description}}
+//easyjson:json
 type {{classname}} struct {
 {{#vars}}
 	{{name}} {{{datatype}}} `json:"{{baseName}},omitempty"` {{#description}}/* {{{description}}} */{{/description}}
