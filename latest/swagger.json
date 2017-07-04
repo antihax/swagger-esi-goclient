@@ -93,7 +93,7 @@
             "format": "int32",
             "in": "query",
             "name": "page",
-            "type": "number"
+            "type": "integer"
         },
         "token": {
             "description": "Access token to use if unable to set a header",
@@ -1394,6 +1394,158 @@
                 "x-cached-seconds": 3600
             }
         },
+        "/characters/{character_id}/attributes/": {
+            "get": {
+                "description": "Return attributes of a character\n\n---\nAlternate route: `/v1/characters/{character_id}/attributes/`\n\nAlternate route: `/legacy/characters/{character_id}/attributes/`\n\nAlternate route: `/dev/characters/{character_id}/attributes/`\n\n---\nThis route is cached for up to 3600 seconds",
+                "operationId": "get_characters_character_id_attributes",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
+                        "$ref": "#/parameters/X-User-Agent"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Attributes of a character",
+                        "examples": {
+                            "application/json": {
+                                "charisma": 20,
+                                "intelligence": 20,
+                                "memory": 20,
+                                "perception": 20,
+                                "willpower": 20
+                            }
+                        },
+                        "headers": {
+                            "Cache-Control": {
+                                "description": "The caching mechanism used",
+                                "type": "string"
+                            },
+                            "Expires": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            },
+                            "Last-Modified": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "description": "200 ok object",
+                            "properties": {
+                                "accrued_remap_cooldown_date": {
+                                    "description": "Neural remapping cooldown after a character uses remap accrued over time",
+                                    "format": "date-time",
+                                    "title": "get_characters_character_id_attributes_accrued_remap_cooldown_date",
+                                    "type": "string"
+                                },
+                                "bonus_remaps": {
+                                    "description": "Number of available bonus character neural remaps",
+                                    "format": "int32",
+                                    "title": "get_characters_character_id_attributes_bonus_remaps",
+                                    "type": "integer"
+                                },
+                                "charisma": {
+                                    "description": "charisma integer",
+                                    "format": "int32",
+                                    "title": "get_characters_character_id_attributes_charisma",
+                                    "type": "integer"
+                                },
+                                "intelligence": {
+                                    "description": "intelligence integer",
+                                    "format": "int32",
+                                    "title": "get_characters_character_id_attributes_intelligence",
+                                    "type": "integer"
+                                },
+                                "last_remap_date": {
+                                    "description": "Datetime of last neural remap, including usage of bonus remaps",
+                                    "format": "date-time",
+                                    "title": "get_characters_character_id_attributes_last_remap_date",
+                                    "type": "string"
+                                },
+                                "memory": {
+                                    "description": "memory integer",
+                                    "format": "int32",
+                                    "title": "get_characters_character_id_attributes_memory",
+                                    "type": "integer"
+                                },
+                                "perception": {
+                                    "description": "perception integer",
+                                    "format": "int32",
+                                    "title": "get_characters_character_id_attributes_perception",
+                                    "type": "integer"
+                                },
+                                "willpower": {
+                                    "description": "willpower integer",
+                                    "format": "int32",
+                                    "title": "get_characters_character_id_attributes_willpower",
+                                    "type": "integer"
+                                }
+                            },
+                            "required": [
+                                "charisma",
+                                "intelligence",
+                                "memory",
+                                "perception",
+                                "willpower"
+                            ],
+                            "title": "get_characters_character_id_attributes_ok",
+                            "type": "object"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "examples": {
+                            "application/json": {
+                                "error": "Forbidden message"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/forbidden"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "examples": {
+                            "application/json": {
+                                "error": "Internal server error message"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/internal_server_error"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "evesso": [
+                            "esi-skills.read_skills.v1"
+                        ]
+                    }
+                ],
+                "summary": "Get character attributes",
+                "tags": [
+                    "Skills"
+                ],
+                "x-alternate-versions": [
+                    "dev",
+                    "legacy",
+                    "v1"
+                ],
+                "x-cached-seconds": 3600
+            }
+        },
         "/characters/{character_id}/blueprints/": {
             "get": {
                 "description": "Return a list of blueprints the character has\n\n---\nAlternate route: `/v1/characters/{character_id}/blueprints/`\n\nAlternate route: `/legacy/characters/{character_id}/blueprints/`\n\nAlternate route: `/dev/characters/{character_id}/blueprints/`\n\n---\nThis route is cached for up to 3600 seconds",
@@ -1995,18 +2147,18 @@
                 "operationId": "get_characters_character_id_calendar",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The event ID to retrieve events from",
                         "format": "int32",
                         "in": "query",
                         "name": "from_event",
                         "required": false,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -2142,18 +2294,18 @@
                 "operationId": "get_characters_character_id_calendar_event_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The id of the event requested",
                         "format": "int32",
                         "in": "path",
                         "name": "event_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -2323,6 +2475,12 @@
                 "operationId": "put_characters_character_id_calendar_event_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The ID of the event requested",
                         "format": "int32",
                         "in": "path",
@@ -2354,12 +2512,6 @@
                             ],
                             "title": "put_characters_character_id_calendar_event_id_response"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -2909,6 +3061,9 @@
                 "operationId": "delete_characters_character_id_contacts",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
                         "description": "A list of contacts to delete",
                         "in": "body",
                         "name": "contact_ids",
@@ -2926,9 +3081,6 @@
                             "title": "delete_characters_character_id_contacts_contact_ids",
                             "type": "array"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
                     },
                     {
                         "$ref": "#/parameters/datasource"
@@ -3141,6 +3293,9 @@
                 "operationId": "post_characters_character_id_contacts",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
                         "description": "A list of contacts to add",
                         "in": "body",
                         "name": "contact_ids",
@@ -3158,6 +3313,9 @@
                             "title": "post_characters_character_id_contacts_contact_ids",
                             "type": "array"
                         }
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "default": 0,
@@ -3179,24 +3337,18 @@
                         "type": "number"
                     },
                     {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
                         "default": false,
                         "description": "Whether the new contact should be watched, note this is only effective on characters",
                         "in": "query",
                         "name": "watched",
                         "required": false,
                         "type": "boolean"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/token"
-                    },
-                    {
-                        "$ref": "#/parameters/user_agent"
                     },
                     {
                         "$ref": "#/parameters/X-User-Agent"
@@ -3269,6 +3421,9 @@
                 "operationId": "put_characters_character_id_contacts",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
                         "description": "A list of contacts to edit",
                         "in": "body",
                         "name": "contact_ids",
@@ -3286,6 +3441,9 @@
                             "title": "put_characters_character_id_contacts_contact_ids",
                             "type": "array"
                         }
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "default": 0,
@@ -3307,24 +3465,18 @@
                         "type": "number"
                     },
                     {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
                         "default": false,
                         "description": "Whether the contact should be watched, note this is only effective on characters",
                         "in": "query",
                         "name": "watched",
                         "required": false,
                         "type": "boolean"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/token"
-                    },
-                    {
-                        "$ref": "#/parameters/user_agent"
                     },
                     {
                         "$ref": "#/parameters/X-User-Agent"
@@ -3783,15 +3935,15 @@
                 "operationId": "get_characters_character_id_contracts_contract_id_bids",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
                         "description": "ID of a contract",
                         "format": "int32",
                         "in": "path",
                         "name": "contract_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
                     },
                     {
                         "$ref": "#/parameters/datasource"
@@ -3925,15 +4077,15 @@
                 "operationId": "get_characters_character_id_contracts_contract_id_items",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
                         "description": "ID of a contract",
                         "format": "int32",
                         "in": "path",
                         "name": "contract_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
                     },
                     {
                         "$ref": "#/parameters/datasource"
@@ -4195,6 +4347,9 @@
                 "operationId": "post_characters_character_id_cspa",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
                         "description": "The target characters to calculate the charge for",
                         "in": "body",
                         "name": "characters",
@@ -4223,9 +4378,6 @@
                             "title": "post_characters_character_id_cspa_characters",
                             "type": "object"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
                     },
                     {
                         "$ref": "#/parameters/datasource"
@@ -4483,6 +4635,12 @@
                 "operationId": "post_characters_character_id_fittings",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "Details about the new fitting",
                         "in": "body",
                         "name": "fitting",
@@ -4556,12 +4714,6 @@
                             "title": "post_characters_character_id_fittings_fitting",
                             "type": "object"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -4645,18 +4797,18 @@
                 "operationId": "delete_characters_character_id_fittings_fitting_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fitting of this character",
                         "format": "int32",
                         "in": "path",
                         "name": "fitting_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -4719,17 +4871,17 @@
                 "operationId": "get_characters_character_id_industry_jobs",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "Whether retrieve completed character industry jobs as well",
                         "in": "query",
                         "name": "include_completed",
                         "required": false,
                         "type": "boolean"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -4997,6 +5149,12 @@
                 "operationId": "get_characters_character_id_killmails_recent",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "default": 50,
                         "description": "How many killmails to return at maximum",
                         "format": "int32",
@@ -5013,12 +5171,6 @@
                         "name": "max_kill_id",
                         "required": false,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -5354,6 +5506,12 @@
                 "operationId": "get_characters_character_id_mail",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "Fetch only mails that match one or more of the given labels",
                         "in": "query",
                         "items": {
@@ -5374,12 +5532,6 @@
                         "in": "query",
                         "name": "last_mail_id",
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -5566,6 +5718,12 @@
                 "operationId": "post_characters_character_id_mail",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The mail to send",
                         "in": "body",
                         "name": "mail",
@@ -5635,12 +5793,6 @@
                             ],
                             "title": "post_characters_character_id_mail_mail"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -5902,6 +6054,12 @@
                 "operationId": "post_characters_character_id_mail_labels",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "Label to create",
                         "in": "body",
                         "name": "label",
@@ -5948,12 +6106,6 @@
                             "title": "post_characters_character_id_mail_labels_label",
                             "type": "object"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -6025,18 +6177,18 @@
                 "operationId": "delete_characters_character_id_mail_labels_label_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "An EVE label id",
                         "format": "int32",
                         "in": "path",
                         "name": "label_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -6236,18 +6388,18 @@
                 "operationId": "delete_characters_character_id_mail_mail_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "An EVE mail ID",
                         "format": "int32",
                         "in": "path",
                         "name": "mail_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -6308,18 +6460,18 @@
                 "operationId": "get_characters_character_id_mail_mail_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "An EVE mail ID",
                         "format": "int32",
                         "in": "path",
                         "name": "mail_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -6512,6 +6664,9 @@
                 "operationId": "put_characters_character_id_mail_mail_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
                         "description": "Data used to update the mail",
                         "in": "body",
                         "name": "contents",
@@ -6544,18 +6699,15 @@
                         }
                     },
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "An EVE mail ID",
                         "format": "int32",
                         "in": "path",
                         "name": "mail_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -7487,18 +7639,18 @@
                 "operationId": "get_characters_character_id_planets_planet_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "Planet id of the target planet",
                         "format": "int32",
                         "in": "path",
                         "name": "planet_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -8208,6 +8360,15 @@
                         "uniqueItems": true
                     },
                     {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/language"
+                    },
+                    {
                         "description": "The string to search on",
                         "in": "query",
                         "minLength": 3,
@@ -8221,15 +8382,6 @@
                         "in": "query",
                         "name": "strict",
                         "type": "boolean"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/language"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -9039,9 +9191,592 @@
                 "x-cached-seconds": 3600
             }
         },
+        "/characters/{character_id}/wallet/": {
+            "get": {
+                "description": "Returns a character's wallet_id and balance\n\n---\nAlternate route: `/v1/characters/{character_id}/wallet/`\n\nAlternate route: `/legacy/characters/{character_id}/wallet/`\n\nAlternate route: `/dev/characters/{character_id}/wallet/`\n\n---\nThis route is cached for up to 120 seconds",
+                "operationId": "get_characters_character_id_wallet",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
+                        "$ref": "#/parameters/X-User-Agent"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Wallet balance",
+                        "examples": {
+                            "application/json": 29500.0
+                        },
+                        "headers": {
+                            "Cache-Control": {
+                                "description": "The caching mechanism used",
+                                "type": "string"
+                            },
+                            "Expires": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            },
+                            "Last-Modified": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "description": "Wallet balance",
+                            "format": "float",
+                            "title": "get_characters_character_id_wallet_ok",
+                            "type": "number"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "examples": {
+                            "application/json": {
+                                "error": "Forbidden message"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/forbidden"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "examples": {
+                            "application/json": {
+                                "error": "Internal server error message"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/internal_server_error"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "evesso": [
+                            "esi-wallet.read_character_wallet.v1"
+                        ]
+                    }
+                ],
+                "summary": "Get a character's wallet balance",
+                "tags": [
+                    "Wallet"
+                ],
+                "x-alternate-versions": [
+                    "dev",
+                    "legacy",
+                    "v1"
+                ],
+                "x-cached-seconds": 120
+            }
+        },
+        "/characters/{character_id}/wallet/journal/": {
+            "get": {
+                "description": "Retrieve character wallet journal\n\n---\nAlternate route: `/v1/characters/{character_id}/wallet/journal/`\n\nAlternate route: `/legacy/characters/{character_id}/wallet/journal/`\n\nAlternate route: `/dev/characters/{character_id}/wallet/journal/`\n\n---\nThis route is cached for up to 3600 seconds",
+                "operationId": "get_characters_character_id_wallet_journal",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "description": "Only show journal entries happened before the transaction referenced by this id",
+                        "format": "int64",
+                        "in": "query",
+                        "name": "from_id",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
+                        "$ref": "#/parameters/X-User-Agent"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Journal entries",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "date": "2016-10-24T09:00:00Z",
+                                    "ref_id": 1234567890,
+                                    "ref_type": "player_trading"
+                                }
+                            ]
+                        },
+                        "headers": {
+                            "Cache-Control": {
+                                "description": "The caching mechanism used",
+                                "type": "string"
+                            },
+                            "Expires": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            },
+                            "Last-Modified": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "description": "Journal entries",
+                            "items": {
+                                "description": "200 ok object",
+                                "properties": {
+                                    "amount": {
+                                        "description": "Transaction amount. Positive when value transferred to the first party. Negative otherwise",
+                                        "format": "float",
+                                        "title": "get_characters_character_id_wallet_journal_amount",
+                                        "type": "number"
+                                    },
+                                    "balance": {
+                                        "description": "Wallet balance after transaction occurred",
+                                        "format": "float",
+                                        "title": "get_characters_character_id_wallet_journal_balance",
+                                        "type": "number"
+                                    },
+                                    "date": {
+                                        "description": "Date and time of transaction",
+                                        "format": "date-time",
+                                        "title": "get_characters_character_id_wallet_journal_date",
+                                        "type": "string"
+                                    },
+                                    "extra_info": {
+                                        "description": "Extra information for different type of transaction",
+                                        "properties": {
+                                            "alliance_id": {
+                                                "description": "alliance_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_alliance_id",
+                                                "type": "integer"
+                                            },
+                                            "character_id": {
+                                                "description": "character_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_character_id",
+                                                "type": "integer"
+                                            },
+                                            "contract_id": {
+                                                "description": "contract_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_contract_id",
+                                                "type": "integer"
+                                            },
+                                            "corporation_id": {
+                                                "description": "corporation_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_corporation_id",
+                                                "type": "integer"
+                                            },
+                                            "destroyed_ship_type_id": {
+                                                "description": "destroyed_ship_type_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_destroyed_ship_type_id",
+                                                "type": "integer"
+                                            },
+                                            "job_id": {
+                                                "description": "job_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_job_id",
+                                                "type": "integer"
+                                            },
+                                            "location_id": {
+                                                "description": "location_id integer",
+                                                "format": "int64",
+                                                "title": "get_characters_character_id_wallet_journal_location_id",
+                                                "type": "integer"
+                                            },
+                                            "npc_id": {
+                                                "description": "npc_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_npc_id",
+                                                "type": "integer"
+                                            },
+                                            "npc_name": {
+                                                "description": "npc_name string",
+                                                "title": "get_characters_character_id_wallet_journal_npc_name",
+                                                "type": "string"
+                                            },
+                                            "planet_id": {
+                                                "description": "planet_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_planet_id",
+                                                "type": "integer"
+                                            },
+                                            "system_id": {
+                                                "description": "system_id integer",
+                                                "format": "int32",
+                                                "title": "get_characters_character_id_wallet_journal_system_id",
+                                                "type": "integer"
+                                            },
+                                            "transaction_id": {
+                                                "description": "transaction_id integer",
+                                                "format": "int64",
+                                                "title": "get_characters_character_id_wallet_journal_transaction_id",
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "title": "get_characters_character_id_wallet_journal_extra_info",
+                                        "type": "object"
+                                    },
+                                    "first_party_id": {
+                                        "description": "first_party_id integer",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallet_journal_first_party_id",
+                                        "type": "integer"
+                                    },
+                                    "first_party_type": {
+                                        "description": "first_party_type string",
+                                        "enum": [
+                                            "character",
+                                            "corporation",
+                                            "alliance",
+                                            "faction"
+                                        ],
+                                        "title": "get_characters_character_id_wallet_journal_first_party_type",
+                                        "type": "string"
+                                    },
+                                    "reason": {
+                                        "description": "reason string",
+                                        "title": "get_characters_character_id_wallet_journal_reason",
+                                        "type": "string"
+                                    },
+                                    "ref_id": {
+                                        "description": "Unique journal reference ID",
+                                        "format": "int64",
+                                        "title": "get_characters_character_id_wallet_journal_ref_id",
+                                        "type": "integer"
+                                    },
+                                    "ref_type": {
+                                        "description": "Transaction type, different type of transaction will populate different fields in `extra_info`",
+                                        "enum": [
+                                            "player_trading",
+                                            "market_transaction",
+                                            "player_donation",
+                                            "office_rental_fee",
+                                            "bounty_prize_historical",
+                                            "insurance",
+                                            "mission_reward",
+                                            "mission_reward_bonus",
+                                            "cspa",
+                                            "corp_account_withdrawal",
+                                            "logo_change_fee",
+                                            "market_escrow",
+                                            "broker_fee",
+                                            "alliance_maintenance_fee",
+                                            "sales_tax",
+                                            "jump_clone_installation_fee",
+                                            "manufacturing",
+                                            "contract",
+                                            "bounty_prizes",
+                                            "medal_creation_fee",
+                                            "medal_issuing_fee",
+                                            "customs_office_import_duty",
+                                            "customs_office_export_duty",
+                                            "corporate_reward_payout",
+                                            "industry_facility_tax",
+                                            "project_discovery_reward",
+                                            "reprocessing_fee",
+                                            "jump_clone_activation_fee",
+                                            "unknown"
+                                        ],
+                                        "title": "get_characters_character_id_wallet_journal_ref_type",
+                                        "type": "string"
+                                    },
+                                    "second_party_id": {
+                                        "description": "second_party_id integer",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallet_journal_second_party_id",
+                                        "type": "integer"
+                                    },
+                                    "second_party_type": {
+                                        "description": "second_party_type string",
+                                        "enum": [
+                                            "character",
+                                            "corporation",
+                                            "alliance",
+                                            "faction"
+                                        ],
+                                        "title": "get_characters_character_id_wallet_journal_second_party_type",
+                                        "type": "string"
+                                    },
+                                    "tax": {
+                                        "description": "Tax amount received for tax related transactions",
+                                        "format": "float",
+                                        "title": "get_characters_character_id_wallet_journal_tax",
+                                        "type": "number"
+                                    },
+                                    "tax_reciever_id": {
+                                        "description": "the corporation ID receiving any tax paid",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallet_journal_tax_reciever_id",
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [
+                                    "date",
+                                    "ref_id",
+                                    "ref_type"
+                                ],
+                                "title": "get_characters_character_id_wallet_journal_200_ok",
+                                "type": "object"
+                            },
+                            "maxItems": 2500,
+                            "title": "get_characters_character_id_wallet_journal_ok",
+                            "type": "array"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "examples": {
+                            "application/json": {
+                                "error": "Forbidden message"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/forbidden"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "examples": {
+                            "application/json": {
+                                "error": "Internal server error message"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/internal_server_error"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "evesso": [
+                            "esi-wallet.read_character_wallet.v1"
+                        ]
+                    }
+                ],
+                "summary": "Get character wallet journal",
+                "tags": [
+                    "Wallet"
+                ],
+                "x-alternate-versions": [
+                    "dev",
+                    "legacy",
+                    "v1"
+                ],
+                "x-cached-seconds": 3600
+            }
+        },
+        "/characters/{character_id}/wallet/transactions/": {
+            "get": {
+                "description": "Get wallet transactions of a character\n\n---\nAlternate route: `/v1/characters/{character_id}/wallet/transactions/`\n\nAlternate route: `/legacy/characters/{character_id}/wallet/transactions/`\n\nAlternate route: `/dev/characters/{character_id}/wallet/transactions/`\n\n---\nThis route is cached for up to 3600 seconds",
+                "operationId": "get_characters_character_id_wallet_transactions",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "description": "Only show transactions happened before the one referenced by this id",
+                        "format": "int64",
+                        "in": "query",
+                        "name": "from_id",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
+                        "$ref": "#/parameters/X-User-Agent"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Wallet transactions",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "client_id": 54321,
+                                    "date": "2016-10-24T09:00:00Z",
+                                    "is_buy": true,
+                                    "is_personal": true,
+                                    "journal_ref_id": 67890,
+                                    "location_id": 60014719,
+                                    "quantity": 1,
+                                    "transaction_id": 1234567890,
+                                    "type_id": 587,
+                                    "unit_price": 1
+                                }
+                            ]
+                        },
+                        "headers": {
+                            "Cache-Control": {
+                                "description": "The caching mechanism used",
+                                "type": "string"
+                            },
+                            "Expires": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            },
+                            "Last-Modified": {
+                                "description": "RFC7231 formatted datetime string",
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "description": "Wallet transactions",
+                            "items": {
+                                "description": "wallet transaction",
+                                "properties": {
+                                    "client_id": {
+                                        "description": "client_id integer",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallet_transactions_client_id",
+                                        "type": "integer"
+                                    },
+                                    "date": {
+                                        "description": "Date and time of transaction",
+                                        "format": "date-time",
+                                        "title": "get_characters_character_id_wallet_transactions_date",
+                                        "type": "string"
+                                    },
+                                    "is_buy": {
+                                        "description": "is_buy boolean",
+                                        "title": "get_characters_character_id_wallet_transactions_is_buy",
+                                        "type": "boolean"
+                                    },
+                                    "is_personal": {
+                                        "description": "is_personal boolean",
+                                        "title": "get_characters_character_id_wallet_transactions_is_personal",
+                                        "type": "boolean"
+                                    },
+                                    "journal_ref_id": {
+                                        "description": "journal_ref_id integer",
+                                        "format": "int64",
+                                        "title": "get_characters_character_id_wallet_transactions_journal_ref_id",
+                                        "type": "integer"
+                                    },
+                                    "location_id": {
+                                        "description": "location_id integer",
+                                        "format": "int64",
+                                        "title": "get_characters_character_id_wallet_transactions_location_id",
+                                        "type": "integer"
+                                    },
+                                    "quantity": {
+                                        "description": "quantity integer",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallet_transactions_quantity",
+                                        "type": "integer"
+                                    },
+                                    "transaction_id": {
+                                        "description": "Unique transaction ID",
+                                        "format": "int64",
+                                        "title": "get_characters_character_id_wallet_transactions_transaction_id",
+                                        "type": "integer"
+                                    },
+                                    "type_id": {
+                                        "description": "type_id integer",
+                                        "format": "int32",
+                                        "title": "get_characters_character_id_wallet_transactions_type_id",
+                                        "type": "integer"
+                                    },
+                                    "unit_price": {
+                                        "description": "Amount paid per unit",
+                                        "format": "float",
+                                        "title": "get_characters_character_id_wallet_transactions_unit_price",
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [
+                                    "transaction_id",
+                                    "date",
+                                    "location_id",
+                                    "type_id",
+                                    "unit_price",
+                                    "quantity",
+                                    "client_id",
+                                    "is_buy",
+                                    "is_personal",
+                                    "journal_ref_id"
+                                ],
+                                "title": "get_characters_character_id_wallet_transactions_200_ok",
+                                "type": "object"
+                            },
+                            "maxItems": 2500,
+                            "title": "get_characters_character_id_wallet_transactions_ok",
+                            "type": "array"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "examples": {
+                            "application/json": {
+                                "error": "Forbidden message"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/forbidden"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "examples": {
+                            "application/json": {
+                                "error": "Internal server error message"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/internal_server_error"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "evesso": [
+                            "esi-wallet.read_character_wallet.v1"
+                        ]
+                    }
+                ],
+                "summary": "Get wallet transactions",
+                "tags": [
+                    "Wallet"
+                ],
+                "x-alternate-versions": [
+                    "dev",
+                    "legacy",
+                    "v1"
+                ],
+                "x-cached-seconds": 3600
+            }
+        },
         "/characters/{character_id}/wallets/": {
             "get": {
-                "description": "List your wallets and their balances. Characters typically have only one wallet, with wallet_id 1000 being the master wallet.\n\n---\nAlternate route: `/v1/characters/{character_id}/wallets/`\n\nAlternate route: `/legacy/characters/{character_id}/wallets/`\n\nAlternate route: `/dev/characters/{character_id}/wallets/`\n\n---\nThis route is cached for up to 120 seconds",
+                "description": "List your wallets and their balances. Characters typically have only one wallet, with wallet_id 1000 being the master wallet.\n\n---\nAlternate route: `/v1/characters/{character_id}/wallets/`\n\nAlternate route: `/legacy/characters/{character_id}/wallets/`\n\n---\nThis route is cached for up to 120 seconds",
                 "operationId": "get_characters_character_id_wallets",
                 "parameters": [
                     {
@@ -9146,7 +9881,6 @@
                     "Wallet"
                 ],
                 "x-alternate-versions": [
-                    "dev",
                     "legacy",
                     "v1"
                 ],
@@ -9155,9 +9889,15 @@
         },
         "/characters/{character_id}/wallets/journal/": {
             "get": {
-                "description": "Retrieve character wallet journal\n\n---\nAlternate route: `/v1/characters/{character_id}/wallets/journal/`\n\nAlternate route: `/legacy/characters/{character_id}/wallets/journal/`\n\nAlternate route: `/dev/characters/{character_id}/wallets/journal/`\n\n---\nThis route is cached for up to 3600 seconds",
+                "description": "Retrieve character wallet journal\n\n---\nAlternate route: `/v1/characters/{character_id}/wallets/journal/`\n\nAlternate route: `/legacy/characters/{character_id}/wallets/journal/`\n\n---\nThis route is cached for up to 3600 seconds",
                 "operationId": "get_characters_character_id_wallets_journal",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/character_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
                     {
                         "description": "Only show journal entries happened before the transaction referenced by this id",
                         "format": "int64",
@@ -9165,12 +9905,6 @@
                         "name": "from_id",
                         "required": false,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/character_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -9354,7 +10088,6 @@
                     "Wallet"
                 ],
                 "x-alternate-versions": [
-                    "dev",
                     "legacy",
                     "v1"
                 ],
@@ -10987,6 +11720,12 @@
                 "operationId": "put_corporations_corporation_id_structures_structure_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/corporation_id"
+                    },
+                    {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "New vulnerability window schedule for the structure",
                         "in": "body",
                         "name": "new_schedule",
@@ -11033,12 +11772,6 @@
                         "name": "structure_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/corporation_id"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -11412,15 +12145,15 @@
                 "operationId": "get_dogma_effects_effect_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "A dogma effect ID",
                         "format": "int32",
                         "in": "path",
                         "name": "effect_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -11676,15 +12409,15 @@
                 "operationId": "get_fleets_fleet_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
                         "name": "fleet_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -11821,6 +12554,9 @@
                 "operationId": "put_fleets_fleet_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -11850,9 +12586,6 @@
                             "title": "put_fleets_fleet_id_new_settings",
                             "type": "object"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -11955,15 +12688,15 @@
                 "operationId": "get_fleets_fleet_id_members",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
                         "name": "fleet_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/language"
@@ -12177,6 +12910,9 @@
                 "operationId": "post_fleets_fleet_id_members",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -12231,9 +12967,6 @@
                             "title": "post_fleets_fleet_id_members_invitation",
                             "type": "object"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -12336,6 +13069,9 @@
                 "operationId": "delete_fleets_fleet_id_members_member_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -12350,9 +13086,6 @@
                         "name": "member_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -12433,6 +13166,9 @@
                 "operationId": "put_fleets_fleet_id_members_member_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -12488,9 +13224,6 @@
                             "title": "put_fleets_fleet_id_members_member_id_movement",
                             "type": "object"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -12593,6 +13326,9 @@
                 "operationId": "delete_fleets_fleet_id_squads_squad_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -12607,9 +13343,6 @@
                         "name": "squad_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -12690,6 +13423,9 @@
                 "operationId": "put_fleets_fleet_id_squads_squad_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -12726,9 +13462,6 @@
                         "name": "squad_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -12811,15 +13544,15 @@
                 "operationId": "get_fleets_fleet_id_wings",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
                         "name": "fleet_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/language"
@@ -13001,15 +13734,15 @@
                 "operationId": "post_fleets_fleet_id_wings",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
                         "name": "fleet_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -13113,6 +13846,9 @@
                 "operationId": "delete_fleets_fleet_id_wings_wing_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -13121,21 +13857,18 @@
                         "type": "integer"
                     },
                     {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
                         "description": "The wing to delete",
                         "format": "int64",
                         "in": "path",
                         "name": "wing_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/token"
-                    },
-                    {
-                        "$ref": "#/parameters/user_agent"
                     },
                     {
                         "$ref": "#/parameters/X-User-Agent"
@@ -13210,6 +13943,9 @@
                 "operationId": "put_fleets_fleet_id_wings_wing_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -13240,21 +13976,18 @@
                         }
                     },
                     {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
                         "description": "The wing to rename",
                         "format": "int64",
                         "in": "path",
                         "name": "wing_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/token"
-                    },
-                    {
-                        "$ref": "#/parameters/user_agent"
                     },
                     {
                         "$ref": "#/parameters/X-User-Agent"
@@ -13331,6 +14064,9 @@
                 "operationId": "post_fleets_fleet_id_wings_wing_id_squads",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID for a fleet",
                         "format": "int64",
                         "in": "path",
@@ -13339,21 +14075,18 @@
                         "type": "integer"
                     },
                     {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
                         "description": "The wing_id to create squad in",
                         "format": "int64",
                         "in": "path",
                         "name": "wing_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/token"
-                    },
-                    {
-                        "$ref": "#/parameters/user_agent"
                     },
                     {
                         "$ref": "#/parameters/X-User-Agent"
@@ -14010,6 +14743,9 @@
                 "operationId": "get_killmails_killmail_id_killmail_hash",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The killmail hash for verification",
                         "in": "path",
                         "name": "killmail_hash",
@@ -14023,9 +14759,6 @@
                         "name": "killmail_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -14668,18 +15401,18 @@
                 "operationId": "get_markets_groups_market_group_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/language"
+                    },
+                    {
                         "description": "An Eve item group ID",
                         "format": "int32",
                         "in": "path",
                         "name": "market_group_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/language"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -14926,18 +15659,18 @@
                 "operationId": "get_markets_structures_structure_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/page"
+                    },
+                    {
                         "description": "Return orders in this structure",
                         "format": "int64",
                         "in": "path",
                         "name": "structure_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/page"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -15136,6 +15869,9 @@
                 "operationId": "get_markets_region_id_history",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "Return statistics in this region",
                         "format": "int32",
                         "in": "path",
@@ -15150,9 +15886,6 @@
                         "name": "type_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -15298,6 +16031,9 @@
                 "operationId": "get_markets_region_id_orders",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "default": "all",
                         "description": "Filter buy/sell orders, return all orders by default. If you query without type_id, we always return both buy and sell orders.",
                         "enum": [
@@ -15309,6 +16045,9 @@
                         "name": "order_type",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "$ref": "#/parameters/page"
                     },
                     {
                         "description": "Return orders in this region",
@@ -15325,12 +16064,6 @@
                         "name": "type_id",
                         "required": false,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/page"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -15376,7 +16109,7 @@
                                 "default": 1,
                                 "description": "Maximum page number",
                                 "format": "int32",
-                                "type": "number"
+                                "type": "integer"
                             }
                         },
                         "schema": {
@@ -15610,15 +16343,15 @@
                 "operationId": "get_opportunities_groups_group_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID of an opportunities group",
                         "format": "int32",
                         "in": "path",
                         "name": "group_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/language"
@@ -15839,15 +16572,15 @@
                 "operationId": "get_opportunities_tasks_task_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "ID of an opportunities task",
                         "format": "int32",
                         "in": "path",
                         "name": "task_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -15976,6 +16709,9 @@
                         "uniqueItems": true
                     },
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "destination solar system ID",
                         "format": "int32",
                         "in": "path",
@@ -16002,9 +16738,6 @@
                         "name": "origin",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -16127,6 +16860,12 @@
                         "uniqueItems": true
                     },
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/language"
+                    },
+                    {
                         "description": "The string to search on",
                         "in": "query",
                         "minLength": 3,
@@ -16140,12 +16879,6 @@
                         "in": "query",
                         "name": "strict",
                         "type": "boolean"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/language"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -16886,15 +17619,15 @@
                         "type": "boolean"
                     },
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The destination to travel to, can be solar system, station or structure's id",
                         "format": "int64",
                         "in": "query",
                         "name": "destination_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -17027,15 +17760,15 @@
                 "operationId": "post_ui_openwindow_information",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The target to open",
                         "format": "int32",
                         "in": "query",
                         "name": "target_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -17098,18 +17831,18 @@
                 "operationId": "post_ui_openwindow_marketdetails",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/token"
+                    },
+                    {
                         "description": "The item type to open in market window",
                         "format": "int32",
                         "in": "query",
                         "name": "type_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/token"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -17169,6 +17902,9 @@
                 "operationId": "post_ui_openwindow_newmail",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The details of mail to create",
                         "in": "body",
                         "name": "new_mail",
@@ -17222,9 +17958,6 @@
                             "title": "post_ui_openwindow_newmail_new_mail",
                             "type": "object"
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -18215,15 +18948,15 @@
                 "operationId": "get_universe_graphics_graphic_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "graphic_id integer",
                         "format": "int32",
                         "in": "path",
                         "name": "graphic_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -18434,15 +19167,15 @@
                 "operationId": "get_universe_groups_group_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "An Eve item group ID",
                         "format": "int32",
                         "in": "path",
                         "name": "group_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/language"
@@ -18594,15 +19327,15 @@
                 "operationId": "get_universe_moons_moon_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "moon_id integer",
                         "format": "int32",
                         "in": "path",
                         "name": "moon_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -18750,6 +19483,9 @@
                 "operationId": "post_universe_names",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "The ids to resolve",
                         "in": "body",
                         "name": "ids",
@@ -18772,9 +19508,6 @@
                             "type": "array",
                             "uniqueItems": true
                         }
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -18893,15 +19626,15 @@
                 "operationId": "get_universe_planets_planet_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "planet_id integer",
                         "format": "int32",
                         "in": "path",
                         "name": "planet_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -19253,18 +19986,18 @@
                 "operationId": "get_universe_regions_region_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/language"
+                    },
+                    {
                         "description": "region_id integer",
                         "format": "int32",
                         "in": "path",
                         "name": "region_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/language"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -19403,15 +20136,15 @@
                 "operationId": "get_universe_schematics_schematic_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "A PI schematic ID",
                         "format": "int32",
                         "in": "path",
                         "name": "schematic_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -19516,15 +20249,15 @@
                 "operationId": "get_universe_stargates_stargate_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "stargate_id integer",
                         "format": "int32",
                         "in": "path",
                         "name": "stargate_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -19708,15 +20441,15 @@
                 "operationId": "get_universe_stations_station_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "station_id integer",
                         "format": "int32",
                         "in": "path",
                         "name": "station_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -20050,15 +20783,15 @@
                 "operationId": "get_universe_structures_structure_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "An Eve structure ID",
                         "format": "int64",
                         "in": "path",
                         "name": "structure_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/token"
@@ -20497,18 +21230,18 @@
                 "operationId": "get_universe_systems_system_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/language"
+                    },
+                    {
                         "description": "system_id integer",
                         "format": "int32",
                         "in": "path",
                         "name": "system_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/language"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -20820,18 +21553,18 @@
                 "operationId": "get_universe_types_type_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/language"
+                    },
+                    {
                         "description": "An Eve item type ID",
                         "format": "int32",
                         "in": "path",
                         "name": "type_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/language"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -21066,15 +21799,15 @@
                 "operationId": "get_wars",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
                         "description": "Only return wars with ID smaller than this.",
                         "format": "int32",
                         "in": "query",
                         "name": "max_war_id",
                         "required": false,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
                     },
                     {
                         "$ref": "#/parameters/user_agent"
@@ -21150,18 +21883,18 @@
                 "operationId": "get_wars_war_id",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/datasource"
+                    },
+                    {
+                        "$ref": "#/parameters/user_agent"
+                    },
+                    {
                         "description": "ID for a war",
                         "format": "int32",
                         "in": "path",
                         "name": "war_id",
                         "required": true,
                         "type": "integer"
-                    },
-                    {
-                        "$ref": "#/parameters/datasource"
-                    },
-                    {
-                        "$ref": "#/parameters/user_agent"
                     },
                     {
                         "$ref": "#/parameters/X-User-Agent"
@@ -21403,14 +22136,6 @@
                 "operationId": "get_wars_war_id_killmails",
                 "parameters": [
                     {
-                        "description": "A valid war ID",
-                        "format": "int32",
-                        "in": "path",
-                        "name": "war_id",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
                         "$ref": "#/parameters/datasource"
                     },
                     {
@@ -21418,6 +22143,14 @@
                     },
                     {
                         "$ref": "#/parameters/user_agent"
+                    },
+                    {
+                        "description": "A valid war ID",
+                        "format": "int32",
+                        "in": "path",
+                        "name": "war_id",
+                        "required": true,
+                        "type": "integer"
                     },
                     {
                         "$ref": "#/parameters/X-User-Agent"
