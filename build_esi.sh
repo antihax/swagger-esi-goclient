@@ -39,23 +39,20 @@ go get -v
 go get github.com/sqs/goreturns
 go get -u github.com/mailru/easyjson/...
 
-COUNTER=1
-while [ $COUNTER -lt 5 ]; do
-    rm -rf ./v$COUNTER/*
-    set -e
-    # Generate models first and JSON code second because there is no easy way to glob for model files only
-    
-    java -jar -Dmodels ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/v$COUNTER -t ../swagger-esi-goclient/template  -l go -i https://esi.tech.ccp.is/v$COUNTER/swagger.json?datasource=tranquility -DpackageName=goesiv$COUNTER
-    easyjson -noformat ../goesi/v$COUNTER/*.go
-    # Generate all the other files
-    java -jar ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/v$COUNTER -t ../swagger-esi-goclient/template  -l go -i https://esi.tech.ccp.is/v$COUNTER/swagger.json?datasource=tranquility -DpackageName=goesiv$COUNTER
-    # Fix slices of struct types
-    sed -i 's/REMOVEME\[\]//g' ../goesi/v$COUNTER/*.*
-    # Fix imports where needed (select encoding/json or easyjson)
-    goreturns -w ../goesi/v$COUNTER
-    let COUNTER=COUNTER+1 
-    set +e
-done
+rm -rf ../goesi/esi/*
+rm -rf ../goesi/esi/docs/*
+set -e
+# Generate models first and JSON code second because there is no easy way to glob for model files only
+java -jar -Dmodels ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/esi -t ../swagger-esi-goclient/template -l go -i https://esi.tech.ccp.is/_latest/swagger.json?datasource=tranquility -DpackageName=esi
+easyjson -noformat ../goesi/esi/*.go
+# Generate all the other files
+java -jar ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/esi -t ../swagger-esi-goclient/template -l go -i https://esi.tech.ccp.is/_latest/swagger.json?datasource=tranquility -DpackageName=esi
+# Fix slices of struct types
+sed -i 's/REMOVEME\[\]//g' ../goesi/esi/*.*
+# Fix imports where needed (select encoding/json or easyjson)
+goreturns -w ../goesi/esi
+let COUNTER=COUNTER+1 
+set +e
 
 set -e
 gofmt -s -w .
