@@ -46,7 +46,7 @@ set -e
 echo Build models
 java -jar -Dmodels ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/esi -t ../swagger-esi-goclient/template -l go -i https://esi.tech.ccp.is/_latest/swagger.json?datasource=tranquility -DpackageName=esi
 echo format models
-easyjson -noformat ../goesi/esi/*.go
+find ../goesi/esi/ -type f -name "*.go" -exec echo processing {} \; -exec easyjson -noformat {} \;
 # Generate all the other files
 echo regenerate
 java -jar ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/esi -t ../swagger-esi-goclient/template -l go -i https://esi.tech.ccp.is/_latest/swagger.json?datasource=tranquility -DpackageName=esi

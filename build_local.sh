@@ -5,7 +5,7 @@ rm -rf ../goesi/esi/docs/*
 set -e
 # Generate models first and JSON code second because there is no easy way to glob for model files only
 java -jar -Dmodels ./swagger-codegen-cli.jar generate -o ../goesi/esi -t ./template -l go -i https://esi.tech.ccp.is/_latest/swagger.json?datasource=tranquility -DpackageName=esi
-easyjson -noformat ../goesi/esi/*.go
+find ../goesi/esi/ -type f -name "*.go" -exec echo processing {} \; -exec easyjson -noformat {} \;
 # Generate all the other files
 java -jar ./swagger-codegen-cli.jar generate -o ../goesi/esi -t ./template -l go -i https://esi.tech.ccp.is/_latest/swagger.json?datasource=tranquility -DpackageName=esi
 # Fix slices of struct types
