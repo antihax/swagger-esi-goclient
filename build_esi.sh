@@ -50,16 +50,20 @@ find ../goesi/esi/ -type f -name "*.go" -exec echo processing {} \; -exec easyjs
 # Generate all the other files
 echo regenerate
 java -jar ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/esi -t ../swagger-esi-goclient/template -l go -i https://esi.tech.ccp.is/_latest/swagger.json?datasource=tranquility -DpackageName=esi
+
+echo fix slices of structs
 # Fix slices of struct types
 sed -i 's/REMOVEME\[\]//g' ../goesi/esi/*.*
+
+echo fix imports and simplify
 # Fix imports where needed (select encoding/json or easyjson)
 goreturns -w ../goesi/esi
-let COUNTER=COUNTER+1 
-set +e
 
+echo format code
 set -e
 gofmt -s -w .
 
+echo test
 go test ./...
 git add -A .
 
