@@ -1,7 +1,6 @@
 language: go
 go: 1.9
-dist: precise
-sudo: false
+sudo: true
 
 services:
   - docker
