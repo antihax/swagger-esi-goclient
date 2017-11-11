@@ -57,7 +57,7 @@ sed -i 's/REMOVEME\[\]//g' ../goesi/esi/*.*
 
 echo fix imports and simplify
 # Fix imports where needed (select encoding/json or easyjson)
-goreturns -w ../goesi/esi
+goreturns -l -w ../goesi/esi
 
 echo format code
 set -e
