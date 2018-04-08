@@ -12,6 +12,7 @@ func (c contextKey) String() string {
 var (
 	ContextOAuth2    = contextKey("token")
 	ContextBasicAuth = contextKey("basic")
+	ContextAccessToken = contextKey("accessToken")
 )
 
 type BasicAuth struct {

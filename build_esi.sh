@@ -61,7 +61,10 @@ goreturns -l -w ../goesi/esi
 
 echo format code
 set -e
-gofmt -s -w .
+gofmt -s -w ../goesi
+
+sed -i 's/antihax\/optional/antihax\/goesi\/optional/g' ../goesi/esi/*.*
+
 
 echo test
 go test ./...
