@@ -258,7 +258,6 @@ func (a *{{{classname}}}Service) {{{nickname}}}(ctx context.Context{{#hasParams}
 		}
 		{{#responses}}{{#dataType}}
 		if localVarHttpResponse.StatusCode == {{{code}}} {
-			localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
 			if err != nil {
 				return {{#returnType}}localVarReturnValue, {{/returnType}}localVarHttpResponse, err
 			}
