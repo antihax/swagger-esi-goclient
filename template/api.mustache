@@ -244,7 +244,7 @@ func (a *{{{classname}}}Service) {{{nickname}}}(ctx context.Context{{#hasParams}
 	{{#returnType}}
 	if localVarHttpResponse.StatusCode < 400 {
 		// If we succeed, return the data, otherwise pass on to decode error.
-		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("content-type"));
 		if err == nil { 
 			return {{#returnType}}localVarReturnValue, {{/returnType}}localVarHttpResponse, err
 		}
@@ -259,7 +259,7 @@ func (a *{{{classname}}}Service) {{{nickname}}}(ctx context.Context{{#hasParams}
 		{{#responses}}{{#dataType}}
 		if localVarHttpResponse.StatusCode == {{{code}}} {
 			var v {{{dataType}}}
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("content-type"));
 				if err != nil {
 					newErr.error = err.Error()
 					return {{#returnType}}localVarReturnValue, {{/returnType}}localVarHttpResponse, newErr
