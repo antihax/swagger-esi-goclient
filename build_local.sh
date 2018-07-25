@@ -29,6 +29,9 @@ gofmt -s -w ../goesi
 
 sed -i 's/antihax\/optional/antihax\/goesi\/optional/g' ../goesi/esi/*.*
 
+echo derpifying filenames for windows
+./rename_esi_files.sh
+
 echo test
 go test ./...
 
