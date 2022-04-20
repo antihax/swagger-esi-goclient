@@ -1,6 +1,5 @@
 #!/bin/bash
 go get -v
-go get github.com/sqs/goreturns
 go get -u github.com/mailru/easyjson/...
 go get github.com/antihax/optional
 

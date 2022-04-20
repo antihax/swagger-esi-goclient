@@ -36,7 +36,6 @@ git remote add upstream "https://${GH_TOKEN}@github.com/antihax/goesi.git"
 git fetch upstream
 git pull upstream HEAD
 go get -v
-go get github.com/sqs/goreturns
 go get -u github.com/mailru/easyjson/...
 go get github.com/antihax/optional
 
