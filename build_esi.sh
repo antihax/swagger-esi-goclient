@@ -75,11 +75,6 @@ echo fix slices of structs meta
 # Fix slices of struct types
 sed -i 's/REMOVEME\[\]//g' ../goesi/meta/*.*
 
-echo fix imports and simplify
-# Fix imports where needed (select encoding/json or easyjson)
-goreturns -l -w ../goesi/esi
-goreturns -l -w ../goesi/meta
-
 echo format code
 set -e
 gofmt -s -w ../goesi
