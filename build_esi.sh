@@ -36,6 +36,7 @@ git remote add upstream "https://${GH_TOKEN}@github.com/antihax/goesi.git"
 git fetch upstream
 git pull upstream HEAD
 go get -v
+go install golang.org/x/tools/cmd/goimports@latest
 go get -u github.com/mailru/easyjson/...
 go get github.com/antihax/optional
 
@@ -73,6 +74,9 @@ sed -i 's/antihax\/optional/antihax\/goesi\/optional/g' ../goesi/meta/*.*
 echo fix slices of structs meta
 # Fix slices of struct types
 sed -i 's/REMOVEME\[\]//g' ../goesi/meta/*.*
+
+goimports -w ../goesi/esi/
+goimports -w ../goesi/meta/
 
 echo format code
 set -e
