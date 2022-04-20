@@ -75,8 +75,8 @@ echo fix slices of structs meta
 # Fix slices of struct types
 sed -i 's/REMOVEME\[\]//g' ../goesi/meta/*.*
 
-goimports -w ../goesi/esi/
-goimports -w ../goesi/meta/
+goimports -w ../goesi/esi
+goimports -w ../goesi/meta
 
 echo format code
 set -e
