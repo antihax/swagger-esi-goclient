@@ -1,11 +1,17 @@
 #!/bin/bash
-
 rev=$(git rev-parse --short HEAD)
 
 git config --global user.name "${GH_USER}"
 git config --global user.email "${GH_EMAIL}"
 git config --global github.token "${GH_TOKEN}"
 git config --global push.default simple
+
+# Don't upload anything if it's a local build
+local_build=false
+if test "$1" = "-local"; then
+    local_build=true
+    echo "Performing local build"
+fi
 
 cd ..
 mkdir mock-esi
@@ -14,20 +20,38 @@ git init
 git remote add upstream "https://${GH_TOKEN}@github.com/antihax/mock-esi.git"
 git fetch upstream
 git pull upstream HEAD
-touch version.txt
 
-oldnum=`cut -d ',' -f2 version.txt`  
-newnum=`expr $oldnum + 1`
-sed -i "s/$oldnum\$/$newnum/g" version.txt 
+
+# Build Mock ESI
 set -e
 go get -v
 bash build_mock_esi.sh
 gofmt -s -w .
 set +e
-git add -A .
-git commit -m "rebuild esi at ${rev}"
-git push -q upstream HEAD
 
+# Push changes
+if [ "$local_build" = false ]; then 
+    if [[ `git status --porcelain` ]]; then
+        echo "Following was changed"
+        git status --porcelain
+
+        # bump version
+        touch version.txt
+        oldnum=`cut -d ',' -f2 version.txt`  
+        newnum=`expr $oldnum + 1`
+        sed -i "s/$oldnum\$/$newnum/g" version.txt 
+
+        git add -A .
+        git commit -m "rebuild esi at ${rev}"
+        git push -q upstream HEAD
+    else
+        echo "no changes to Mock ESI"
+    fi
+    else
+    echo "Local build, not uploading"
+fi
+
+# Pull down ESI
 cd ..
 mkdir goesi
 cd goesi
@@ -40,6 +64,7 @@ go install golang.org/x/tools/cmd/goimports@latest
 go get -u github.com/mailru/easyjson/...
 go get github.com/antihax/optional
 
+# Clean out everything
 rm -rf ../goesi/esi/*
 rm -rf ../goesi/esi/docs/*
 rm -rf ../goesi/meta/*
@@ -64,6 +89,7 @@ echo Build models
 java -jar -Dmodels ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/meta -t ../swagger-esi-goclient/template -l go -i https://esi.evetech.net/swagger.json -DpackageName=meta
 echo format models
 find ../goesi/meta/ -type f -name "*.go" -exec echo processing {} \; -exec easyjson -noformat {} \;
+
 # Generate all the other files
 echo "regenerate"
 java -jar ../swagger-esi-goclient/swagger-codegen-cli.jar generate -o ../goesi/meta -t ../swagger-esi-goclient/template -l go -i https://esi.evetech.net/swagger.json -DpackageName=meta
@@ -86,10 +112,17 @@ echo test
 go test ./...
 git add -A .
 
-set +e
-git commit -m "rebuild esi at ${rev}"
-git push -q upstream HEAD
-set -e
+if [ "$local_build" = false ]; then 
+    if [[ `git status --porcelain` ]]; then
+        echo "Following was changed"
+        git status --porcelain
+        # Push new source
+        set +e
+        git commit -m "rebuild esi at ${rev}"
+        git push -q upstream HEAD
+        set -e
+    fi
+fi
 
 go get -v
 go test ./...
